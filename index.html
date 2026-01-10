@@ -3,227 +3,76 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>전리품 분배 매니저 v6 (UI 개선판)</title>
+  <title>전리품 매니저 v8 (GitHub 클라우드 연동)</title>
   <style>
     :root {
-      --primary: #4f46e5;
-      --primary-hover: #4338ca;
-      --danger: #ef4444;
-      --danger-hover: #dc2626;
-      --success: #10b981;
-      --bg: #f3f4f6;
-      --card-bg: #ffffff;
-      --text-main: #1f2937;
-      --text-muted: #6b7280;
-      --border: #e5e7eb;
-      --radius: 8px;
-      --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+      --primary: #4f46e5; --primary-hover: #4338ca;
+      --danger: #ef4444; --success: #10b981;
+      --bg: #f3f4f6; --card-bg: #ffffff;
+      --text-main: #1f2937; --text-muted: #6b7280;
+      --border: #e5e7eb; --radius: 8px;
+      --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+      --github: #24292f;
     }
-
     * { box-sizing: border-box; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background-color: var(--bg);
-      color: var(--text-main);
-      margin: 0;
-      padding: 0;
-      line-height: 1.5;
-    }
-
-    /* Layout */
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 16px;
-    }
-
-    /* Navigation / Tabs */
-    .nav-tabs {
-      display: flex;
-      gap: 8px;
-      background: var(--card-bg);
-      padding: 8px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      margin-bottom: 20px;
-      overflow-x: auto;
-    }
-    .nav-btn {
-      flex: 1;
-      padding: 10px 16px;
-      border: none;
-      background: transparent;
-      color: var(--text-muted);
-      font-weight: 600;
-      cursor: pointer;
-      border-radius: 6px;
-      transition: all 0.2s;
-      white-space: nowrap;
-      text-align: center;
-    }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-main); margin: 0; padding: 0; line-height: 1.5; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 16px; }
+    
+    /* Nav */
+    .nav-tabs { display: flex; gap: 8px; background: var(--card-bg); padding: 8px; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 20px; overflow-x: auto; }
+    .nav-btn { flex: 1; padding: 10px; border: none; background: transparent; color: var(--text-muted); font-weight: 600; cursor: pointer; border-radius: 6px; white-space: nowrap; transition: 0.2s; }
     .nav-btn:hover { background: var(--bg); color: var(--text-main); }
-    .nav-btn.active {
-      background: var(--primary);
-      color: white;
-      box-shadow: 0 2px 4px rgba(79, 70, 229, 0.3);
-    }
+    .nav-btn.active { background: var(--primary); color: white; }
 
-    /* Cards */
-    .card {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 20px;
-      margin-bottom: 20px;
-      border: 1px solid var(--border);
-    }
-    .card h3 { margin-top: 0; margin-bottom: 16px; font-size: 1.25rem; color: var(--text-main); border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-    .card h4 { margin: 16px 0 8px 0; font-size: 1rem; }
-
-    /* Forms & Inputs */
+    /* UI Components */
+    .card { background: var(--card-bg); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px; margin-bottom: 20px; border: 1px solid var(--border); }
+    .card h3 { margin: 0 0 16px 0; border-bottom: 1px solid var(--border); padding-bottom: 10px; font-size: 1.25rem; }
     .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
     .col { display: flex; flex-direction: column; gap: 8px; }
-    
-    input, select, textarea {
-      padding: 10px 12px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      font-size: 0.95rem;
-      width: 100%;
-      transition: border-color 0.2s;
-    }
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-    }
-
-    /* Buttons */
-    button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 16px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: white;
-      color: var(--text-main);
-      font-weight: 500;
-      cursor: pointer;
-      font-size: 0.9rem;
-      transition: all 0.2s;
-    }
-    button:hover { background: #f9fafb; border-color: #d1d5db; }
-    button:active { transform: translateY(1px); }
-
-    button.primary {
-      background: var(--primary);
-      border-color: var(--primary);
-      color: white;
-    }
+    input, select, textarea { padding: 10px; border: 1px solid var(--border); border-radius: 6px; width: 100%; }
+    input:focus { outline: 2px solid var(--primary); border-color: transparent; }
+    button { padding: 10px 16px; border-radius: 6px; border: 1px solid var(--border); background: white; cursor: pointer; font-weight: 500; transition: 0.2s; display:inline-flex; align-items:center; justify-content:center; gap:6px; }
+    button:hover { background: #f9fafb; }
+    button.primary { background: var(--primary); color: white; border-color: var(--primary); }
     button.primary:hover { background: var(--primary-hover); }
+    button.danger { color: var(--danger); border-color: var(--danger); }
+    button.github { background: var(--github); color: white; border-color: var(--github); }
+    button.github:hover { opacity: 0.9; }
+    button.sm { padding: 4px 10px; font-size: 0.85rem; }
 
-    button.danger {
-      background: white;
-      color: var(--danger);
-      border-color: var(--danger);
-    }
-    button.danger:hover { background: #fef2f2; }
-    
-    button.success {
-      background: var(--success);
-      border-color: var(--success);
-      color: white;
-    }
-
-    button.sm { padding: 4px 8px; font-size: 0.8rem; }
-
-    /* Tables */
+    /* Tables & Badges */
     .table-responsive { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-    th {
-      background: #f9fafb;
-      text-align: left;
-      padding: 12px;
-      font-weight: 600;
-      color: var(--text-muted);
-      border-bottom: 2px solid var(--border);
-      white-space: nowrap;
-    }
-    td {
-      padding: 12px;
-      border-bottom: 1px solid var(--border);
-      vertical-align: middle;
-    }
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: #f9fafb; }
-    
-    /* Drag & Drop */
-    .drag-handle { cursor: grab; color: var(--text-muted); font-size: 1.2rem; padding-right: 8px; }
-    tr.drag-over td { background: #eef2ff; border-top: 2px dashed var(--primary); }
-
-    /* Utilities */
-    .muted { color: var(--text-muted); font-size: 0.85rem; }
-    .warn { color: #d97706; font-weight: 600; }
-    .text-danger { color: var(--danger); }
-    .pill {
-      display: inline-flex;
-      padding: 4px 12px;
-      background: #eef2ff;
-      color: var(--primary);
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      border: 1px solid #c7d2fe;
-    }
-    .badge {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
+    th { background: #f9fafb; padding: 12px; text-align: left; border-bottom: 2px solid var(--border); white-space: nowrap; }
+    td { padding: 12px; border-bottom: 1px solid var(--border); }
+    .badge { padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
     .badge.on { background: #d1fae5; color: #065f46; }
     .badge.off { background: #f3f4f6; color: #6b7280; }
     .badge.done { background: #fef3c7; color: #92400e; }
     .badge.ready { background: #e0e7ff; color: #3730a3; }
-
-    .hr { height: 1px; background: var(--border); margin: 16px 0; }
-    .flex-center { display: flex; align-items: center; justify-content: center; }
+    .drag-handle { cursor: grab; padding-right: 8px; color: var(--text-muted); }
+    tr.drag-over td { background: #eef2ff; border-top: 2px dashed var(--primary); }
     
-    /* Current Player Highlight */
-    .current-player-box {
-      background: #e0e7ff;
-      border: 1px solid #c7d2fe;
-      padding: 16px;
-      border-radius: var(--radius);
-      text-align: center;
-      margin-bottom: 16px;
-    }
-    .current-player-name {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--primary);
-      display: block;
-      margin: 8px 0;
-    }
-
-    details summary { cursor: pointer; color: var(--primary); font-weight: 600; }
+    /* Github Config Box */
+    .gh-config { background: #24292f; color: #fff; padding: 16px; border-radius: 8px; margin-bottom: 16px; }
+    .gh-config input { background: #0d1117; border: 1px solid #30363d; color: #fff; }
+    .gh-config label { font-size: 0.85rem; color: #8b949e; display: block; margin-bottom: 4px; }
+    .status-msg { font-size: 0.9rem; margin-left: 8px; font-weight: 600; }
   </style>
 </head>
 <body>
 
 <div class="container">
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-    <h2 style="margin:0;">⚔️ 전리품 매니저 v6</h2>
-    <span class="muted">UI Improved</span>
+    <h2 style="margin:0;">⚔️ 전리품 매니저 v8</h2>
+    <span style="font-size:0.85rem; color:#666; background:#fff; padding:4px 8px; border-radius:12px; border:1px solid #ddd;">GitHub Sync Enabled</span>
   </div>
 
   <div class="nav-tabs">
     <button id="tabRoster" class="nav-btn active">👥 명단/목록</button>
     <button id="tabFixed" class="nav-btn">💎 고정템 레인</button>
     <button id="tabLoot" class="nav-btn">🎲 전리템 레인</button>
-    <button id="tabLogs" class="nav-btn">📜 이력/백업</button>
+    <button id="tabLogs" class="nav-btn">☁️ 클라우드/백업</button>
   </div>
 
   <div id="view"></div>
@@ -231,86 +80,48 @@
 
 <script>
 /**
- * 기능 로직은 v5와 동일하게 유지
- * UI 렌더링 부분만 개선된 CSS 클래스와 구조로 변경
+ * v8 변경점:
+ * - GitHub API 연동 (Save / Load)
+ * - 한글 깨짐 방지를 위한 Base64 인코딩/디코딩 처리
  */
 
 const STORAGE_KEY = "loot_manager_v5";
 
-// --- Reorder helpers (명단 순서 변경) ---
-let _dragPlayerId = null;
-function moveArrayItem(arr, fromIdx, toIdx){
-  if(fromIdx === toIdx) return arr;
-  const copy = arr.slice();
-  const [it] = copy.splice(fromIdx, 1);
-  copy.splice(toIdx, 0, it);
-  return copy;
+// --- Base64 UTF-8 Helpers (한글 처리용) ---
+function utf8_to_b64(str) {
+  return window.btoa(unescape(encodeURIComponent(str)));
 }
-function reorderPlayersById(dragId, dropId){
-  if(!dragId || !dropId || dragId===dropId) return;
-  const fromIdx = state.players.findIndex(p=>p.id===dragId);
-  const toIdx   = state.players.findIndex(p=>p.id===dropId);
-  if(fromIdx<0 || toIdx<0) return;
-  state.players = moveArrayItem(state.players, fromIdx, toIdx);
-  logEvent("ROSTER_REORDER","(명단)", null, `명단 순서 변경: ${fromIdx+1} → ${toIdx+1}`, { fromIdx, toIdx, dragId, dropId });
-  saveState();
-}
-function reorderPlayersByIndex(i, delta){
-  const j = i + delta;
-  if(i<0 || j<0 || i>=state.players.length || j>=state.players.length) return;
-  state.players = moveArrayItem(state.players, i, j);
-  logEvent("ROSTER_REORDER","(명단)", null, `명단 순서 변경: ${i+1} ↔ ${j+1}`, { fromIdx:i, toIdx:j });
-  saveState();
+function b64_to_utf8(str) {
+  return decodeURIComponent(escape(window.atob(str)));
 }
 
-// Utils
+// --- Utils ---
 function nowTs(){ return Date.now(); }
 function fmt(ts){
   const d = new Date(ts);
   const pad = n => String(n).padStart(2,"0");
-  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+  return `${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
-function safeText(s, fallback="(미입력)"){
-  const t = (s || "").trim();
-  return t ? t : fallback;
-}
-
-function normalizeGitHubTextUrl(u){
-  const url = (u || "").trim();
-  if(!url) return url;
-  try{
-    const m = url.match(/^https:\/\/github\.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.+)$/);
-    if(m){
-      const owner = m[1], repo = m[2], branch = m[3], path = m[4];
-      return `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${path}`;
-    }
-  }catch(e){}
-  return url;
+function safeText(s){ return (s||"").trim() || "(미입력)"; }
+function moveArrayItem(arr, f, t){
+  if(f===t) return arr;
+  const c = arr.slice();
+  const [i] = c.splice(f,1);
+  c.splice(t,0,i);
+  return c;
 }
 
-function looksLikeHtml(text){
-  const t = (text || "").trim().slice(0, 200).toLowerCase();
-  return t.includes("<!doctype html") || t.includes("<html") || t.includes("<head") || t.includes("<body");
-}
-
-function stripBom(s){
-  if(!s) return s;
-  return s.charCodeAt(0) === 0xFEFF ? s.slice(1) : s;
-}
-
-
-// State
+// --- State ---
 function defaultState(){
   return {
     players: [],
-    fixedPointer: 0,
-    lootPointer: 0,
-    fixedItemName: "고정템",
-    lootCatalog: [],
+    fixedPointer: 0, lootPointer: 0,
+    fixedItemName: "고정템", lootCatalog: [],
     batchId: null,
-    batchReceivedFixed: {},
-    batchReceivedLoot: {},
+    batchReceivedFixed: {}, batchReceivedLoot: {},
     logs: [],
+    // GitHub Settings
+    gh: { token: "", owner: "", repo: "", path: "data.json" },
     ui: { showDangerButtons: false }
   };
 }
@@ -319,904 +130,273 @@ let state = loadState();
 function loadState(){
   try{
     const raw = localStorage.getItem(STORAGE_KEY);
-    if(!raw) return defaultState();
-    const parsed = JSON.parse(raw);
-    return {
-      ...defaultState(),
-      ...parsed,
-      ui: { ...defaultState().ui, ...(parsed.ui||{}) },
-      batchReceivedFixed: parsed.batchReceivedFixed || {},
-      batchReceivedLoot: parsed.batchReceivedLoot || {}
-    };
-  }catch(e){
-    console.warn(e);
-    return defaultState();
-  }
+    return raw ? { ...defaultState(), ...JSON.parse(raw) } : defaultState();
+  }catch(e){ return defaultState(); }
 }
 function saveState(){
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
-function logEvent(type, itemName, receiverId, detail, meta = {}){
+function logEvent(type, itemName, receiverId, detail, meta={}){
   state.logs.unshift({ ts: nowTs(), type, itemName, receiverId, detail, meta });
   saveState();
 }
 
-// Batch
-function startBatch(){
-  state.batchId = nowTs();
-  state.batchReceivedFixed = {};
-  state.batchReceivedLoot = {};
-  logEvent("BATCH_START", "(배치)", null, "이번 보스(배치) 시작: 레인별 1인1개 초기화", { batchId: state.batchId });
-  saveState();
-}
-function canReceive(which, playerId){
-  if(which === "fixed") return !state.batchReceivedFixed[playerId];
-  return !state.batchReceivedLoot[playerId];
-}
-function markReceived(which, playerId){
-  if(which === "fixed") state.batchReceivedFixed[playerId] = true;
-  else state.batchReceivedLoot[playerId] = true;
-  saveState();
-}
-function batchSummary(which){
-  if(which === "fixed") return Object.keys(state.batchReceivedFixed || {}).length;
-  if(which === "loot") return Object.keys(state.batchReceivedLoot || {}).length;
-  return (Object.keys(state.batchReceivedFixed || {}).length + Object.keys(state.batchReceivedLoot || {}).length);
-}
-
-// Lane roster / pointer
-function laneKey(which){ return which === "fixed" ? "activeFixed" : "activeLoot"; }
-function lanePlayers(which){
-  const key = laneKey(which);
-  return state.players.filter(p => !!p[key]);
-}
-function laneCount(which){ return lanePlayers(which).length; }
-
-function clampPointer(which){
-  const n = laneCount(which);
-  if(n === 0){
-    if(which==="fixed") state.fixedPointer = 0;
-    else state.lootPointer = 0;
+// --- GitHub API Logic ---
+async function githubOp(mode) {
+  const { token, owner, repo, path } = state.gh;
+  const statusEl = document.getElementById("ghStatus");
+  
+  if(!token || !owner || !repo){
+    alert("GitHub 설정(토큰, 아이디, 저장소)을 먼저 입력해주세요.");
     return;
   }
-  if(which==="fixed") state.fixedPointer = ((state.fixedPointer % n) + n) % n;
-  else state.lootPointer = ((state.lootPointer % n) + n) % n;
-}
-function pointerValue(which){
-  clampPointer(which);
-  return which==="fixed" ? state.fixedPointer : state.lootPointer;
-}
-function setPointerValue(which, v){
-  if(which==="fixed") state.fixedPointer = v;
-  else state.lootPointer = v;
-  clampPointer(which);
-  saveState();
-}
-function stepPointer(which, step=1){
-  const n = laneCount(which);
-  if(n === 0) return;
-  const p = pointerValue(which);
-  setPointerValue(which, (p + step) % n);
-}
-function peekEligibleCurrent(which){
-  const arr = lanePlayers(which);
-  const n = arr.length;
-  if(n === 0) return { player:null, offset:0, exhausted:true };
 
-  const start = pointerValue(which);
-  for(let i=0; i<n; i++){
-    const idx = (start + i) % n;
-    const p = arr[idx];
-    if(canReceive(which, p.id)){
-      return { player:p, offset:i, exhausted:false };
-    }
-  }
-  return { player:null, offset:0, exhausted:true };
-}
-function normalizePointerToEligible(which){
-  const n = laneCount(which);
-  if(n === 0){
-    alert("해당 레인 참여자가 없습니다. (명단에서 ON 설정)");
-    return false;
-  }
-  const peek = peekEligibleCurrent(which);
-  if(peek.exhausted){
-    alert("이번 배치에서 받을 사람이 없습니다. 새 보스면 [이번 보스 시작]을 눌러주세요.");
-    return false;
-  }
-  if(peek.offset > 0){
-    stepPointer(which, peek.offset);
-    logEvent("AUTO_SKIP_BATCH", "(자동)", null,
-      `${which==="fixed"?"고정":"전리"} 레인: 레인별 1인1개로 ${peek.offset}명 자동 스킵`,
-      { which, skipped: peek.offset, batchId: state.batchId }
-    );
-  }
-  return true;
-}
-function getCurrentEligible(which){
-  const arr = lanePlayers(which);
-  if(arr.length === 0) return null;
-  const idx = pointerValue(which);
-  return arr[idx] || null;
-}
+  const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+  const headers = {
+    "Authorization": `token ${token}`,
+    "Accept": "application/vnd.github.v3+json"
+  };
 
-// Player ops
-function addPlayer(name){
-  if(state.players.length >= 50) return alert("최대 50명까지 가능합니다.");
-  const id = crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2);
-  state.players.push({
-    id,
-    name,
-    activeFixed: true,
-    activeLoot: true,
-    fixedCount: 0,
-    lootCount: 0,
-    tokens: 0
-  });
-  saveState();
-}
-function parseNames(text){
-  return (text || "")
-    .split(/[\n,|\t]+/g)
-    .map(s => s.trim())
-    .filter(Boolean);
-}
-function addPlayersBulk(text){
-  const parts = parseNames(text);
-  if(parts.length === 0) return;
+  try {
+    if(statusEl) statusEl.textContent = "⏳ 처리 중...";
 
-  const existing = new Set(state.players.map(p => p.name.trim()));
-  const seen = new Set();
-  const unique = [];
-  for(const n of parts){
-    if(existing.has(n)) continue;
-    if(seen.has(n)) continue;
-    unique.push(n);
-    seen.add(n);
-  }
-  if(unique.length === 0){
-    alert("추가할 새 인원이 없습니다. (중복이거나 비어있음)");
-    return;
-  }
-  const room = 50 - state.players.length;
-  const toAdd = unique.slice(0, Math.max(0, room));
-  toAdd.forEach(addPlayer);
+    // 1. 현재 파일 상태 확인 (SHA 값 얻기 위해 필수)
+    let sha = null;
+    let existingContent = null;
+    try {
+      const res = await fetch(apiUrl, { headers });
+      if(res.ok) {
+        const data = await res.json();
+        sha = data.sha;
+        existingContent = data.content; // Base64
+      }
+    } catch(e) {}
 
-  logEvent("ROSTER_BULK_ADD", "(명단)", null, `대량 추가: ${toAdd.length}명`, { added: toAdd });
-  if(unique.length > room){
-    alert(`최대 50명 제한으로 ${toAdd.length}명만 추가했습니다. (초과 ${unique.length - room}명)`);
-  }
-  saveState();
-}
-function setTodayParticipantsForLane(which, text){
-  const names = parseNames(text);
-  if(names.length === 0) return alert("이름을 붙여넣어주세요.");
-  const set = new Set(names.map(s=>s.trim()));
-  const key = laneKey(which);
-  state.players.forEach(p => { p[key] = set.has(p.name.trim()); });
-  clampPointer(which);
-  logEvent("ROSTER_TODAY_SET", "(명단)", null, `오늘 참여자만 ON (${which})`, { which, names });
-  saveState();
-}
-function setAllForLane(which, on){
-  const key = laneKey(which);
-  state.players.forEach(p => p[key] = !!on);
-  clampPointer(which);
-  logEvent(on ? "ROSTER_ALL_ON" : "ROSTER_ALL_OFF", "(명단)", null, `${which} 전체 ${on?"ON":"OFF"}`, { which });
-  saveState();
-}
-function setBothLanesFromNames(text){
-  const names = parseNames(text);
-  if(names.length === 0) return alert("이름을 붙여넣어주세요.");
-  const set = new Set(names.map(s=>s.trim()));
-  state.players.forEach(p=>{
-    const on = set.has(p.name.trim());
-    p.activeFixed = on;
-    p.activeLoot = on;
-  });
-  clampPointer("fixed"); clampPointer("loot");
-  logEvent("ROSTER_TODAY_SET_BOTH", "(명단)", null, "오늘 참여자만 ON (고정+전리)", { names });
-  saveState();
-}
-function resetPointers(){
-  state.fixedPointer = 0;
-  state.lootPointer = 0;
-  clampPointer("fixed"); clampPointer("loot");
-  logEvent("POINTER_RESET", "(포인터)", null, "고정/전리 포인터를 1번으로 리셋");
-  saveState();
-}
-function setPointerToName(which, name){
-  const arr = lanePlayers(which);
-  if(arr.length === 0) return alert("해당 레인 참여자가 없습니다.");
-  const idx = arr.findIndex(p => p.name.trim() === name.trim());
-  if(idx < 0) return alert("해당 레인 참여자(ON)에서 이름을 찾지 못했습니다.");
-  setPointerValue(which, idx);
-  logEvent("POINTER_SET", "(포인터)", null, `${which} 포인터를 ${name}부터 시작`);
-  saveState();
-}
+    if (mode === "LOAD") {
+      if(!sha) throw new Error("저장소에 파일이 없습니다.");
+      const jsonStr = b64_to_utf8(existingContent.replace(/\n/g, ''));
+      const parsed = JSON.parse(jsonStr);
+      
+      // Merge state
+      state = { ...defaultState(), ...parsed, gh: state.gh }; // 설정은 현재 설정 유지
+      saveState();
+      render();
+      alert("✅ GitHub에서 데이터를 불러왔습니다.");
+    } 
+    else if (mode === "SAVE") {
+      const contentStr = JSON.stringify(state, null, 2);
+      const contentB64 = utf8_to_b64(contentStr);
+      
+      const body = {
+        message: `Loot Manager Auto Save (${new Date().toLocaleString()})`,
+        content: contentB64
+      };
+      if(sha) body.sha = sha; // 업데이트 시 SHA 필수
 
-// GitHub roster.txt load
-function parseRosterText(text){
-  return (text || "")
-    .split(/\r?\n/g)
-    .map(s => s.trim())
-    .filter(s => s && !s.startsWith("#"));
-}
-async function fetchRosterFromUrl(url){
-  let u = normalizeGitHubTextUrl((url || "").trim());
-  if(!u) return alert("roster.txt URL을 입력하세요.");
-  try{
-    const res = await fetch(u, { cache: "no-store" });
-    if(!res.ok) throw new Error("HTTP " + res.status);
-    let txt = stripBom(await res.text());
-    if(looksLikeHtml(txt)) return alert("불러오기 실패: GitHub raw 주소가 아닌 것 같습니다.");
-    const names = parseRosterText(txt);
-    if(names.length === 0) return alert("roster.txt에서 이름을 찾지 못했습니다.");
+      const putRes = await fetch(apiUrl, {
+        method: "PUT",
+        headers,
+        body: JSON.stringify(body)
+      });
 
-    const unique = [];
-    const seen = new Set();
-    for(const n of names){
-      if(seen.has(n)) continue;
-      unique.push(n);
-      seen.add(n);
-    }
-    const finalNames = unique.slice(0, 50);
-
-    if(!confirm(`roster.txt에서 ${finalNames.length}명을 불러옵니다.\n현재 명단을 덮어쓸까요?`)) return;
-
-    state.players = [];
-    state.fixedPointer = 0;
-    state.lootPointer = 0;
-
-    finalNames.forEach(addPlayer);
-    state.players.forEach(p => { p.activeFixed = true; p.activeLoot = true; });
-
-    resetPointers();
-    logEvent("ROSTER_FROM_TXT", "(명단)", null, `roster.txt 불러오기(덮어쓰기): ${finalNames.length}명`, { url: u, names: finalNames });
-    saveState();
-    alert("명단을 불러왔습니다.");
-  }catch(e){
-    alert("불러오기 실패: " + (e.message || e));
-  }
-}
-function exportRosterTxt(){
-  const lines = state.players.map(p => p.name);
-  const content = lines.join("\n") + "\n";
-  const blob = new Blob([content], { type:"text/plain;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "roster.txt";
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
-// GitHub loot_items.txt load
-function parseLootItemsText(text){
-  return (text || "")
-    .split(/\r?\n/g)
-    .map(s => s.trim())
-    .filter(s => s && !s.startsWith("#"));
-}
-async function fetchLootItemsFromUrl(url){
-  let u = normalizeGitHubTextUrl((url || "").trim());
-  if(!u) return alert("loot_items.txt URL을 입력하세요.");
-  try{
-    const res = await fetch(u, { cache: "no-store" });
-    if(!res.ok) throw new Error("HTTP " + res.status);
-    let txt = stripBom(await res.text());
-    if(looksLikeHtml(txt)) return alert("불러오기 실패");
-    const items = parseLootItemsText(txt);
-    if(items.length === 0) return alert("loot_items.txt에서 아이템을 찾지 못했습니다.");
-
-    const seen = new Set();
-    const uniq = [];
-    for(const it of items){
-      if(seen.has(it)) continue;
-      seen.add(it);
-      uniq.push(it);
+      if(!putRes.ok) throw new Error(`저장 실패 (${putRes.status})`);
+      alert("✅ GitHub에 성공적으로 저장했습니다!");
     }
 
-    if(!confirm(`loot_items.txt에서 ${uniq.length}개 아이템을 불러옵니다.\n현재 전리템 목록을 덮어쓸까요?`)) return;
-    state.lootCatalog = uniq;
-    logEvent("LOOT_CATALOG_FROM_TXT", "(전리목록)", null, `loot_items.txt 불러오기(덮어쓰기): ${uniq.length}개`, { url: u, items: uniq });
-    saveState();
-    alert(`전리품 목록을 불러왔습니다. (${uniq.length}개)`);
-  }catch(e){
-    alert("불러오기 실패: " + (e.message || e));
+    if(statusEl) statusEl.textContent = "✨ 완료";
+
+  } catch (err) {
+    console.error(err);
+    alert(`오류 발생: ${err.message}`);
+    if(statusEl) statusEl.textContent = "❌ 실패";
   }
 }
 
-
-// Loot catalog
-function setLootCatalogFromText(text){
-  const names = (text || "")
-    .split(/\r?\n/g)
-    .map(s=>s.trim())
-    .filter(s=>s && !s.startsWith("#"));
-  const seen = new Set();
-  const uniq = [];
-  for(const n of names){
-    if(seen.has(n)) continue;
-    seen.add(n);
-    uniq.push(n);
-  }
-  state.lootCatalog = uniq;
-  logEvent("LOOT_CATALOG_SET", "(전리목록)", null, `전리템 목록 저장: ${uniq.length}개`);
-  saveState();
-}
-function exportLootCatalogTxt(){
-  const lines = (state.lootCatalog || []);
-  const content = lines.join("\n") + "\n";
-  const blob = new Blob([content], { type:"text/plain;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "loot_items.txt";
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
-// Priority
-function prioritySelector(which, currentId){
-  const sel = document.createElement("select");
-  const key = laneKey(which);
-  const candidates = state.players
-    .filter(p => !!p[key] && p.tokens >= 1 && p.id !== currentId && canReceive(which, p.id))
-    .sort((a,b)=> b.tokens - a.tokens || a.name.localeCompare(b.name));
-
-  sel.appendChild(el("option", { value:"" }, candidates.length ? "⚠️ 우선권 사용 (대상 선택)" : "사용 가능한 대상 없음"));
-  candidates.forEach(p=>{
-    sel.appendChild(el("option", { value:p.id }, `🎫 ${p.name} (토큰 ${p.tokens})`));
-  });
-  return sel;
-}
-function priorityGive(which, itemName, claimantId){
-  if(!normalizePointerToEligible(which)) return;
-  const cur = getCurrentEligible(which);
-  if(!cur) return;
-
-  const claimant = state.players.find(p => p.id === claimantId) || null;
-  if(!claimant) return alert("요청자를 선택하세요.");
-  if(!claimant[laneKey(which)]) return alert("요청자가 해당 레인에서 OFF 상태입니다.");
-  if(claimant.tokens < 1) return alert("요청자 토큰이 부족합니다. (필요: 1)");
-  if(!canReceive(which, claimant.id)) return alert("요청자는 이번 배치에서 이미 1개를 받았습니다. (우선권 불가)");
-  if(claimant.id === cur.id) return alert("현재 차례자 본인은 우선권 요청 대상이 아닙니다.");
-
-  const finalItemName = safeText(itemName);
-
-  // Token 이동
-  claimant.tokens -= 1;
-  cur.tokens += 1;
-
-  if(which === "fixed") claimant.fixedCount += 1;
-  else claimant.lootCount += 1;
-
-  markReceived(which, claimant.id);
-
-  logEvent(
-    which === "fixed" ? "PRIORITY_FIXED" : "PRIORITY_LOOT",
-    finalItemName,
-    claimant.id,
-    `우선권 적용: 원차례자=${cur.name} → 수령자=${claimant.name} / 토큰 1개 ${cur.name}에게 이동`,
-    { which, curId: cur.id, claimantId: claimant.id, tokenTransfer: 1, batchId: state.batchId }
-  );
-
-  stepPointer(which, 1);
-}
-
-// DOM helpers
+// --- DOM Helpers ---
 function el(tag, props={}, children=[]){
-  const node = document.createElement(tag);
+  const n = document.createElement(tag);
   Object.entries(props).forEach(([k,v])=>{
-    if(k==="class") node.className = v;
-    else if(k==="html") node.innerHTML = v;
-    else if(k.startsWith("on") && typeof v === "function") node.addEventListener(k.slice(2), v);
-    else node.setAttribute(k,v);
+    if(k==="class") n.className=v; else if(k.startsWith("on")) n.addEventListener(k.slice(2),v); else n.setAttribute(k,v);
   });
-  (Array.isArray(children)?children:[children]).forEach(ch=>{
-    if(ch === null || ch === undefined) return;
-    node.appendChild(typeof ch === "string" ? document.createTextNode(ch) : ch);
-  });
-  return node;
+  (Array.isArray(children)?children:[children]).forEach(c=>c&&n.appendChild(typeof c==="string"?document.createTextNode(c):c));
+  return n;
 }
-
 let currentTab = "roster";
-function setTab(tab){
-  currentTab = tab;
-  document.getElementById("tabRoster").classList.toggle("active", tab==="roster");
-  document.getElementById("tabFixed").classList.toggle("active", tab==="fixed");
-  document.getElementById("tabLoot").classList.toggle("active", tab==="loot");
-  document.getElementById("tabLogs").classList.toggle("active", tab==="logs");
+function setTab(t){
+  currentTab=t; 
+  ["roster","fixed","loot","logs"].forEach(x=>document.getElementById("tab"+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle("active", x===t));
   render();
 }
-document.getElementById("tabRoster").onclick = () => setTab("roster");
-document.getElementById("tabFixed").onclick  = () => setTab("fixed");
-document.getElementById("tabLoot").onclick   = () => setTab("loot");
-document.getElementById("tabLogs").onclick   = () => setTab("logs");
+["roster","fixed","loot","logs"].forEach(t=>document.getElementById("tab"+(t.charAt(0).toUpperCase()+t.slice(1))).onclick=()=>setTab(t));
 
-function render(){
-  const view = document.getElementById("view");
-  view.innerHTML = "";
-  view.appendChild(currentView());
-}
+function render(){ document.getElementById("view").innerHTML=""; document.getElementById("view").appendChild(currentView()); }
 function currentView(){
   if(currentTab==="roster") return viewRoster();
-  if(currentTab==="fixed")  return viewFixed();
-  if(currentTab==="loot")   return viewLoot();
+  if(currentTab==="fixed") return viewLane("fixed");
+  if(currentTab==="loot") return viewLane("loot");
   return viewLogs();
 }
 
-// View: Roster
+// --- Views ---
 function viewRoster(){
   const wrap = el("div");
-
-  const fixedOn = laneCount("fixed");
-  const lootOn  = laneCount("loot");
-
-  const nameInput = el("input", { placeholder:"이름 입력", style:"flex:1;" });
-  const addBtn = el("button", { class:"primary", onclick:()=>{
-    const name = nameInput.value.trim();
-    if(!name) return;
-    addPlayer(name);
-    logEvent("ROSTER_ADD", "(명단)", null, `단일 추가: ${name}`);
-    nameInput.value = "";
-    render();
-  }}, "➕ 추가");
-
-  const bulkInput = el("textarea", {
-    placeholder: "여러 명 붙여넣기 (한 줄에 한 명)\n예)\n혜붕\n우기\n순심이\n목성",
-    rows: "5"
-  });
-
-  const rosterUrlInput = el("input", {
-    id:"rosterUrl",
-    placeholder:"roster.txt URL (raw 주소)",
-    value:"roster.txt",
-    style:"flex:2;"
-  });
-
-  const dangerToggle = el("input", { type:"checkbox", style:"width:auto; margin-right:8px;" });
-  dangerToggle.checked = !!state.ui.showDangerButtons;
-  dangerToggle.addEventListener("change", ()=>{
-    state.ui.showDangerButtons = dangerToggle.checked;
-    saveState();
-    render();
-  });
-
-  // Top Stats Card
-  wrap.appendChild(el("div", { class:"card" }, [
-    el("div", { class:"row" }, [
-      el("span", { class:"pill" }, `전체: ${state.players.length}명`),
-      el("span", { class:"pill" }, `고정ON: ${fixedOn}명`),
-      el("span", { class:"pill" }, `전리ON: ${lootOn}명`),
-      el("span", { class:"pill" }, `완료(고정): ${batchSummary("fixed")}명`),
-      el("span", { class:"pill" }, `완료(전리): ${batchSummary("loot")}명`),
+  // Top Stats
+  wrap.appendChild(el("div", {class:"card"}, [
+    el("div",{class:"row"},[
+      el("h3",{style:"margin:0"},"👥 참여자 관리"),
+      el("span",{class:"badge ready"},`총원 ${state.players.length}명`)
     ]),
-    el("div", { class:"hr" }),
-    el("div", { class:"row" }, [ nameInput, addBtn ]),
-    el("div", { class:"row", style:"margin-top:10px" }, [
-        el("button", { class:"", onclick:()=>{ resetPointers(); render(); }}, "🔄 포인터 리셋"),
-        el("button", { class:"primary", onclick:()=>{ startBatch(); render(); }}, "⚔️ 이번 보스 시작(배치 초기화)")
-    ])
-  ]));
-
-  // Bulk & Settings Card
-  wrap.appendChild(el("div", { class:"card" }, [
-    el("details", {}, [
-      el("summary", {}, "📂 대량 추가 및 설정"),
-      el("div", { style:"margin-top:16px;" }, [
-        el("h4", {}, "텍스트 붙여넣기"),
-        bulkInput,
-        el("div", { class:"row", style:"margin-top:8px" }, [
-          el("button", { onclick:()=>{ addPlayersBulk(bulkInput.value); bulkInput.value=""; render(); }}, "명단 추가"),
-          el("button", { onclick:()=>{ setBothLanesFromNames(bulkInput.value); bulkInput.value=""; render(); }}, "오늘 참여자만 ON (둘다)"),
-        ]),
-        el("div", { class:"row", style:"margin-top:8px" }, [
-          el("button", { class:"sm", onclick:()=>{ setTodayParticipantsForLane("fixed", bulkInput.value); bulkInput.value=""; render(); }}, "고정만 ON"),
-          el("button", { class:"sm", onclick:()=>{ setTodayParticipantsForLane("loot", bulkInput.value); bulkInput.value=""; render(); }}, "전리만 ON"),
-        ]),
-        el("div", { class:"hr" }),
-        el("h4", {}, "GitHub 연동"),
-        el("div", { class:"row" }, [ rosterUrlInput, el("button", { onclick: async()=>{ await fetchRosterFromUrl(rosterUrlInput.value); render(); }}, "불러오기") ]),
-        el("div", { class:"row", style:"margin-top:8px" }, [ el("button", { class:"sm", onclick: exportRosterTxt }, "roster.txt 다운로드") ]),
-        el("div", { class:"hr" }),
-        el("h4", {}, "고급 옵션"),
-        el("div", { class:"flex-center", style:"justify-content:flex-start" }, [
-            dangerToggle,
-            el("span", { class:"muted" }, "삭제/토큰 수동 조정 버튼 표시(주의)")
-        ])
-      ])
+    el("div",{class:"hr"}),
+    el("div",{class:"row"},[
+      el("input",{id:"newName",placeholder:"이름",style:"flex:1"}),
+      el("button",{class:"primary",onclick:()=>{
+        const n=document.getElementById("newName").value.trim();
+        if(n){ state.players.push({id:String(Math.random()).slice(2),name:n,activeFixed:true,activeLoot:true,fixedCount:0,lootCount:0,tokens:0}); saveState(); render(); }
+      }},"추가"),
+      el("button",{onclick:()=>{ if(confirm("배치 초기화?")) startBatch(); render(); }}, "⚔️ 배치 초기화")
     ])
   ]));
 
   // Table
-  const table = el("table");
-  table.appendChild(el("thead", {}, el("tr", {}, [
-    el("th", {}, "순서"),
-    el("th", {}, "이름"),
-    el("th", {}, el("div",{class:"row", style:"gap:4px"},[el("span",{},"고정"), el("button",{class:"sm", onclick:()=>{setAllForLane("fixed",true);render()}},"All ON"),el("button",{class:"sm", onclick:()=>{setAllForLane("fixed",false);render()}},"OFF")])),
-    el("th", {}, el("div",{class:"row", style:"gap:4px"},[el("span",{},"전리"), el("button",{class:"sm", onclick:()=>{setAllForLane("loot",true);render()}},"All ON"),el("button",{class:"sm", onclick:()=>{setAllForLane("loot",false);render()}},"OFF")])),
-    el("th", {}, "누적수령"),
-    el("th", {}, "토큰"),
-    el("th", {}, "상태(고정)"),
-    el("th", {}, "상태(전리)"),
-    el("th", {}, "관리"),
-  ])));
-
   const tbody = el("tbody");
-  state.players.forEach((p, idx)=>{
-    const fixedBadge = p.activeFixed ? el("span", {class:"badge on"}, "ON") : el("span", {class:"badge off"}, "OFF");
-    const lootBadge  = p.activeLoot  ? el("span", {class:"badge on"}, "ON") : el("span", {class:"badge off"}, "OFF");
-
-    const receivedFixed = canReceive("fixed", p.id) ? el("span", { class:"badge ready" }, "대기") : el("span", { class:"badge done" }, "완료");
-    const receivedLoot  = canReceive("loot", p.id)  ? el("span", { class:"badge ready" }, "대기") : el("span", { class:"badge done" }, "완료");
-
-    const manage = [];
-    if(state.ui.showDangerButtons){
-      manage.push(
-        el("button", { class:"sm", onclick:()=>{ p.tokens += 1; logEvent("TOKEN_ADJUST","(수동)",p.id,`${p.name} 토큰 +1`,{delta:+1}); saveState(); render(); }}, "+1"),
-        el("button", { class:"sm", onclick:()=>{ if(p.tokens<=0) return; p.tokens -= 1; logEvent("TOKEN_ADJUST","(수동)",p.id,`${p.name} 토큰 -1`,{delta:-1}); saveState(); render(); }}, "-1"),
-        el("button", { class:"sm danger", onclick:()=>{
-          if(!confirm("삭제할까요?")) return;
-          state.players = state.players.filter(x=>x.id !== p.id);
-          delete state.batchReceivedFixed[p.id];
-          delete state.batchReceivedLoot[p.id];
-          logEvent("ROSTER_DELETE","(명단)",null,`삭제: ${p.name}`);
-          saveState(); render();
-        }}, "🗑️")
-      );
-    }
-
-    const tr = el("tr", {}, [
-      el("td", {}, el("div", { class:"flex-center", style:"justify-content:flex-start" }, [
-        el("span", { class:"drag-handle", title:"드래그로 순서 변경" }, "≡"),
-        el("span", { style:"margin-right:8px; width:20px;" }, String(idx+1)),
-        el("button", { class:"sm", style:"padding:2px 6px;", onclick:()=>{ reorderPlayersByIndex(idx, -1); render(); }}, "▲"),
-        el("button", { class:"sm", style:"padding:2px 6px;", onclick:()=>{ reorderPlayersByIndex(idx, 1); render(); }}, "▼"),
+  state.players.forEach((p,i)=>{
+    const tr = el("tr",{},[
+      el("td",{},el("div",{class:"row",style:"gap:4px"},[
+        el("span",{class:"drag-handle"},"≡"), el("span",{},String(i+1)),
+        el("button",{class:"sm",onclick:()=>{ reorder(i,-1) }},"▲"),
+        el("button",{class:"sm",onclick:()=>{ reorder(i,1) }},"▼")
       ])),
-      el("td", { style:"font-weight:600" }, p.name),
-      el("td", { onclick:()=>{ p.activeFixed=!p.activeFixed; clampPointer("fixed"); saveState(); render(); }, style:"cursor:pointer" }, fixedBadge),
-      el("td", { onclick:()=>{ p.activeLoot=!p.activeLoot; clampPointer("loot"); saveState(); render(); }, style:"cursor:pointer" }, lootBadge),
-      el("td", {}, `${p.fixedCount} / ${p.lootCount}`),
-      el("td", { style:"font-weight:bold; color:var(--primary);" }, String(p.tokens)),
-      el("td", {}, receivedFixed),
-      el("td", {}, receivedLoot),
-      el("td", {}, el("div", { class:"row", style:"gap:4px;" }, manage)),
+      el("td",{style:"font-weight:600"},p.name),
+      el("td",{},el("button",{class:p.activeFixed?"sm primary":"sm",onclick:()=>{p.activeFixed=!p.activeFixed; clamp("fixed"); saveState(); render();}},p.activeFixed?"ON":"OFF")),
+      el("td",{},el("button",{class:p.activeLoot?"sm primary":"sm",onclick:()=>{p.activeLoot=!p.activeLoot; clamp("loot"); saveState(); render();}},p.activeLoot?"ON":"OFF")),
+      el("td",{},el("span",{class:canReceive("fixed",p.id)?"badge ready":"badge done"},canReceive("fixed",p.id)?"대기":"완료")),
+      el("td",{},String(p.tokens)),
+      el("td",{},el("button",{class:"sm danger",onclick:()=>{state.players.splice(i,1); saveState(); render();}},"삭제"))
     ]);
-
-    // Drag & Drop
-    tr.draggable = true;
-    tr.addEventListener("dragstart", ()=>{ _dragPlayerId = p.id; });
-    tr.addEventListener("dragend", ()=>{ _dragPlayerId = null; });
-    tr.addEventListener("dragover", (e)=>{ e.preventDefault(); tr.classList.add("drag-over"); });
-    tr.addEventListener("dragleave", ()=>{ tr.classList.remove("drag-over"); });
-    tr.addEventListener("drop", (e)=>{ e.preventDefault(); tr.classList.remove("drag-over"); reorderPlayersById(_dragPlayerId, p.id); render(); });
-
+    tr.draggable=true;
+    tr.ondragstart=()=>_dragId=p.id;
+    tr.ondragover=(e)=>{e.preventDefault(); tr.classList.add("drag-over");};
+    tr.ondragleave=()=>tr.classList.remove("drag-over");
+    tr.ondrop=(e)=>{e.preventDefault(); tr.classList.remove("drag-over"); reorderId(_dragId,p.id);};
     tbody.appendChild(tr);
   });
-  table.appendChild(tbody);
-
-  wrap.appendChild(el("div", { class:"card" }, [
-    el("div", {class:"table-responsive"}, table)
-  ]));
-
-  // Catalog Mngt
-  const catalogText = el("textarea", { rows:"4", placeholder:"도감\n희귀 장비\n강화석" });
-  catalogText.value = (state.lootCatalog || []).join("\n");
-  
-  const lootUrlInput = el("input", { value:"loot_items.txt", style:"flex:2" });
-
-  wrap.appendChild(el("div", { class:"card" }, [
-    el("details", {}, [
-        el("summary", {}, "📝 전리템 목록 관리"),
-        el("div", {style:"margin-top:16px"}, [
-            el("h4", {}, "직접 편집"),
-            catalogText,
-            el("div", { class:"row", style:"margin-top:8px" }, [
-                el("button", { onclick:()=>{ setLootCatalogFromText(catalogText.value); render(); }}, "목록 저장"),
-                el("button", { onclick: exportLootCatalogTxt }, "다운로드")
-            ]),
-            el("div", { class:"hr" }),
-            el("h4", {}, "GitHub 불러오기"),
-            el("div", { class:"row" }, [
-                lootUrlInput,
-                el("button", { onclick: async()=>{ await fetchLootItemsFromUrl(lootUrlInput.value); render(); }}, "불러오기")
-            ])
-        ])
-    ])
-  ]));
-
+  wrap.appendChild(el("div",{class:"card table-responsive"}, el("table",{},[
+    el("thead",{},el("tr",{},[el("th",{},"순서"),el("th",{},"이름"),el("th",{},"고정"),el("th",{},"전리"),el("th",{},"배치상태"),el("th",{},"토큰"),el("th",{},"관리")])),
+    tbody
+  ])));
   return wrap;
 }
 
-// View: Fixed Lane
-function viewFixed(){
+function viewLane(which){
   const wrap = el("div");
-  const peek = peekEligibleCurrent("fixed");
-  const curDisplay = peek.player ? peek.player.name : "(없음)";
-  const n = laneCount("fixed");
-
-  const itemNameInput = el("input", { value: state.fixedItemName, placeholder:"예: 고정 보상 상자", style:"font-weight:bold;" });
-  itemNameInput.addEventListener("input", ()=>{
-    state.fixedItemName = itemNameInput.value.trim() || "고정템";
-    saveState();
-  });
-
-  const startSel = el("select", { style:"flex:1;" });
-  startSel.appendChild(el("option", { value:"" }, "포인터 변경(선택)"));
-  lanePlayers("fixed").forEach(p => startSel.appendChild(el("option", { value:p.name }, p.name)));
-
-  wrap.appendChild(el("div", { class:"card" }, [
-    el("div", { style:"display:flex; justify-content:space-between; align-items:center;" }, [
-        el("h3", { style:"margin:0" }, "💎 고정템 레인"),
-        el("button", { class:"primary sm", onclick:()=>{ startBatch(); render(); }}, "⚔️ 새 배치 시작")
-    ]),
-    el("div", { class:"row", style:"margin-top:12px; margin-bottom:12px;" }, [
-        el("span", { class:"pill" }, `참여: ${n}명`),
-        el("span", { class:"pill" }, `포인터: ${n ? (pointerValue("fixed")+1) : 0}`),
-        el("span", { class:"pill" }, `완료: ${batchSummary("fixed")}명`),
-    ]),
-    
-    // Main Action Box
-    el("div", { class:"current-player-box" }, [
-        el("div", { class:"muted" }, "현재 차례 (Target)"),
-        el("div", { class:"current-player-name" }, curDisplay),
-        peek.offset > 0 ? el("div", { class:"text-danger", style:"margin-bottom:8px; font-weight:600;" }, `※ 앞선 ${peek.offset}명(배치 완료자) 자동 스킵됨`) : null,
-        
-        el("div", { class:"row", style:"justify-content:center; margin-top:16px;" }, [
-            el("span", {style:"align-self:center;"}, "아이템명: "),
-            el("div", {style:"width:200px"}, itemNameInput)
-        ]),
-
-        el("div", { class:"row", style:"justify-content:center; margin-top:16px; gap:16px;" }, [
-            el("button", { class:"primary", style:"padding:12px 24px; font-size:1.1rem;", onclick:()=>{
-                if(!normalizePointerToEligible("fixed")) return;
-                const cur = getCurrentEligible("fixed");
-                if(!cur) return;
-                cur.fixedCount += 1;
-                state.fixedItemName = itemNameInput.value.trim() || "고정템";
-                markReceived("fixed", cur.id);
-                logEvent("FIXED_GIVE", state.fixedItemName, cur.id, `${cur.name}에게 고정템 지급`, { which:"fixed", curId:cur.id, batchId: state.batchId });
-                stepPointer("fixed", 1);
-                render();
-            }}, "🎁 지급 (본인 수령)"),
-            
-            el("button", { class:"danger", onclick:()=>{
-                if(!normalizePointerToEligible("fixed")) return;
-                const cur = getCurrentEligible("fixed");
-                if(!cur) return;
-                state.fixedItemName = itemNameInput.value.trim() || "고정템";
-                logEvent("FIXED_SKIP", state.fixedItemName, cur.id, `${cur.name} 차례 스킵`, { which:"fixed", curId:cur.id, batchId: state.batchId });
-                stepPointer("fixed", 1);
-                render();
-            }}, "⏭ 스킵")
-        ])
-    ]),
-
-    el("div", { class:"hr" }),
-    
-    // Priority Section
-    el("div", { class:"row", style:"background:#fffbeb; padding:12px; border-radius:8px; border:1px solid #fcd34d;" }, [
-        el("div", {style:"font-weight:600; color:#92400e; margin-right:8px;"}, "⚡ 우선권 사용:"),
-        el("div", {style:"flex:1"}, prioritySelector("fixed", (peek.player && peek.player.id) ? peek.player.id : "")),
-        el("button", { onclick:()=>{
-            const sel = wrap.querySelector("select"); // hacky but works in this scope
-            if(!sel.value) return alert("우선권 요청자를 선택하세요.");
-            priorityGive("fixed", itemNameInput.value, sel.value);
-            render();
-        }}, "적용 (토큰 차감)")
-    ]),
-
-    el("div", { class:"row", style:"margin-top:16px; justify-content:flex-end;" }, [
-        startSel,
-        el("button", { class:"sm", onclick:()=>{
-            if(!startSel.value) return alert("선택하세요");
-            setPointerToName("fixed", startSel.value);
-            render();
-        }}, "강제 이동")
-    ])
-  ]));
-
-  return wrap;
-}
-
-// View: Loot Lane
-function viewLoot(){
-  const wrap = el("div");
-  const peek = peekEligibleCurrent("loot");
-  const curDisplay = peek.player ? peek.player.name : "(없음)";
-  const n = laneCount("loot");
-
-  const itemInput = el("input", { placeholder:"드랍된 아이템 입력...", style:"font-weight:bold;" });
+  const p = peek(which);
+  const n = laneCount(which);
   
-  const catSel = el("select", { style:"margin-bottom:8px;" });
-  catSel.appendChild(el("option", { value:"" }, "📋 목록에서 아이템 선택..."));
-  (state.lootCatalog || []).forEach(x => catSel.appendChild(el("option", { value:x }, x)));
-  catSel.addEventListener("change", ()=>{ if(catSel.value) itemInput.value = catSel.value; });
-
-  const startSel = el("select", { style:"flex:1;" });
-  startSel.appendChild(el("option", { value:"" }, "포인터 변경(선택)"));
-  lanePlayers("loot").forEach(p => startSel.appendChild(el("option", { value:p.name }, p.name)));
-
-  wrap.appendChild(el("div", { class:"card" }, [
-    el("div", { style:"display:flex; justify-content:space-between; align-items:center;" }, [
-        el("h3", { style:"margin:0" }, "🎲 전리템 레인"),
-        el("button", { class:"primary sm", onclick:()=>{ startBatch(); render(); }}, "⚔️ 새 배치 시작")
-    ]),
-    el("div", { class:"row", style:"margin-top:12px; margin-bottom:12px;" }, [
-        el("span", { class:"pill" }, `참여: ${n}명`),
-        el("span", { class:"pill" }, `포인터: ${n ? (pointerValue("loot")+1) : 0}`),
-        el("span", { class:"pill" }, `완료: ${batchSummary("loot")}명`),
-    ]),
-
-    // Main Action Box
-    el("div", { class:"current-player-box" }, [
-        el("div", { class:"muted" }, "현재 차례 (Target)"),
-        el("div", { class:"current-player-name" }, curDisplay),
-        peek.offset > 0 ? el("div", { class:"text-danger", style:"margin-bottom:8px; font-weight:600;" }, `※ 앞선 ${peek.offset}명(배치 완료자) 자동 스킵됨`) : null,
-
-        el("div", { class:"col", style:"max-width:400px; margin:16px auto;" }, [
-            catSel,
-            itemInput
-        ]),
-
-        el("div", { class:"row", style:"justify-content:center; gap:10px; flex-wrap:wrap;" }, [
-            el("button", { class:"primary", style:"padding:12px 20px; font-size:1rem;", onclick:()=>{
-                if(!normalizePointerToEligible("loot")) return;
-                const cur = getCurrentEligible("loot");
-                if(!cur) return;
-                const itemName = safeText(itemInput.value);
-                if(itemName === "(미입력)") return alert("아이템 이름을 입력하세요.");
-                cur.lootCount += 1;
-                markReceived("loot", cur.id);
-                logEvent("LOOT_GIVE", itemName, cur.id, `${cur.name}에게 전리템 지급`, { which:"loot", curId:cur.id, batchId: state.batchId });
-                stepPointer("loot", 1);
-                itemInput.value = ""; catSel.value = ""; render();
-            }}, "🎁 지급"),
-
-            el("button", { class:"success", style:"padding:12px 20px; font-size:1rem;", onclick:()=>{
-                if(!normalizePointerToEligible("loot")) return;
-                const cur = getCurrentEligible("loot");
-                if(!cur) return;
-                const itemName = safeText(itemInput.value);
-                cur.tokens += 1;
-                logEvent("LOOT_PASS_TOKEN", itemName, cur.id, `${cur.name} 패스 (토큰+1)`, { which:"loot", curId:cur.id, minted:1, batchId: state.batchId });
-                stepPointer("loot", 1);
-                itemInput.value = ""; catSel.value = ""; render();
-            }}, "🪙 패스 (토큰+1)"),
-
-            el("button", { class:"danger", style:"padding:12px 20px; font-size:1rem;", onclick:()=>{
-                if(!normalizePointerToEligible("loot")) return;
-                const cur = getCurrentEligible("loot");
-                if(!cur) return;
-                const itemName = safeText(itemInput.value);
-                logEvent("LOOT_SKIP", itemName, cur.id, `${cur.name} 스킵 (보상X)`, { which:"loot", curId:cur.id, batchId: state.batchId });
-                stepPointer("loot", 1);
-                itemInput.value = ""; catSel.value = ""; render();
-            }}, "⏭ 스킵")
-        ])
-    ]),
-
-    el("div", { class:"hr" }),
-
-    // Priority
-    el("div", { class:"row", style:"background:#fffbeb; padding:12px; border-radius:8px; border:1px solid #fcd34d;" }, [
-        el("div", {style:"font-weight:600; color:#92400e; margin-right:8px;"}, "⚡ 우선권 사용:"),
-        el("div", {style:"flex:1"}, prioritySelector("loot", (peek.player && peek.player.id) ? peek.player.id : "")),
-        el("button", { onclick:()=>{
-            const sel = wrap.querySelectorAll("select")[2]; // hacky selector
-            if(!sel || !sel.value) return alert("우선권 요청자를 선택하세요.");
-            priorityGive("loot", itemInput.value, sel.value);
-            itemInput.value = ""; catSel.value = ""; render();
-        }}, "적용")
-    ]),
-
-    el("div", { class:"row", style:"margin-top:16px; justify-content:flex-end;" }, [
-        startSel,
-        el("button", { class:"sm", onclick:()=>{
-            if(!startSel.value) return alert("선택하세요");
-            setPointerToName("loot", startSel.value);
-            render();
-        }}, "강제 이동")
+  const act = el("div",{class:"current-player-box"},[
+    el("div",{style:"font-size:0.9rem; color:#666"}, `${which==="fixed"?"고정":"전리"}템 차례`),
+    el("div",{class:"current-player-name"}, p.player ? p.player.name : "(대상 없음)"),
+    p.offset>0 ? el("div",{style:"color:red; font-size:0.8rem"}, `※ 앞선 ${p.offset}명(완료자) 자동 스킵됨`) : null,
+    el("div",{class:"row",style:"justify-content:center; margin-top:10px"},[
+      el("button",{class:"primary",onclick:()=>{
+        if(!check(which))return;
+        give(which);
+      }}, "🎁 지급 (완료처리)"),
+      el("button",{onclick:()=>{ if(check(which)){ step(which); render(); } }}, "⏭ 스킵"),
+      which==="loot" ? el("button",{class:"github",onclick:()=>{ // Pass Token
+         if(!check(which))return;
+         const cur=getCur(which); cur.tokens++; step(which); logEvent("PASS_TOKEN","(패스)",cur.id,"토큰+1"); render();
+      }}, "🪙 패스(토큰+1)") : null
     ])
+  ]);
+  
+  wrap.appendChild(el("div",{class:"card"},[
+    el("h3",{}, which==="fixed"?"💎 고정템 분배":"🎲 전리템 분배"),
+    el("div",{class:"row",style:"margin-bottom:10px"},[el("span",{class:"badge ready"},`참여 ${n}명`), el("span",{class:"badge done"},`완료 ${batchSummary(which)}명`)]),
+    act
   ]));
-
   return wrap;
 }
 
-// Logs
 function viewLogs(){
   const wrap = el("div");
 
-  const exportBtn = el("button", { onclick:exportJson }, "💾 JSON 내보내기");
-  const importBtn = el("button", { onclick:importJson }, "📂 JSON 불러오기");
-  const resetBtn  = el("button", { class:"danger", onclick:resetAll }, "🚫 전체 초기화");
+  // GitHub Config Section
+  const ghWrap = el("div", {class:"gh-config"}, [
+    el("h4", {style:"margin:0 0 10px 0; border-bottom:1px solid #444; padding-bottom:8px;"}, "☁️ GitHub 저장소 연결 설정"),
+    el("div", {class:"row"}, [
+        el("div", {class:"col", style:"flex:1"}, [ el("label",{},"Repo Owner (ID)"), el("input", {value:state.gh.owner, onchange:(e)=>{state.gh.owner=e.target.value; saveState();}, placeholder:"예: my-id"}) ]),
+        el("div", {class:"col", style:"flex:1"}, [ el("label",{},"Repo Name"), el("input", {value:state.gh.repo, onchange:(e)=>{state.gh.repo=e.target.value; saveState();}, placeholder:"예: loot-manager"}) ]),
+        el("div", {class:"col", style:"flex:1"}, [ el("label",{},"File Path"), el("input", {value:state.gh.path, onchange:(e)=>{state.gh.path=e.target.value; saveState();}, placeholder:"data.json"}) ]),
+    ]),
+    el("div", {class:"col", style:"margin-top:10px"}, [
+        el("label",{},"Personal Access Token (Repo 권한 필수)"),
+        el("input", {type:"password", value:state.gh.token, onchange:(e)=>{state.gh.token=e.target.value; saveState();}, placeholder:"ghp_..."})
+    ]),
+    el("div", {class:"row", style:"margin-top:16px"}, [
+        el("button", {class:"github", onclick:()=>githubOp("SAVE")}, "⬆️ GitHub에 저장"),
+        el("button", {class:"github", onclick:()=>githubOp("LOAD")}, "⬇️ GitHub에서 불러오기"),
+        el("span", {id:"ghStatus", class:"status-msg"}, "")
+    ])
+  ]);
 
-  wrap.appendChild(el("div", { class:"card" }, [
-    el("h3", {}, "데이터 관리"),
-    el("div", { class:"row" }, [exportBtn, importBtn, resetBtn])
-  ]));
+  wrap.appendChild(el("div", {class:"card"}, [ghWrap]));
 
-  const table = el("table");
-  table.appendChild(el("thead", {}, el("tr", {}, [
-    el("th", {}, "시간"),
-    el("th", {}, "유형"),
-    el("th", {}, "아이템"),
-    el("th", {}, "대상"),
-    el("th", {}, "내용"),
-  ])));
-
+  // Log Table
   const tbody = el("tbody");
-  state.logs.slice(0, 500).forEach(l=>{
-    const receiver = l.receiverId ? (state.players.find(p=>p.id===l.receiverId) || null) : null;
-    tbody.appendChild(el("tr", {}, [
-      el("td", { class:"muted" }, fmt(l.ts).split(" ")[1]), // 시간만 표시
-      el("td", {}, l.type),
-      el("td", {}, l.itemName || "-"),
-      el("td", { style:"font-weight:600" }, receiver ? receiver.name : "-"),
-      el("td", { class:"muted" }, l.detail || ""),
+  state.logs.slice(0,50).forEach(l=>{
+    tbody.appendChild(el("tr",{},[
+      el("td",{class:"muted"},fmt(l.ts)),
+      el("td",{},l.type),
+      el("td",{},l.itemName||"-"),
+      el("td",{},(state.players.find(p=>p.id===l.receiverId)||{}).name||"-"),
+      el("td",{},l.detail)
     ]));
   });
-  table.appendChild(tbody);
-
-  wrap.appendChild(el("div", { class:"card" }, [
-    el("h3", {}, `최근 기록 (${state.logs.length}건)`),
-    el("div", {class:"table-responsive"}, table)
-  ]));
-
+  wrap.appendChild(el("div",{class:"card table-responsive"}, el("table",{},[
+     el("thead",{},el("tr",{},[el("th",{},"시간"),el("th",{},"유형"),el("th",{},"템"),el("th",{},"대상"),el("th",{},"내용")])),
+     tbody
+  ])));
   return wrap;
 }
 
-// Backup / Reset
-function exportJson(){
-  const blob = new Blob([JSON.stringify(state, null, 2)], { type:"application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `loot_state_${Date.now()}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
+// --- Logic Helpers ---
+let _dragId=null;
+function reorder(i,d){ const j=i+d; if(j<0||j>=state.players.length)return; state.players=moveArrayItem(state.players,i,j); saveState(); render(); }
+function reorderId(fId,tId){ if(fId===tId)return; const f=state.players.findIndex(p=>p.id===fId), t=state.players.findIndex(p=>p.id===tId); state.players=moveArrayItem(state.players,f,t); saveState(); render(); }
+function startBatch(){ state.batchId=nowTs(); state.batchReceivedFixed={}; state.batchReceivedLoot={}; logEvent("BATCH","(초기화)",null,"새 배치 시작"); saveState(); }
+function canReceive(w,id){ return w==="fixed"?!state.batchReceivedFixed[id]:!state.batchReceivedLoot[id]; }
+function batchSummary(w){ return Object.keys(w==="fixed"?state.batchReceivedFixed:state.batchReceivedLoot).length; }
+function laneCount(w){ return state.players.filter(p=>p[w==="fixed"?"activeFixed":"activeLoot"]).length; }
+function clamp(w){ const k=w==="fixed"?"fixedPointer":"lootPointer", n=laneCount(w); state[k]=n===0?0:((state[k]%n)+n)%n; }
+function getCur(w){ const arr=state.players.filter(p=>p[w==="fixed"?"activeFixed":"activeLoot"]); clamp(w); return arr[state[w==="fixed"?"fixedPointer":"lootPointer"]]; }
+function step(w,s=1){ const n=laneCount(w); if(n>0){ const k=w==="fixed"?"fixedPointer":"lootPointer"; state[k]=(state[k]+s)%n; saveState(); } }
+function peek(w){
+  const arr=state.players.filter(p=>p[w==="fixed"?"activeFixed":"activeLoot"]);
+  const n=arr.length, k=w==="fixed"?"fixedPointer":"lootPointer";
+  clamp(w);
+  for(let i=0;i<n;i++){
+    const p=arr[(state[k]+i)%n];
+    if(canReceive(w,p.id)) return {player:p, offset:i};
+  }
+  return {player:null, offset:0};
 }
-function importJson(){
-  const inp = document.createElement("input");
-  inp.type = "file";
-  inp.accept = "application/json";
-  inp.onchange = () => {
-    const file = inp.files && inp.files[0];
-    if(!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      try{
-        const parsed = JSON.parse(String(reader.result));
-        state = {
-          ...defaultState(),
-          ...parsed,
-          ui: { ...defaultState().ui, ...(parsed.ui||{}) },
-          batchReceivedFixed: parsed.batchReceivedFixed || {},
-          batchReceivedLoot: parsed.batchReceivedLoot || {}
-        };
-        logEvent("IMPORT", "(백업)", null, "JSON 가져오기 완료");
-        saveState();
-        render();
-      }catch(e){
-        alert("JSON 파싱 실패");
-      }
-    };
-    reader.readAsText(file);
-  };
-  inp.click();
+function check(w){
+  if(laneCount(w)===0) {alert("참여자가 없습니다."); return false;}
+  const p=peek(w);
+  if(!p.player){ alert("모두 수령했습니다."); return false; }
+  if(p.offset>0) step(w, p.offset);
+  return true;
 }
-function resetAll(){
-  if(!confirm("⚠️ 경고: 모든 데이터가 삭제됩니다. 계속하시겠습니까?")) return;
-  state = defaultState();
-  saveState();
-  render();
+function give(w){
+  const cur=getCur(w);
+  if(w==="fixed") state.batchReceivedFixed[cur.id]=true; else state.batchReceivedLoot[cur.id]=true;
+  if(w==="fixed") cur.fixedCount++; else cur.lootCount++;
+  logEvent("GIVE",w,cur.id,`${cur.name} 수령`);
+  step(w); render();
 }
 
 // Init
 setTab("roster");
-if(state.batchId === null) startBatch();
 </script>
 </body>
 </html>
