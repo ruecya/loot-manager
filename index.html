@@ -95,6 +95,34 @@ function safeText(s, fallback="(미입력)"){
   return t ? t : fallback;
 }
 
+function normalizeGitHubTextUrl(u){
+  // Accept:
+  // - https://github.com/<owner>/<repo>/blob/<branch>/path
+  // Convert to:
+  // - https://raw.githubusercontent.com/<owner>/<repo>/<branch>/path
+  const url = (u || "").trim();
+  if(!url) return url;
+  try{
+    const m = url.match(/^https:\/\/github\.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.+)$/);
+    if(m){
+      const owner = m[1], repo = m[2], branch = m[3], path = m[4];
+      return `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${path}`;
+    }
+  }catch(e){}
+  return url;
+}
+
+function looksLikeHtml(text){
+  const t = (text || "").trim().slice(0, 200).toLowerCase();
+  return t.includes("<!doctype html") || t.includes("<html") || t.includes("<head") || t.includes("<body");
+}
+
+function stripBom(s){
+  if(!s) return s;
+  return s.charCodeAt(0) === 0xFEFF ? s.slice(1) : s;
+}
+
+
 // State
 function defaultState(){
   return {
@@ -340,12 +368,13 @@ function parseRosterText(text){
     .filter(s => s && !s.startsWith("#"));
 }
 async function fetchRosterFromUrl(url){
-  const u = (url || "").trim();
+  let u = normalizeGitHubTextUrl((url || "").trim());
   if(!u) return alert("roster.txt URL을 입력하세요.");
   try{
     const res = await fetch(u, { cache: "no-store" });
     if(!res.ok) throw new Error("HTTP " + res.status);
-    const txt = await res.text();
+    let txt = stripBom(await res.text());
+    if(looksLikeHtml(txt)) return alert("불러오기 실패: GitHub raw 주소가 아닌 것 같습니다. (github.com/blob/... 말고 raw.githubusercontent.com 주소를 넣어주세요)");
     const names = parseRosterText(txt);
     if(names.length === 0) return alert("roster.txt에서 이름을 찾지 못했습니다.");
 
@@ -394,12 +423,13 @@ function parseLootItemsText(text){
     .filter(s => s && !s.startsWith("#"));
 }
 async function fetchLootItemsFromUrl(url){
-  const u = (url || "").trim();
+  let u = normalizeGitHubTextUrl((url || "").trim());
   if(!u) return alert("loot_items.txt URL을 입력하세요.");
   try{
     const res = await fetch(u, { cache: "no-store" });
     if(!res.ok) throw new Error("HTTP " + res.status);
-    const txt = await res.text();
+    let txt = stripBom(await res.text());
+    if(looksLikeHtml(txt)) return alert("불러오기 실패: GitHub raw 주소가 아닌 것 같습니다. (github.com/blob/... 말고 raw.githubusercontent.com 주소를 넣어주세요)");
     const items = parseLootItemsText(txt);
     if(items.length === 0) return alert("loot_items.txt에서 아이템을 찾지 못했습니다.");
 
@@ -415,7 +445,7 @@ async function fetchLootItemsFromUrl(url){
     state.lootCatalog = uniq;
     logEvent("LOOT_CATALOG_FROM_TXT", "(전리목록)", null, `loot_items.txt 불러오기(덮어쓰기): ${uniq.length}개`, { url: u, items: uniq });
     saveState();
-    alert("전리품 목록을 불러왔습니다.");
+    alert(`전리품 목록을 불러왔습니다. (${uniq.length}개)\n예: ${uniq.slice(0,5).join(", ")}${uniq.length>5?" ...":""}`);
   }catch(e){
     alert("불러오기 실패: " + (e.message || e));
   }
@@ -599,7 +629,7 @@ function viewRoster(){
   const rosterUrlInput = el("input", {
     id:"rosterUrl",
     style:"width:min(860px,100%);",
-    placeholder:"roster.txt URL (예: https://raw.githubusercontent.com/<id>/<repo>/main/roster.txt)",
+    placeholder:"roster.txt URL (raw 권장 / github.com/blob/...도 자동 변환)",
     value:"roster.txt"
   });
   const loadRosterBtn = el("button", { class:"primary", onclick: async()=>{
@@ -754,7 +784,7 @@ el("div", { class:"muted small" }, "GitHub에 loot_items.txt를 올려두면 여
   const lootUrlInput = el("input", {
     id:"lootItemsUrl",
     style:"width:min(860px,100%);",
-    placeholder:"loot_items.txt URL (예: https://raw.githubusercontent.com/<id>/<repo>/main/loot_items.txt)",
+    placeholder:"loot_items.txt URL (raw 권장 / github.com/blob/...도 자동 변환)",
     value:"loot_items.txt"
   });
   const loadLootBtn = el("button", { class:"primary", onclick: async()=>{

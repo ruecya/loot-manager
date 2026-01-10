@@ -29,3 +29,8 @@
 ## 전리품 목록 가져오기(loot_items.txt)
 - repo에 `loot_items.txt` 업로드(한 줄에 하나)
 - 명단/목록 탭의 '전리템 목록 관리'에서 raw URL 또는 `loot_items.txt`로 불러오기
+
+
+## URL 팁
+- `github.com/<owner>/<repo>/blob/...` 형태로 넣어도 자동으로 raw 주소로 변환합니다.
+- 실패하면 raw 주소를 직접 사용하세요: `https://raw.githubusercontent.com/<owner>/<repo>/<branch>/...`
