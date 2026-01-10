@@ -1,0 +1,828 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>전리품 분배 매니저 (2레인 + 토큰 우선권)</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 16px; }
+    .row { display:flex; gap:12px; flex-wrap: wrap; align-items: center; }
+    .card { border:1px solid #ddd; border-radius:12px; padding:12px; margin:12px 0; }
+    button { padding:8px 12px; border-radius:10px; border:1px solid #ccc; background:#fff; cursor:pointer; }
+    button.primary { border-color:#111; font-weight:600; }
+    button.danger { border-color:#c00; color:#c00; }
+    input, select, textarea { padding:8px; border-radius:10px; border:1px solid #ccc; }
+    textarea { width: min(720px, 100%); }
+    table { width:100%; border-collapse: collapse; }
+    th, td { border-bottom:1px solid #eee; padding:8px; text-align:left; }
+    .muted { color:#666; }
+    .pill { padding:2px 10px; border:1px solid #ddd; border-radius:999px; font-size:12px; }
+    .hr { height:1px; background:#eee; margin:10px 0; }
+    .warn { color:#b45309; }
+    .small { font-size:12px; }
+    details summary { cursor:pointer; }
+    code { background:#f6f6f6; padding:2px 6px; border-radius:6px; }
+  </style>
+</head>
+<body>
+  <h2>전리품 분배 매니저</h2>
+
+  <div class="row">
+    <button id="tabRoster" class="primary">명단</button>
+    <button id="tabFixed">고정템 레인</button>
+    <button id="tabLoot">전리템 레인</button>
+    <button id="tabLogs">이력/백업</button>
+  </div>
+
+  <div id="view"></div>
+
+<script>
+/**
+ * ✅ 확정 룰
+ * - 레인 2개(고정/전리)는 서로 독립 포인터
+ * - 우선권(토큰 1개): 요청자(B) 토큰 -1, 원차례자(A) 토큰 +1, 아이템은 B 수령
+ * - 우선권 써도 순번 포인터는 절대 바뀌지 않음(정상 +1 진행)
+ * - 토큰 생성: 전리템 차례에서 "패스(토큰+1)" 누르면 +1 생성(민팅)
+ */
+
+const STORAGE_KEY = "loot_manager_final_v1";
+
+/** -------------------------
+ *  Utils
+ *  ------------------------- */
+function nowTs(){ return Date.now(); }
+function fmt(ts){
+  const d = new Date(ts);
+  const pad = n => String(n).padStart(2,"0");
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+}
+function safeItemName(name){
+  const s = (name || "").trim();
+  return s ? s : "(미입력)";
+}
+
+/** -------------------------
+ *  State
+ *  ------------------------- */
+function defaultState(){
+  return {
+    players: [],
+    fixedPointer: 0,
+    lootPointer: 0,
+    fixedItemName: "고정템",
+    logs: [],
+    ui: {
+      // 명단이 거의 고정이라는 전제에서: 삭제 버튼 노출 여부(기본 숨김)
+      showDangerButtons: false
+    }
+  };
+}
+
+let state = loadState();
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return defaultState();
+    const parsed = JSON.parse(raw);
+    return { ...defaultState(), ...parsed, ui: { ...defaultState().ui, ...(parsed.ui||{}) } };
+  }catch(e){
+    console.warn(e);
+    return defaultState();
+  }
+}
+function saveState(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+function activePlayers(){ return state.players.filter(p => p.active); }
+function clampPointers(){
+  const n = activePlayers().length;
+  if(n === 0){ state.fixedPointer = 0; state.lootPointer = 0; return; }
+  state.fixedPointer = ((state.fixedPointer % n) + n) % n;
+  state.lootPointer  = ((state.lootPointer  % n) + n) % n;
+}
+function findPlayer(id){ return state.players.find(p => p.id === id) || null; }
+function getActiveByPointer(pointer){
+  const a = activePlayers();
+  if(a.length === 0) return null;
+  clampPointers();
+  return a[pointer];
+}
+function stepPointer(which, step=1){
+  const n = activePlayers().length;
+  if(n === 0) return;
+  if(which === "fixed") state.fixedPointer = (state.fixedPointer + step) % n;
+  if(which === "loot")  state.lootPointer  = (state.lootPointer  + step) % n;
+  saveState();
+}
+function logEvent(type, itemName, receiverId, detail, meta = {}){
+  state.logs.unshift({ ts: nowTs(), type, itemName, receiverId, detail, meta });
+  saveState();
+}
+
+/** -------------------------
+ *  Roster ops
+ *  ------------------------- */
+function addPlayer(name){
+  if(state.players.length >= 50) return alert("최대 50명까지 가능합니다.");
+  const id = crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2);
+  state.players.push({ id, name, active:true, fixedCount:0, lootCount:0, tokens:0, notes:"" });
+  saveState();
+}
+function addPlayersBulk(text){
+  const raw = (text || "").trim();
+  if(!raw) return;
+
+  const parts = raw
+    .split(/[\n,|\t]+/g)
+    .map(s => s.trim())
+    .filter(Boolean);
+
+  if(parts.length === 0) return;
+
+  const existing = new Set(state.players.map(p => p.name.trim()));
+  const seen = new Set();
+  const unique = [];
+
+  for(const name of parts){
+    if(existing.has(name)) continue;
+    if(seen.has(name)) continue;
+    unique.push(name);
+    seen.add(name);
+  }
+
+  if(unique.length === 0){
+    alert("추가할 새 인원이 없습니다. (중복이거나 비어있음)");
+    return;
+  }
+
+  const room = 50 - state.players.length;
+  const toAdd = unique.slice(0, Math.max(0, room));
+
+  for(const name of toAdd) addPlayer(name);
+
+  clampPointers();
+  saveState();
+
+  logEvent("ROSTER_BULK_ADD", "(명단)", null, `대량 추가: ${toAdd.length}명`, { added: toAdd });
+
+  if(unique.length > room){
+    alert(`최대 50명 제한으로 ${toAdd.length}명만 추가했습니다. (초과 ${unique.length - room}명)`);
+  }
+}
+
+function setTodayParticipantsByPaste(text){
+  const raw = (text || "").trim();
+  if(!raw) return alert("오늘 참여자 이름을 붙여넣어주세요.");
+
+  const names = raw
+    .split(/[\n,|\t]+/g)
+    .map(s => s.trim())
+    .filter(Boolean);
+
+  const set = new Set(names);
+
+  // 전원 OFF 후, 매칭되는 이름만 ON
+  state.players.forEach(p => {
+    p.active = set.has(p.name.trim());
+  });
+
+  clampPointers();
+  logEvent("ROSTER_TODAY_SET", "(명단)", null, `오늘 참여자 세팅: 붙여넣기 ${names.length}명`, { names });
+  saveState();
+}
+
+/** -------------------------
+ *  Pointer helpers
+ *  ------------------------- */
+function resetPointers(){
+  state.fixedPointer = 0;
+  state.lootPointer = 0;
+  clampPointers();
+  logEvent("POINTER_RESET", "(포인터)", null, "고정/전리 포인터를 1번으로 리셋");
+  saveState();
+}
+function setPointerToName(which, name){
+  const a = activePlayers();
+  if(a.length === 0) return alert("참여자가 없습니다.");
+  const idx = a.findIndex(p => p.name.trim() === name.trim());
+  if(idx < 0) return alert("참여자(ON) 중에서 해당 이름을 찾지 못했습니다.");
+  if(which === "fixed") state.fixedPointer = idx;
+  if(which === "loot") state.lootPointer = idx;
+  clampPointers();
+  logEvent("POINTER_SET", "(포인터)", null, `${which==="fixed"?"고정":"전리"} 포인터를 ${name}부터 시작`);
+  saveState();
+}
+
+/** -------------------------
+ *  Priority (Token)
+ *  ------------------------- */
+function priorityGive(which, itemName, claimantId){
+  const cur = (which === "fixed")
+    ? getActiveByPointer(state.fixedPointer)
+    : getActiveByPointer(state.lootPointer);
+
+  if(!cur) return alert("참여자가 없습니다.");
+
+  const claimant = findPlayer(claimantId);
+  if(!claimant) return alert("요청자를 선택하세요.");
+  if(!claimant.active) return alert("요청자가 비활성 상태입니다.");
+  if(claimant.tokens < 1) return alert("요청자 토큰이 부족합니다. (필요: 1)");
+  if(claimant.id === cur.id) return alert("현재 차례자 본인은 우선권 요청 대상이 아닙니다.");
+
+  const finalItemName = safeItemName(itemName);
+
+  // token transfer (양보 보상)
+  claimant.tokens -= 1;
+  cur.tokens += 1;
+
+  // item grant
+  if(which === "fixed") claimant.fixedCount += 1;
+  else claimant.lootCount += 1;
+
+  logEvent(
+    which === "fixed" ? "PRIORITY_FIXED" : "PRIORITY_LOOT",
+    finalItemName,
+    claimant.id,
+    `우선권 적용: 원차례자=${cur.name} → 수령자=${claimant.name} / 토큰 1개 ${cur.name}에게 이동`,
+    { which, curId: cur.id, claimantId: claimant.id, tokenTransfer: 1 }
+  );
+
+  stepPointer(which, 1);
+}
+
+/** -------------------------
+ *  DOM helper / Tabs
+ *  ------------------------- */
+function el(tag, props={}, children=[]){
+  const node = document.createElement(tag);
+  Object.entries(props).forEach(([k,v])=>{
+    if(k==="class") node.className = v;
+    else if(k==="html") node.innerHTML = v;
+    else if(k.startsWith("on") && typeof v === "function") node.addEventListener(k.slice(2), v);
+    else node.setAttribute(k,v);
+  });
+  (Array.isArray(children)?children:[children]).forEach(ch=>{
+    if(ch === null || ch === undefined) return;
+    node.appendChild(typeof ch === "string" ? document.createTextNode(ch) : ch);
+  });
+  return node;
+}
+
+let currentTab = "roster";
+
+function setTab(tab){
+  currentTab = tab;
+  document.getElementById("tabRoster").classList.toggle("primary", tab==="roster");
+  document.getElementById("tabFixed").classList.toggle("primary", tab==="fixed");
+  document.getElementById("tabLoot").classList.toggle("primary", tab==="loot");
+  document.getElementById("tabLogs").classList.toggle("primary", tab==="logs");
+  render();
+}
+
+document.getElementById("tabRoster").onclick = () => setTab("roster");
+document.getElementById("tabFixed").onclick  = () => setTab("fixed");
+document.getElementById("tabLoot").onclick   = () => setTab("loot");
+document.getElementById("tabLogs").onclick   = () => setTab("logs");
+
+function render(){
+  const view = document.getElementById("view");
+  view.innerHTML = "";
+  view.appendChild(currentView());
+}
+function currentView(){
+  if(currentTab==="roster") return viewRoster();
+  if(currentTab==="fixed")  return viewFixed();
+  if(currentTab==="loot")   return viewLoot();
+  return viewLogs();
+}
+
+/** -------------------------
+ *  View: Roster
+ *  ------------------------- */
+function viewRoster(){
+  const wrap = el("div");
+  const a = activePlayers();
+
+  const nameInput = el("input", { placeholder:"이름 입력" });
+  const addBtn = el("button", { class:"primary", onclick:()=>{
+    const name = nameInput.value.trim();
+    if(!name) return;
+    addPlayer(name);
+    logEvent("ROSTER_ADD", "(명단)", null, `단일 추가: ${name}`);
+    nameInput.value = "";
+    render();
+  }}, "추가");
+
+  const bulkInput = el("textarea", {
+    placeholder: "여러 명 붙여넣기 (한 줄에 한 명)\n예)\n혜붕\n우기\n순심이\n목성",
+    rows: "6"
+  });
+
+  const bulkAddBtn = el("button", { class:"primary", onclick:()=>{
+    addPlayersBulk(bulkInput.value);
+    bulkInput.value = "";
+    render();
+  }}, "여러명 추가");
+
+  const todayOnlyBtn = el("button", { class:"primary", onclick:()=>{
+    setTodayParticipantsByPaste(bulkInput.value);
+    bulkInput.value = "";
+    render();
+  }}, "오늘 참여자만 ON");
+
+  const allOnBtn = el("button", { onclick:()=>{
+    state.players.forEach(p => p.active = true);
+    clampPointers();
+    logEvent("ROSTER_ALL_ON", "(명단)", null, "전체 ON");
+    saveState();
+    render();
+  }}, "전체 ON");
+
+  const allOffBtn = el("button", { onclick:()=>{
+    state.players.forEach(p => p.active = false);
+    clampPointers();
+    logEvent("ROSTER_ALL_OFF", "(명단)", null, "전체 OFF");
+    saveState();
+    render();
+  }}, "전체 OFF");
+
+  const resetPtrBtn = el("button", { onclick:()=>{
+    resetPointers();
+    render();
+  }}, "포인터 1번 리셋");
+
+  const showDangerToggle = el("input", { type:"checkbox" });
+  showDangerToggle.checked = !!state.ui.showDangerButtons;
+  showDangerToggle.addEventListener("change", ()=>{
+    state.ui.showDangerButtons = showDangerToggle.checked;
+    saveState();
+    render();
+  });
+
+  wrap.appendChild(el("div", { class:"card" }, [
+    el("div", { class:"row" }, [
+      el("div", { class:"pill" }, `참여자 ${a.length}명 / 전체 ${state.players.length}명 (최대 50)`),
+      el("div", { class:"pill" }, `고정 포인터: ${a.length ? (state.fixedPointer+1) : 0}`),
+      el("div", { class:"pill" }, `전리 포인터: ${a.length ? (state.lootPointer+1) : 0}`),
+    ]),
+    el("div", { class:"row", style:"margin-top:10px" }, [nameInput, addBtn, resetPtrBtn]),
+    el("div", { class:"hr" }),
+    el("div", { class:"row" }, [bulkInput]),
+    el("div", { class:"row", style:"margin-top:10px" }, [
+      bulkAddBtn, todayOnlyBtn, allOnBtn, allOffBtn,
+      el("div", { class:"muted small" }, "줄바꿈/쉼표/탭 구분 · 중복 자동 스킵")
+    ]),
+    el("details", {}, [
+      el("summary", {}, "고급 옵션"),
+      el("div", { class:"row", style:"margin-top:10px" }, [
+        el("label", { class:"row" }, [
+          showDangerToggle,
+          el("span", { class:"muted" }, "삭제/토큰수동조정 버튼 표시(주의)")
+        ])
+      ]),
+      el("div", { class:"muted small warn" },
+        "삭제는 되돌리기 어렵습니다. 명단이 고정이라면 OFF(비활성)만 쓰는 걸 추천합니다."
+      )
+    ])
+  ]));
+
+  const table = el("table");
+  table.appendChild(el("thead", {}, el("tr", {}, [
+    el("th", {}, "이름"),
+    el("th", {}, "상태"),
+    el("th", {}, "고정"),
+    el("th", {}, "전리"),
+    el("th", {}, "토큰"),
+    el("th", {}, "관리"),
+  ])));
+
+  const tbody = el("tbody");
+  state.players.forEach(p=>{
+    const toggleBtn = el("button", { onclick:()=>{
+      p.active = !p.active;
+      clampPointers();
+      logEvent("ROSTER_TOGGLE", "(명단)", null, `${p.name} ${p.active?"ON":"OFF"}`);
+      saveState();
+      render();
+    }}, p.active ? "참여중" : "비활성");
+
+    const manageButtons = [toggleBtn];
+
+    if(state.ui.showDangerButtons){
+      const tokenPlus = el("button", { onclick:()=>{
+        p.tokens += 1;
+        logEvent("TOKEN_ADJUST", "(수동)", p.id, `${p.name} 토큰 +1 (운영자 조정)`, { delta:+1 });
+        saveState();
+        render();
+      }}, "+토큰");
+
+      const tokenMinus = el("button", { onclick:()=>{
+        if(p.tokens <= 0) return;
+        p.tokens -= 1;
+        logEvent("TOKEN_ADJUST", "(수동)", p.id, `${p.name} 토큰 -1 (운영자 조정)`, { delta:-1 });
+        saveState();
+        render();
+      }}, "-토큰");
+
+      const delBtn = el("button", { class:"danger", onclick:()=>{
+        if(!confirm("삭제할까요? (되돌리기 어려움)")) return;
+        state.players = state.players.filter(x=>x.id !== p.id);
+        clampPointers();
+        logEvent("ROSTER_DELETE", "(명단)", null, `삭제: ${p.name}`);
+        saveState();
+        render();
+      }}, "삭제");
+
+      manageButtons.push(tokenPlus, tokenMinus, delBtn);
+    }else{
+      manageButtons.push(el("span", { class:"muted small" }, "토글로 운영"));
+    }
+
+    tbody.appendChild(el("tr", {}, [
+      el("td", {}, p.name),
+      el("td", {}, p.active ? "ON" : "OFF"),
+      el("td", {}, String(p.fixedCount)),
+      el("td", {}, String(p.lootCount)),
+      el("td", {}, String(p.tokens)),
+      el("td", {}, el("div", { class:"row" }, manageButtons)),
+    ]));
+  });
+
+  table.appendChild(tbody);
+  wrap.appendChild(el("div", { class:"card" }, [el("h3", {}, "명단"), table]));
+  return wrap;
+}
+
+/** -------------------------
+ *  Priority selector
+ *  ------------------------- */
+function prioritySelector(curId){
+  const sel = el("select");
+  const candidates = state.players
+    .filter(p => p.active && p.tokens >= 1 && p.id !== curId)
+    .sort((a,b)=> b.tokens - a.tokens || a.name.localeCompare(b.name));
+
+  sel.appendChild(el("option", { value:"" }, candidates.length ? "우선권 요청자 선택" : "우선권 요청자 없음"));
+  candidates.forEach(p=>{
+    sel.appendChild(el("option", { value:p.id }, `${p.name} (토큰 ${p.tokens})`));
+  });
+  return sel;
+}
+
+/** -------------------------
+ *  View: Fixed Lane
+ *  ------------------------- */
+function viewFixed(){
+  const wrap = el("div");
+  const a = activePlayers();
+  const cur = getActiveByPointer(state.fixedPointer);
+
+  const itemNameInput = el("input", { value: state.fixedItemName });
+  const saveItemBtn = el("button", { onclick:()=>{
+    state.fixedItemName = itemNameInput.value.trim() || "고정템";
+    logEvent("FIXED_NAME_SET", "(설정)", null, `고정템 이름 변경: ${state.fixedItemName}`);
+    saveState();
+    render();
+  }}, "고정템 이름 저장");
+
+  const startSel = el("select");
+  startSel.appendChild(el("option", { value:"" }, "포인터 시작 인원 선택(참여자 ON 기준)"));
+  activePlayers().forEach(p => startSel.appendChild(el("option", { value:p.name }, p.name)));
+  const setStartBtn = el("button", { onclick:()=>{
+    if(!startSel.value) return alert("시작할 인원을 선택하세요.");
+    setPointerToName("fixed", startSel.value);
+    render();
+  }}, "이 사람부터 시작");
+
+  wrap.appendChild(el("div", { class:"card" }, [
+    el("h3", {}, "고정템 레인"),
+    el("div", { class:"row" }, [
+      el("div", { class:"pill" }, `참여자 ${a.length}명`),
+      el("div", { class:"pill" }, `현재 차례: ${cur ? cur.name : "-"}`),
+      el("div", { class:"pill" }, `포인터: ${a.length ? (state.fixedPointer+1) : 0}`),
+    ]),
+    el("div", { class:"row", style:"margin-top:10px" }, [
+      el("span", { class:"muted" }, "고정템 이름: "),
+      itemNameInput, saveItemBtn
+    ]),
+    el("div", { class:"row", style:"margin-top:10px" }, [
+      startSel, setStartBtn
+    ]),
+    el("div", { class:"muted small", style:"margin-top:8px" },
+      "우선권(토큰 1개): 요청자 토큰 -1 / 원차례자 토큰 +1 / 아이템은 요청자 수령 / 포인터는 정상 진행"
+    )
+  ]));
+
+  const giveBtn = el("button", { class:"primary", onclick:()=>{
+    if(!cur) return alert("참여자가 없습니다.");
+    cur.fixedCount += 1;
+    logEvent("FIXED_GIVE", state.fixedItemName, cur.id, `${cur.name}에게 고정템 지급`, { which:"fixed", curId:cur.id });
+    stepPointer("fixed", 1);
+    render();
+  }}, "본인 수령(지급)");
+
+  const skipBtn = el("button", { onclick:()=>{
+    if(!cur) return alert("참여자가 없습니다.");
+    logEvent("FIXED_SKIP", state.fixedItemName, cur.id, `${cur.name} 차례 스킵`, { which:"fixed", curId:cur.id });
+    stepPointer("fixed", 1);
+    render();
+  }}, "스킵");
+
+  const undoBtn = el("button", { onclick:undoLast }, "되돌리기(1회)");
+
+  const sel = prioritySelector(cur ? cur.id : "");
+  const priorityBtn = el("button", { onclick:()=>{
+    if(!sel.value) return alert("우선권 요청자를 선택하세요.");
+    priorityGive("fixed", state.fixedItemName, sel.value);
+    render();
+  }}, "우선권 적용(토큰1 이동)");
+
+  wrap.appendChild(el("div", { class:"card" }, [
+    el("div", { class:"row" }, [giveBtn, skipBtn, undoBtn]),
+    el("div", { class:"hr" }),
+    el("div", { class:"row" }, [
+      el("span", { class:"muted" }, "우선권: "),
+      sel, priorityBtn
+    ])
+  ]));
+
+  return wrap;
+}
+
+/** -------------------------
+ *  View: Loot Lane
+ *  ------------------------- */
+function viewLoot(){
+  const wrap = el("div");
+  const a = activePlayers();
+  const cur = getActiveByPointer(state.lootPointer);
+
+  const itemInput = el("input", { placeholder:"드랍된 전리템 이름 (예: 도감/장비/재료)" });
+
+  const startSel = el("select");
+  startSel.appendChild(el("option", { value:"" }, "포인터 시작 인원 선택(참여자 ON 기준)"));
+  activePlayers().forEach(p => startSel.appendChild(el("option", { value:p.name }, p.name)));
+  const setStartBtn = el("button", { onclick:()=>{
+    if(!startSel.value) return alert("시작할 인원을 선택하세요.");
+    setPointerToName("loot", startSel.value);
+    render();
+  }}, "이 사람부터 시작");
+
+  wrap.appendChild(el("div", { class:"card" }, [
+    el("h3", {}, "전리템 레인"),
+    el("div", { class:"row" }, [
+      el("div", { class:"pill" }, `참여자 ${a.length}명`),
+      el("div", { class:"pill" }, `현재 차례: ${cur ? cur.name : "-"}`),
+      el("div", { class:"pill" }, `포인터: ${a.length ? (state.lootPointer+1) : 0}`),
+    ]),
+    el("div", { class:"row", style:"margin-top:10px" }, [itemInput]),
+    el("div", { class:"row", style:"margin-top:10px" }, [startSel, setStartBtn]),
+    el("div", { class:"muted small", style:"margin-top:8px" },
+      "토큰 생성: 전리템 차례에서 '패스(토큰+1)'을 누르면 토큰이 새로 생성됩니다."
+    )
+  ]));
+
+  const giveBtn = el("button", { class:"primary", onclick:()=>{
+    const itemName = (itemInput.value || "").trim();
+    if(!itemName) return alert("전리템 이름을 입력하세요.");
+    if(!cur) return alert("참여자가 없습니다.");
+    cur.lootCount += 1;
+    logEvent("LOOT_GIVE", itemName, cur.id, `${cur.name}에게 전리템 지급`, { which:"loot", curId:cur.id });
+    stepPointer("loot", 1);
+    itemInput.value = "";
+    render();
+  }}, "본인 수령(지급)");
+
+  const passTokenBtn = el("button", { onclick:()=>{
+    const itemName = safeItemName(itemInput.value);
+    if(!cur) return alert("참여자가 없습니다.");
+    cur.tokens += 1; // mint
+    logEvent("LOOT_PASS_TOKEN", itemName, cur.id, `${cur.name} 전리템 패스 → 토큰 +1 생성`, { which:"loot", curId:cur.id, minted:1 });
+    stepPointer("loot", 1);
+    itemInput.value = "";
+    render();
+  }}, "패스(토큰+1)");
+
+  const skipBtn = el("button", { onclick:()=>{
+    const itemName = safeItemName(itemInput.value);
+    if(!cur) return alert("참여자가 없습니다.");
+    logEvent("LOOT_SKIP", itemName, cur.id, `${cur.name} 전리템 스킵(토큰 없음)`, { which:"loot", curId:cur.id });
+    stepPointer("loot", 1);
+    itemInput.value = "";
+    render();
+  }}, "스킵");
+
+  const undoBtn = el("button", { onclick:undoLast }, "되돌리기(1회)");
+
+  const sel = prioritySelector(cur ? cur.id : "");
+  const priorityBtn = el("button", { onclick:()=>{
+    if(!sel.value) return alert("우선권 요청자를 선택하세요.");
+    priorityGive("loot", itemInput.value, sel.value);
+    itemInput.value = "";
+    render();
+  }}, "우선권 적용(토큰1 이동)");
+
+  wrap.appendChild(el("div", { class:"card" }, [
+    el("div", { class:"row" }, [giveBtn, passTokenBtn, skipBtn, undoBtn]),
+    el("div", { class:"hr" }),
+    el("div", { class:"row" }, [
+      el("span", { class:"muted" }, "우선권: "),
+      sel, priorityBtn
+    ])
+  ]));
+
+  return wrap;
+}
+
+/** -------------------------
+ *  View: Logs / Backup
+ *  ------------------------- */
+function viewLogs(){
+  const wrap = el("div");
+
+  const exportBtn = el("button", { onclick:exportJson }, "JSON 내보내기");
+  const importBtn = el("button", { onclick:importJson }, "JSON 가져오기");
+  const resetBtn  = el("button", { class:"danger", onclick:resetAll }, "전체 초기화");
+
+  wrap.appendChild(el("div", { class:"card" }, [
+    el("h3", {}, "이력 / 백업"),
+    el("div", { class:"row" }, [exportBtn, importBtn, resetBtn]),
+    el("div", { class:"muted small", style:"margin-top:8px" },
+      "팁: 시즌/서버 이슈 대비로 가끔 JSON 내보내기로 백업해두면 안전합니다."
+    )
+  ]));
+
+  const table = el("table");
+  table.appendChild(el("thead", {}, el("tr", {}, [
+    el("th", {}, "시간"),
+    el("th", {}, "유형"),
+    el("th", {}, "아이템"),
+    el("th", {}, "수령자"),
+    el("th", {}, "내용"),
+  ])));
+
+  const tbody = el("tbody");
+  state.logs.slice(0, 400).forEach(l=>{
+    const receiver = l.receiverId ? findPlayer(l.receiverId) : null;
+    tbody.appendChild(el("tr", {}, [
+      el("td", {}, fmt(l.ts)),
+      el("td", {}, l.type),
+      el("td", {}, l.itemName || ""),
+      el("td", {}, receiver ? receiver.name : "-"),
+      el("td", {}, l.detail || ""),
+    ]));
+  });
+  table.appendChild(tbody);
+
+  wrap.appendChild(el("div", { class:"card" }, [
+    el("div", { class:"muted" }, `총 로그 ${state.logs.length}건 (최근 400건 표시)`),
+    table
+  ]));
+
+  wrap.appendChild(el("div", { class:"card" }, [
+    el("h4", {}, "규칙 요약"),
+    el("div", { class:"small" }, [
+      el("div", {}, "• 전리템 패스(토큰+1)로 토큰 생성"),
+      el("div", {}, "• 우선권(토큰 1개) 사용 시: 요청자 -1, 원차례자 +1, 아이템은 요청자"),
+      el("div", {}, "• 우선권 사용해도 순번 포인터는 정상 진행(바뀌지 않음)"),
+      el("div", {}, "• 명단이 고정이면 삭제 대신 OFF(비활성) 추천")
+    ])
+  ]));
+
+  return wrap;
+}
+
+/** -------------------------
+ *  Backup / Reset
+ *  ------------------------- */
+function exportJson(){
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type:"application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `loot_state_${Date.now()}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importJson(){
+  const inp = document.createElement("input");
+  inp.type = "file";
+  inp.accept = "application/json";
+  inp.onchange = () => {
+    const file = inp.files && inp.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try{
+        const parsed = JSON.parse(String(reader.result));
+        state = { ...defaultState(), ...parsed, ui: { ...defaultState().ui, ...(parsed.ui||{}) } };
+        clampPointers();
+        saveState();
+        logEvent("IMPORT", "(백업)", null, "JSON 가져오기 완료");
+        render();
+      }catch(e){
+        alert("JSON 파싱 실패");
+      }
+    };
+    reader.readAsText(file);
+  };
+  inp.click();
+}
+
+function resetAll(){
+  if(!confirm("정말 전체 초기화할까요?")) return;
+  state = defaultState();
+  saveState();
+  render();
+}
+
+/** -------------------------
+ *  UNDO
+ *  ------------------------- */
+function undoLast(){
+  const last = state.logs.shift();
+  if(!last) return alert("되돌릴 로그가 없습니다.");
+
+  const a = activePlayers();
+  const n = a.length;
+
+  const receiver = last.receiverId ? findPlayer(last.receiverId) : null;
+  const meta = last.meta || {};
+
+  const rewindPointer = (which) => {
+    if(n <= 0) return;
+    if(which === "fixed") state.fixedPointer = (state.fixedPointer - 1 + n) % n;
+    if(which === "loot")  state.lootPointer  = (state.lootPointer  - 1 + n) % n;
+  };
+
+  switch(last.type){
+    case "FIXED_GIVE":
+      if(receiver) receiver.fixedCount = Math.max(0, receiver.fixedCount - 1);
+      rewindPointer("fixed");
+      break;
+
+    case "FIXED_SKIP":
+      rewindPointer("fixed");
+      break;
+
+    case "LOOT_GIVE":
+      if(receiver) receiver.lootCount = Math.max(0, receiver.lootCount - 1);
+      rewindPointer("loot");
+      break;
+
+    case "LOOT_PASS_TOKEN":
+      if(receiver) receiver.tokens = Math.max(0, receiver.tokens - 1); // minted rollback
+      rewindPointer("loot");
+      break;
+
+    case "LOOT_SKIP":
+      rewindPointer("loot");
+      break;
+
+    case "PRIORITY_FIXED":
+    case "PRIORITY_LOOT": {
+      const claimant = receiver; // receiverId = claimant
+      const cur = meta.curId ? findPlayer(meta.curId) : null;
+      const which = meta.which;
+
+      if(claimant){
+        if(which === "fixed") claimant.fixedCount = Math.max(0, claimant.fixedCount - 1);
+        else claimant.lootCount = Math.max(0, claimant.lootCount - 1);
+
+        claimant.tokens += 1; // revert token transfer
+      }
+      if(cur){
+        cur.tokens = Math.max(0, cur.tokens - 1);
+      }
+      rewindPointer(which);
+      break;
+    }
+
+    default:
+      alert("되돌리기 지원: 지급/패스/스킵/우선권만 지원합니다.");
+      state.logs.unshift(last);
+      return;
+  }
+
+  state.logs.unshift({
+    ts: nowTs(),
+    type: "UNDO",
+    itemName: "",
+    receiverId: null,
+    detail: `되돌림: ${last.type} (${fmt(last.ts)})`,
+    meta: { undoneType:last.type }
+  });
+
+  saveState();
+  render();
+}
+
+/** -------------------------
+ *  Init
+ *  ------------------------- */
+setTab("roster");
+</script>
+</body>
+</html>
