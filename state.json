@@ -246,7 +246,15 @@
   "batchReceivedLoot": {},
   "logs": [
     {
-      "ts": 1768074875847,
+      "ts": 1768074944012,
+      "type": "IMPORT",
+      "itemName": "(백업)",
+      "receiverId": null,
+      "detail": "JSON 가져오기 완료",
+      "meta": {}
+    },
+    {
+      "ts": 1768074930080,
       "type": "LOOT_PASS_TOKEN",
       "itemName": "마귀의 가면",
       "receiverId": "184c5a01-8198-48b9-8987-27bc5a9bb89b",
@@ -259,7 +267,7 @@
       }
     },
     {
-      "ts": 1768074870009,
+      "ts": 1768074926476,
       "type": "FIXED_GIVE",
       "itemName": "비닐신발",
       "receiverId": "184c5a01-8198-48b9-8987-27bc5a9bb89b",
@@ -271,7 +279,7 @@
       }
     },
     {
-      "ts": 1768074776564,
+      "ts": 1768074891805,
       "type": "RESTORE_GITHUB",
       "itemName": "(복구)",
       "receiverId": null,
