@@ -5,9 +5,9 @@
       "name": "순심이",
       "activeFixed": true,
       "activeLoot": true,
-      "fixedCount": 0,
+      "fixedCount": 1,
       "lootCount": 0,
-      "tokens": 0
+      "tokens": 1
     },
     {
       "id": "c5756ec0-774f-44c6-baee-15ffddb7248b",
@@ -226,9 +226,9 @@
       "tokens": 0
     }
   ],
-  "fixedPointer": 0,
-  "lootPointer": 0,
-  "fixedItemName": "고정템",
+  "fixedPointer": 1,
+  "lootPointer": 1,
+  "fixedItemName": "비닐신발",
   "lootCatalog": [
     "마귀의 가면",
     "고대 견장",
@@ -240,9 +240,44 @@
     "하급 작약 호리병"
   ],
   "batchId": 1768074181915,
-  "batchReceivedFixed": {},
+  "batchReceivedFixed": {
+    "184c5a01-8198-48b9-8987-27bc5a9bb89b": true
+  },
   "batchReceivedLoot": {},
   "logs": [
+    {
+      "ts": 1768074875847,
+      "type": "LOOT_PASS_TOKEN",
+      "itemName": "마귀의 가면",
+      "receiverId": "184c5a01-8198-48b9-8987-27bc5a9bb89b",
+      "detail": "순심이 패스 (토큰+1)",
+      "meta": {
+        "which": "loot",
+        "curId": "184c5a01-8198-48b9-8987-27bc5a9bb89b",
+        "minted": 1,
+        "batchId": 1768074181915
+      }
+    },
+    {
+      "ts": 1768074870009,
+      "type": "FIXED_GIVE",
+      "itemName": "비닐신발",
+      "receiverId": "184c5a01-8198-48b9-8987-27bc5a9bb89b",
+      "detail": "순심이에게 고정템 지급",
+      "meta": {
+        "which": "fixed",
+        "curId": "184c5a01-8198-48b9-8987-27bc5a9bb89b",
+        "batchId": 1768074181915
+      }
+    },
+    {
+      "ts": 1768074776564,
+      "type": "RESTORE_GITHUB",
+      "itemName": "(복구)",
+      "receiverId": null,
+      "detail": "GitHub state.json 복구 완료",
+      "meta": {}
+    },
     {
       "ts": 1768074579237,
       "type": "ROSTER_ALL_OFF",
