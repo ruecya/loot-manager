@@ -1262,6 +1262,8 @@ function viewLoot(){
   startSel.appendChild(el("option", { value:"" }, "포인터 변경(선택)"));
   lanePlayers("loot").forEach(p => startSel.appendChild(el("option", { value:p.name }, p.name)));
 
+  const prioSel = prioritySelector("loot", (peek.player && peek.player.id) ? peek.player.id : "");
+
   wrap.appendChild(el("div", { class:"card" }, [
     el("div", { style:"display:flex; justify-content:space-between; align-items:center;" }, [
       el("h3", { style:"margin:0" }, "🎲 전리템 레인"),
@@ -1321,11 +1323,10 @@ function viewLoot(){
 
     el("div", { class:"row", style:"background:#fffbeb; padding:12px; border-radius:8px; border:1px solid #fcd34d;" }, [
       el("div", {style:"font-weight:600; color:#92400e; margin-right:8px;"}, "⚡ 우선권 사용:"),
-      el("div", {style:"flex:1"}, prioritySelector("loot", (peek.player && peek.player.id) ? peek.player.id : "")),
+      el("div", {style:"flex:1"}, prioSel),
       el("button", { onclick:()=>{
-        const sel = wrap.querySelectorAll("select")[2]; // 우선권 선택 select
-        if(!sel || !sel.value) return alert("우선권 요청자를 선택하세요.");
-        priorityGive("loot", itemInput.value, sel.value);
+        if(!prioSel.value) return alert("우선권 요청자를 선택하세요.");
+        priorityGive("loot", itemInput.value, prioSel.value);
         itemInput.value = ""; catSel.value = ""; render();
       }}, "적용")
     ]),
