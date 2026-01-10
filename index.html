@@ -385,6 +385,42 @@ function exportRosterTxt(){
   a.download = "roster.txt";
   a.click();
   URL.revokeObjectURL(url);
+
+// GitHub loot_items.txt load (전리품 목록 가져오기)
+function parseLootItemsText(text){
+  return (text || "")
+    .split(/\r?\n/g)
+    .map(s => s.trim())
+    .filter(s => s && !s.startsWith("#"));
+}
+async function fetchLootItemsFromUrl(url){
+  const u = (url || "").trim();
+  if(!u) return alert("loot_items.txt URL을 입력하세요.");
+  try{
+    const res = await fetch(u, { cache: "no-store" });
+    if(!res.ok) throw new Error("HTTP " + res.status);
+    const txt = await res.text();
+    const items = parseLootItemsText(txt);
+    if(items.length === 0) return alert("loot_items.txt에서 아이템을 찾지 못했습니다.");
+
+    const seen = new Set();
+    const uniq = [];
+    for(const it of items){
+      if(seen.has(it)) continue;
+      seen.add(it);
+      uniq.push(it);
+    }
+
+    if(!confirm(`loot_items.txt에서 ${uniq.length}개 아이템을 불러옵니다.\n현재 전리템 목록을 덮어쓸까요?`)) return;
+    state.lootCatalog = uniq;
+    logEvent("LOOT_CATALOG_FROM_TXT", "(전리목록)", null, `loot_items.txt 불러오기(덮어쓰기): ${uniq.length}개`, { url: u, items: uniq });
+    saveState();
+    alert("전리품 목록을 불러왔습니다.");
+  }catch(e){
+    alert("불러오기 실패: " + (e.message || e));
+  }
+}
+
 }
 
 // Loot catalog
@@ -712,7 +748,22 @@ function viewRoster(){
 
   wrap.appendChild(el("div", { class:"card" }, [
     el("h3", {}, "전리템 목록(선택용) 관리"),
-    el("div", { class:"muted small" }, "전리템 레인에서 목록을 선택해 입력을 빠르게 할 수 있습니다."),
+    
+el("div", { class:"muted small" }, "GitHub에 loot_items.txt를 올려두면 여기서 바로 불러올 수 있습니다. (raw URL 권장)"),
+(()=>{ 
+  const lootUrlInput = el("input", {
+    id:"lootItemsUrl",
+    style:"width:min(860px,100%);",
+    placeholder:"loot_items.txt URL (예: https://raw.githubusercontent.com/<id>/<repo>/main/loot_items.txt)",
+    value:"loot_items.txt"
+  });
+  const loadLootBtn = el("button", { class:"primary", onclick: async()=>{
+    await fetchLootItemsFromUrl(lootUrlInput.value);
+    render();
+  }}, "loot_items.txt 불러와서 덮어쓰기");
+  return el("div", { class:"row", style:"margin-top:10px" }, [lootUrlInput, loadLootBtn]);
+})(),
+el("div", { class:"muted small" }, "전리템 레인에서 목록을 선택해 입력을 빠르게 할 수 있습니다."),
     el("div", { class:"row", style:"margin-top:10px" }, [catalogText]),
     el("div", { class:"row", style:"margin-top:10px" }, [saveCatalogBtn, downloadCatalogBtn]),
   ]));

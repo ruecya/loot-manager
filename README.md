@@ -24,3 +24,8 @@
 - index.html : 단일 파일 앱
 - roster.txt : (템플릿) 한 줄에 한 명
 - loot_items.txt : (템플릿) 한 줄에 하나(전리템 목록)
+
+
+## 전리품 목록 가져오기(loot_items.txt)
+- repo에 `loot_items.txt` 업로드(한 줄에 하나)
+- 명단/목록 탭의 '전리템 목록 관리'에서 raw URL 또는 `loot_items.txt`로 불러오기
