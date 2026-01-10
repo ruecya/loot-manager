@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>전리품 분배 매니저 v6 (UI 개선판)</title>
+  <title>전리품 분배 매니저 v6.3 (GitHub 자동업로드 + state 백업/복구)</title>
   <style>
     :root {
       --primary: #4f46e5;
@@ -30,45 +30,24 @@
       line-height: 1.5;
     }
 
-    /* Layout */
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 16px;
-    }
+    .container { max-width: 1000px; margin: 0 auto; padding: 16px; }
 
-    /* Navigation / Tabs */
     .nav-tabs {
-      display: flex;
-      gap: 8px;
-      background: var(--card-bg);
-      padding: 8px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      margin-bottom: 20px;
-      overflow-x: auto;
+      display: flex; gap: 8px; background: var(--card-bg);
+      padding: 8px; border-radius: var(--radius);
+      box-shadow: var(--shadow); margin-bottom: 20px; overflow-x: auto;
     }
     .nav-btn {
-      flex: 1;
-      padding: 10px 16px;
-      border: none;
-      background: transparent;
-      color: var(--text-muted);
-      font-weight: 600;
-      cursor: pointer;
-      border-radius: 6px;
-      transition: all 0.2s;
-      white-space: nowrap;
-      text-align: center;
+      flex: 1; padding: 10px 16px; border: none; background: transparent;
+      color: var(--text-muted); font-weight: 600; cursor: pointer;
+      border-radius: 6px; transition: all 0.2s; white-space: nowrap; text-align: center;
     }
     .nav-btn:hover { background: var(--bg); color: var(--text-main); }
     .nav-btn.active {
-      background: var(--primary);
-      color: white;
+      background: var(--primary); color: white;
       box-shadow: 0 2px 4px rgba(79, 70, 229, 0.3);
     }
 
-    /* Cards */
     .card {
       background: var(--card-bg);
       border-radius: var(--radius);
@@ -80,10 +59,9 @@
     .card h3 { margin-top: 0; margin-bottom: 16px; font-size: 1.25rem; color: var(--text-main); border-bottom: 1px solid var(--border); padding-bottom: 10px; }
     .card h4 { margin: 16px 0 8px 0; font-size: 1rem; }
 
-    /* Forms & Inputs */
     .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
     .col { display: flex; flex-direction: column; gap: 8px; }
-    
+
     input, select, textarea {
       padding: 10px 12px;
       border: 1px solid var(--border);
@@ -98,7 +76,6 @@
       box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
     }
 
-    /* Buttons */
     button {
       display: inline-flex;
       align-items: center;
@@ -129,7 +106,7 @@
       border-color: var(--danger);
     }
     button.danger:hover { background: #fef2f2; }
-    
+
     button.success {
       background: var(--success);
       border-color: var(--success);
@@ -138,7 +115,6 @@
 
     button.sm { padding: 4px 8px; font-size: 0.8rem; }
 
-    /* Tables */
     .table-responsive { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
     th {
@@ -157,14 +133,11 @@
     }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: #f9fafb; }
-    
-    /* Drag & Drop */
+
     .drag-handle { cursor: grab; color: var(--text-muted); font-size: 1.2rem; padding-right: 8px; }
     tr.drag-over td { background: #eef2ff; border-top: 2px dashed var(--primary); }
 
-    /* Utilities */
     .muted { color: var(--text-muted); font-size: 0.85rem; }
-    .warn { color: #d97706; font-weight: 600; }
     .text-danger { color: var(--danger); }
     .pill {
       display: inline-flex;
@@ -190,8 +163,7 @@
 
     .hr { height: 1px; background: var(--border); margin: 16px 0; }
     .flex-center { display: flex; align-items: center; justify-content: center; }
-    
-    /* Current Player Highlight */
+
     .current-player-box {
       background: #e0e7ff;
       border: 1px solid #c7d2fe;
@@ -209,14 +181,32 @@
     }
 
     details summary { cursor: pointer; color: var(--primary); font-weight: 600; }
+
+    /* Toast */
+    #toast {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 9999;
+      display: none;
+      max-width: 360px;
+      background: rgba(17,24,39,0.92);
+      color: #fff;
+      padding: 10px 12px;
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0,0,0,.2);
+      font-size: 0.9rem;
+      line-height: 1.3;
+    }
   </style>
 </head>
 <body>
+<div id="toast"></div>
 
 <div class="container">
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-    <h2 style="margin:0;">⚔️ 전리품 매니저 v6</h2>
-    <span class="muted">UI Improved</span>
+    <h2 style="margin:0;">⚔️ 전리품 매니저 v6.3</h2>
+    <span class="muted">Auto Upload + GitHub Backup</span>
   </div>
 
   <div class="nav-tabs">
@@ -231,11 +221,184 @@
 
 <script>
 /**
- * 기능 로직은 v5와 동일하게 유지
- * UI 렌더링 부분만 개선된 CSS 클래스와 구조로 변경
+ * 반영 사항:
+ * - "전리템 목록 관리"의 "목록 저장" 버튼을 누르면 GitHub에도 자동 업로드(버튼 없이)
+ * - state.json을 GitHub에 자동 백업/복구 버튼 제공
+ * - JSON 내보내기 파일명: 날짜(YYYY-MM-DD)까지만
  */
 
 const STORAGE_KEY = "loot_manager_v5";
+
+// ===== Toast =====
+let _toastTimer = null;
+function toast(msg, ms=2200){
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.style.display = "block";
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(()=>{ t.style.display = "none"; }, ms);
+}
+
+// ===== GitHub Auto Save (token) =====
+const GH_SETTINGS_KEY = "loot_manager_github_settings_v2";
+function defaultGh(){
+  return {
+    owner: "",
+    repo: "",
+    branch: "main",
+    token: "",
+    rosterPath: "roster.txt",
+    lootPath: "loot_items.txt",
+    statePath: "state.json"
+  };
+}
+function loadGh(){
+  try{
+    const raw = localStorage.getItem(GH_SETTINGS_KEY);
+    if(!raw) return defaultGh();
+    return { ...defaultGh(), ...JSON.parse(raw) };
+  }catch(e){
+    return defaultGh();
+  }
+}
+function saveGh(){ localStorage.setItem(GH_SETTINGS_KEY, JSON.stringify(gh)); }
+let gh = loadGh();
+
+function b64utf8(str){
+  return btoa(unescape(encodeURIComponent(str)));
+}
+function b64utf8Decode(b64){
+  return decodeURIComponent(escape(atob(b64)));
+}
+
+function validateGh(){
+  if(!gh.owner || !gh.repo || !gh.branch || !gh.token){
+    throw new Error("GitHub 설정(Owner/Repo/Branch/Token)이 비어있습니다.");
+  }
+}
+
+function ghContentUrl(path){
+  const safe = encodeURIComponent(path).replace(/%2F/g,"/");
+  return `https://api.github.com/repos/${gh.owner}/${gh.repo}/contents/${safe}`;
+}
+
+async function ghGetSha(path){
+  const url = `${ghContentUrl(path)}?ref=${encodeURIComponent(gh.branch)}`;
+  const res = await fetch(url, {
+    headers: {
+      "Accept":"application/vnd.github+json",
+      "Authorization":`Bearer ${gh.token}`
+    }
+  });
+  if(res.status === 404) return null;
+  if(!res.ok) throw new Error(`GitHub GET 실패 (HTTP ${res.status})`);
+  const data = await res.json();
+  return data && data.sha ? data.sha : null;
+}
+
+async function ghGetFileText(path){
+  const url = `${ghContentUrl(path)}?ref=${encodeURIComponent(gh.branch)}`;
+  const res = await fetch(url, {
+    headers: {
+      "Accept":"application/vnd.github+json",
+      "Authorization":`Bearer ${gh.token}`
+    }
+  });
+  if(res.status === 404) return null;
+  if(!res.ok) throw new Error(`GitHub GET 실패 (HTTP ${res.status})`);
+  const data = await res.json();
+  if(!data || data.type !== "file" || !data.content) throw new Error("GitHub 파일 내용을 읽지 못했습니다.");
+  // content has line breaks
+  const b64 = String(data.content).replace(/\n/g,"");
+  return b64utf8Decode(b64);
+}
+
+async function ghPutFile(path, contentText, message){
+  const api = ghContentUrl(path);
+  const sha = await ghGetSha(path);
+
+  const body = {
+    message: message || `Update ${path}`,
+    content: b64utf8(contentText),
+    branch: gh.branch
+  };
+  if(sha) body.sha = sha;
+
+  const res = await fetch(api, {
+    method:"PUT",
+    headers:{
+      "Accept":"application/vnd.github+json",
+      "Content-Type":"application/json",
+      "Authorization":`Bearer ${gh.token}`
+    },
+    body: JSON.stringify(body)
+  });
+
+  // 409 충돌 시 sha 재조회 후 1회 재시도
+  if(res.status === 409){
+    const sha2 = await ghGetSha(path);
+    const body2 = { ...body };
+    if(sha2) body2.sha = sha2;
+    const res2 = await fetch(api, {
+      method:"PUT",
+      headers:{
+        "Accept":"application/vnd.github+json",
+        "Content-Type":"application/json",
+        "Authorization":`Bearer ${gh.token}`
+      },
+      body: JSON.stringify(body2)
+    });
+    if(!res2.ok) throw new Error(`GitHub PUT 실패(재시도) (HTTP ${res2.status})`);
+    return await res2.json();
+  }
+
+  if(!res.ok) throw new Error(`GitHub PUT 실패 (HTTP ${res.status})`);
+  return await res.json();
+}
+
+function isoDate(){ return new Date().toISOString().slice(0,10); }
+
+function buildRosterText(){ return state.players.map(p => p.name).join("\n") + "\n"; }
+function buildLootItemsText(){ return (state.lootCatalog || []).join("\n") + "\n"; }
+function buildStateJsonText(){ return JSON.stringify(state, null, 2); }
+
+// 버튼 없이 자동 업로드(실패해도 앱은 계속 동작)
+let _autoUploadTimer = null;
+function scheduleAutoUploadLootCatalog(){
+  clearTimeout(_autoUploadTimer);
+  _autoUploadTimer = setTimeout(async()=>{
+    try{
+      if(!gh.owner || !gh.repo || !gh.branch || !gh.token) return; // 설정 없으면 조용히 패스
+      await ghPutFile(gh.lootPath, buildLootItemsText(), `Auto: loot_items (${isoDate()})`);
+      toast("✅ 전리템 목록 GitHub 자동 업로드 완료");
+    }catch(err){
+      toast("⚠️ GitHub 자동 업로드 실패: " + (err.message||err), 3200);
+    }
+  }, 350);
+}
+
+async function ghBackupState(){
+  validateGh();
+  await ghPutFile(gh.statePath, buildStateJsonText(), `Backup state (${isoDate()})`);
+}
+
+async function ghRestoreState(){
+  validateGh();
+  const txt = await ghGetFileText(gh.statePath);
+  if(txt === null) throw new Error("state.json 파일을 찾지 못했습니다.");
+  const parsed = JSON.parse(txt);
+  state = {
+    ...defaultState(),
+    ...parsed,
+    ui: { ...defaultState().ui, ...(parsed.ui||{}) },
+    batchReceivedFixed: parsed.batchReceivedFixed || {},
+    batchReceivedLoot: parsed.batchReceivedLoot || {}
+  };
+  saveState();
+  render();
+}
+// ===== /GitHub =====
+
 
 // --- Reorder helpers (명단 순서 변경) ---
 let _dragPlayerId = null;
@@ -274,7 +437,6 @@ function safeText(s, fallback="(미입력)"){
   const t = (s || "").trim();
   return t ? t : fallback;
 }
-
 function normalizeGitHubTextUrl(u){
   const url = (u || "").trim();
   if(!url) return url;
@@ -287,12 +449,10 @@ function normalizeGitHubTextUrl(u){
   }catch(e){}
   return url;
 }
-
 function looksLikeHtml(text){
   const t = (text || "").trim().slice(0, 200).toLowerCase();
   return t.includes("<!doctype html") || t.includes("<html") || t.includes("<head") || t.includes("<body");
 }
-
 function stripBom(s){
   if(!s) return s;
   return s.charCodeAt(0) === 0xFEFF ? s.slice(1) : s;
@@ -333,9 +493,7 @@ function loadState(){
     return defaultState();
   }
 }
-function saveState(){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-}
+function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 function logEvent(type, itemName, receiverId, detail, meta = {}){
   state.logs.unshift({ ts: nowTs(), type, itemName, receiverId, detail, meta });
   saveState();
@@ -535,7 +693,7 @@ function setPointerToName(which, name){
   saveState();
 }
 
-// GitHub roster.txt load
+// GitHub roster.txt load (raw)
 function parseRosterText(text){
   return (text || "")
     .split(/\r?\n/g)
@@ -591,7 +749,7 @@ function exportRosterTxt(){
   URL.revokeObjectURL(url);
 }
 
-// GitHub loot_items.txt load
+// GitHub loot_items.txt load (raw)
 function parseLootItemsText(text){
   return (text || "")
     .split(/\r?\n/g)
@@ -644,6 +802,9 @@ function setLootCatalogFromText(text){
   state.lootCatalog = uniq;
   logEvent("LOOT_CATALOG_SET", "(전리목록)", null, `전리템 목록 저장: ${uniq.length}개`);
   saveState();
+
+  // ✅ 요청사항: "목록 저장" 시 GitHub 자동 업로드(버튼 없이)
+  scheduleAutoUploadLootCatalog();
 }
 function exportLootCatalogTxt(){
   const lines = (state.lootCatalog || []);
@@ -784,7 +945,6 @@ function viewRoster(){
     render();
   });
 
-  // Top Stats Card
   wrap.appendChild(el("div", { class:"card" }, [
     el("div", { class:"row" }, [
       el("span", { class:"pill" }, `전체: ${state.players.length}명`),
@@ -796,12 +956,11 @@ function viewRoster(){
     el("div", { class:"hr" }),
     el("div", { class:"row" }, [ nameInput, addBtn ]),
     el("div", { class:"row", style:"margin-top:10px" }, [
-        el("button", { class:"", onclick:()=>{ resetPointers(); render(); }}, "🔄 포인터 리셋"),
+        el("button", { onclick:()=>{ resetPointers(); render(); }}, "🔄 포인터 리셋"),
         el("button", { class:"primary", onclick:()=>{ startBatch(); render(); }}, "⚔️ 이번 보스 시작(배치 초기화)")
     ])
   ]));
 
-  // Bulk & Settings Card
   wrap.appendChild(el("div", { class:"card" }, [
     el("details", {}, [
       el("summary", {}, "📂 대량 추가 및 설정"),
@@ -816,27 +975,90 @@ function viewRoster(){
           el("button", { class:"sm", onclick:()=>{ setTodayParticipantsForLane("fixed", bulkInput.value); bulkInput.value=""; render(); }}, "고정만 ON"),
           el("button", { class:"sm", onclick:()=>{ setTodayParticipantsForLane("loot", bulkInput.value); bulkInput.value=""; render(); }}, "전리만 ON"),
         ]),
+
         el("div", { class:"hr" }),
-        el("h4", {}, "GitHub 연동"),
-        el("div", { class:"row" }, [ rosterUrlInput, el("button", { onclick: async()=>{ await fetchRosterFromUrl(rosterUrlInput.value); render(); }}, "불러오기") ]),
-        el("div", { class:"row", style:"margin-top:8px" }, [ el("button", { class:"sm", onclick: exportRosterTxt }, "roster.txt 다운로드") ]),
+        el("h4", {}, "GitHub raw 불러오기"),
+        el("div", { class:"row" }, [
+          rosterUrlInput,
+          el("button", { onclick: async()=>{ await fetchRosterFromUrl(rosterUrlInput.value); render(); }}, "roster.txt 불러오기"),
+          el("button", { class:"sm", onclick: exportRosterTxt }, "roster.txt 다운로드")
+        ]),
+
+        el("div", { class:"hr" }),
+        el("h4", {}, "GitHub 토큰 설정 (state 백업/복구 포함)"),
+        el("div", { class:"row" }, [
+          el("input", { placeholder:"owner", value: gh.owner, style:"flex:1",
+            oninput:(e)=>{ gh.owner = e.target.value.trim(); saveGh(); }
+          }),
+          el("input", { placeholder:"repo", value: gh.repo, style:"flex:1",
+            oninput:(e)=>{ gh.repo = e.target.value.trim(); saveGh(); }
+          }),
+          el("input", { placeholder:"branch", value: gh.branch, style:"flex:1",
+            oninput:(e)=>{ gh.branch = e.target.value.trim() || "main"; saveGh(); }
+          }),
+        ]),
+        el("div", { class:"row", style:"margin-top:8px" }, [
+          el("input", { placeholder:"rosterPath", value: gh.rosterPath, style:"flex:1",
+            oninput:(e)=>{ gh.rosterPath = e.target.value.trim() || "roster.txt"; saveGh(); }
+          }),
+          el("input", { placeholder:"lootPath", value: gh.lootPath, style:"flex:1",
+            oninput:(e)=>{ gh.lootPath = e.target.value.trim() || "loot_items.txt"; saveGh(); }
+          }),
+          el("input", { placeholder:"statePath", value: gh.statePath, style:"flex:1",
+            oninput:(e)=>{ gh.statePath = e.target.value.trim() || "state.json"; saveGh(); }
+          }),
+        ]),
+        el("div", { class:"row", style:"margin-top:8px" }, [
+          el("input", {
+            type:"password",
+            placeholder:"GitHub Token (fine-grained PAT 권장 / Contents RW)",
+            value: gh.token,
+            style:"flex:2",
+            oninput:(e)=>{ gh.token = e.target.value; saveGh(); }
+          }),
+          el("button", { class:"primary", onclick: async()=>{
+            try{
+              validateGh();
+              await ghPutFile(gh.rosterPath, buildRosterText(), `Manual: roster (${isoDate()})`);
+              toast("✅ roster.txt GitHub 저장 완료");
+            }catch(err){ alert("❌ " + (err.message||err)); }
+          }}, "⬆️ roster 저장"),
+          el("button", { class:"primary", onclick: async()=>{
+            try{
+              validateGh();
+              await ghPutFile(gh.lootPath, buildLootItemsText(), `Manual: loot_items (${isoDate()})`);
+              toast("✅ loot_items.txt GitHub 저장 완료");
+            }catch(err){ alert("❌ " + (err.message||err)); }
+          }}, "⬆️ loot 저장"),
+        ]),
+        el("div", { class:"muted", style:"margin-top:6px" },
+          "※ 전리템 '목록 저장' 버튼을 누르면 loot_items는 자동으로 GitHub 업로드 됩니다."
+        ),
+
         el("div", { class:"hr" }),
         el("h4", {}, "고급 옵션"),
         el("div", { class:"flex-center", style:"justify-content:flex-start" }, [
-            dangerToggle,
-            el("span", { class:"muted" }, "삭제/토큰 수동 조정 버튼 표시(주의)")
+          dangerToggle,
+          el("span", { class:"muted" }, "삭제/토큰 수동 조정 버튼 표시(주의)")
         ])
       ])
     ])
   ]));
 
-  // Table
   const table = el("table");
   table.appendChild(el("thead", {}, el("tr", {}, [
     el("th", {}, "순서"),
     el("th", {}, "이름"),
-    el("th", {}, el("div",{class:"row", style:"gap:4px"},[el("span",{},"고정"), el("button",{class:"sm", onclick:()=>{setAllForLane("fixed",true);render()}},"All ON"),el("button",{class:"sm", onclick:()=>{setAllForLane("fixed",false);render()}},"OFF")])),
-    el("th", {}, el("div",{class:"row", style:"gap:4px"},[el("span",{},"전리"), el("button",{class:"sm", onclick:()=>{setAllForLane("loot",true);render()}},"All ON"),el("button",{class:"sm", onclick:()=>{setAllForLane("loot",false);render()}},"OFF")])),
+    el("th", {}, el("div",{class:"row", style:"gap:4px"},[
+      el("span",{},"고정"),
+      el("button",{class:"sm", onclick:()=>{setAllForLane("fixed",true);render();}},"All ON"),
+      el("button",{class:"sm", onclick:()=>{setAllForLane("fixed",false);render();}},"OFF")
+    ])),
+    el("th", {}, el("div",{class:"row", style:"gap:4px"},[
+      el("span",{},"전리"),
+      el("button",{class:"sm", onclick:()=>{setAllForLane("loot",true);render();}},"All ON"),
+      el("button",{class:"sm", onclick:()=>{setAllForLane("loot",false);render();}},"OFF")
+    ])),
     el("th", {}, "누적수령"),
     el("th", {}, "토큰"),
     el("th", {}, "상태(고정)"),
@@ -885,7 +1107,6 @@ function viewRoster(){
       el("td", {}, el("div", { class:"row", style:"gap:4px;" }, manage)),
     ]);
 
-    // Drag & Drop
     tr.draggable = true;
     tr.addEventListener("dragstart", ()=>{ _dragPlayerId = p.id; });
     tr.addEventListener("dragend", ()=>{ _dragPlayerId = null; });
@@ -904,26 +1125,30 @@ function viewRoster(){
   // Catalog Mngt
   const catalogText = el("textarea", { rows:"4", placeholder:"도감\n희귀 장비\n강화석" });
   catalogText.value = (state.lootCatalog || []).join("\n");
-  
+
   const lootUrlInput = el("input", { value:"loot_items.txt", style:"flex:2" });
 
   wrap.appendChild(el("div", { class:"card" }, [
     el("details", {}, [
-        el("summary", {}, "📝 전리템 목록 관리"),
-        el("div", {style:"margin-top:16px"}, [
-            el("h4", {}, "직접 편집"),
-            catalogText,
-            el("div", { class:"row", style:"margin-top:8px" }, [
-                el("button", { onclick:()=>{ setLootCatalogFromText(catalogText.value); render(); }}, "목록 저장"),
-                el("button", { onclick: exportLootCatalogTxt }, "다운로드")
-            ]),
-            el("div", { class:"hr" }),
-            el("h4", {}, "GitHub 불러오기"),
-            el("div", { class:"row" }, [
-                lootUrlInput,
-                el("button", { onclick: async()=>{ await fetchLootItemsFromUrl(lootUrlInput.value); render(); }}, "불러오기")
-            ])
+      el("summary", {}, "📝 전리템 목록 관리"),
+      el("div", {style:"margin-top:16px"}, [
+        el("h4", {}, "직접 편집"),
+        catalogText,
+        el("div", { class:"row", style:"margin-top:8px" }, [
+          el("button", { onclick:()=>{
+            setLootCatalogFromText(catalogText.value);
+            toast("✅ 전리템 목록 저장 완료 (GitHub 자동업로드 시도)");
+            render();
+          }}, "목록 저장"),
+          el("button", { onclick: exportLootCatalogTxt }, "다운로드")
+        ]),
+        el("div", { class:"hr" }),
+        el("h4", {}, "GitHub 불러오기(raw)"),
+        el("div", { class:"row" }, [
+          lootUrlInput,
+          el("button", { onclick: async()=>{ await fetchLootItemsFromUrl(lootUrlInput.value); render(); }}, "불러오기")
         ])
+      ])
     ])
   ]));
 
@@ -949,72 +1174,70 @@ function viewFixed(){
 
   wrap.appendChild(el("div", { class:"card" }, [
     el("div", { style:"display:flex; justify-content:space-between; align-items:center;" }, [
-        el("h3", { style:"margin:0" }, "💎 고정템 레인"),
-        el("button", { class:"primary sm", onclick:()=>{ startBatch(); render(); }}, "⚔️ 새 배치 시작")
+      el("h3", { style:"margin:0" }, "💎 고정템 레인"),
+      el("button", { class:"primary sm", onclick:()=>{ startBatch(); render(); }}, "⚔️ 새 배치 시작")
     ]),
     el("div", { class:"row", style:"margin-top:12px; margin-bottom:12px;" }, [
-        el("span", { class:"pill" }, `참여: ${n}명`),
-        el("span", { class:"pill" }, `포인터: ${n ? (pointerValue("fixed")+1) : 0}`),
-        el("span", { class:"pill" }, `완료: ${batchSummary("fixed")}명`),
+      el("span", { class:"pill" }, `참여: ${n}명`),
+      el("span", { class:"pill" }, `포인터: ${n ? (pointerValue("fixed")+1) : 0}`),
+      el("span", { class:"pill" }, `완료: ${batchSummary("fixed")}명`),
     ]),
-    
-    // Main Action Box
-    el("div", { class:"current-player-box" }, [
-        el("div", { class:"muted" }, "현재 차례 (Target)"),
-        el("div", { class:"current-player-name" }, curDisplay),
-        peek.offset > 0 ? el("div", { class:"text-danger", style:"margin-bottom:8px; font-weight:600;" }, `※ 앞선 ${peek.offset}명(배치 완료자) 자동 스킵됨`) : null,
-        
-        el("div", { class:"row", style:"justify-content:center; margin-top:16px;" }, [
-            el("span", {style:"align-self:center;"}, "아이템명: "),
-            el("div", {style:"width:200px"}, itemNameInput)
-        ]),
 
-        el("div", { class:"row", style:"justify-content:center; margin-top:16px; gap:16px;" }, [
-            el("button", { class:"primary", style:"padding:12px 24px; font-size:1.1rem;", onclick:()=>{
-                if(!normalizePointerToEligible("fixed")) return;
-                const cur = getCurrentEligible("fixed");
-                if(!cur) return;
-                cur.fixedCount += 1;
-                state.fixedItemName = itemNameInput.value.trim() || "고정템";
-                markReceived("fixed", cur.id);
-                logEvent("FIXED_GIVE", state.fixedItemName, cur.id, `${cur.name}에게 고정템 지급`, { which:"fixed", curId:cur.id, batchId: state.batchId });
-                stepPointer("fixed", 1);
-                render();
-            }}, "🎁 지급 (본인 수령)"),
-            
-            el("button", { class:"danger", onclick:()=>{
-                if(!normalizePointerToEligible("fixed")) return;
-                const cur = getCurrentEligible("fixed");
-                if(!cur) return;
-                state.fixedItemName = itemNameInput.value.trim() || "고정템";
-                logEvent("FIXED_SKIP", state.fixedItemName, cur.id, `${cur.name} 차례 스킵`, { which:"fixed", curId:cur.id, batchId: state.batchId });
-                stepPointer("fixed", 1);
-                render();
-            }}, "⏭ 스킵")
-        ])
+    el("div", { class:"current-player-box" }, [
+      el("div", { class:"muted" }, "현재 차례 (Target)"),
+      el("div", { class:"current-player-name" }, curDisplay),
+      peek.offset > 0 ? el("div", { class:"text-danger", style:"margin-bottom:8px; font-weight:600;" }, `※ 앞선 ${peek.offset}명(배치 완료자) 자동 스킵됨`) : null,
+
+      el("div", { class:"row", style:"justify-content:center; margin-top:16px;" }, [
+        el("span", {style:"align-self:center;"}, "아이템명: "),
+        el("div", {style:"width:220px"}, itemNameInput)
+      ]),
+
+      el("div", { class:"row", style:"justify-content:center; margin-top:16px; gap:16px;" }, [
+        el("button", { class:"primary", style:"padding:12px 24px; font-size:1.1rem;", onclick:()=>{
+          if(!normalizePointerToEligible("fixed")) return;
+          const cur = getCurrentEligible("fixed");
+          if(!cur) return;
+          cur.fixedCount += 1;
+          state.fixedItemName = itemNameInput.value.trim() || "고정템";
+          markReceived("fixed", cur.id);
+          logEvent("FIXED_GIVE", state.fixedItemName, cur.id, `${cur.name}에게 고정템 지급`, { which:"fixed", curId:cur.id, batchId: state.batchId });
+          stepPointer("fixed", 1);
+          render();
+        }}, "🎁 지급 (본인 수령)"),
+
+        el("button", { class:"danger", onclick:()=>{
+          if(!normalizePointerToEligible("fixed")) return;
+          const cur = getCurrentEligible("fixed");
+          if(!cur) return;
+          state.fixedItemName = itemNameInput.value.trim() || "고정템";
+          logEvent("FIXED_SKIP", state.fixedItemName, cur.id, `${cur.name} 차례 스킵`, { which:"fixed", curId:cur.id, batchId: state.batchId });
+          stepPointer("fixed", 1);
+          render();
+        }}, "⏭ 스킵")
+      ])
     ]),
 
     el("div", { class:"hr" }),
-    
-    // Priority Section
+
     el("div", { class:"row", style:"background:#fffbeb; padding:12px; border-radius:8px; border:1px solid #fcd34d;" }, [
-        el("div", {style:"font-weight:600; color:#92400e; margin-right:8px;"}, "⚡ 우선권 사용:"),
-        el("div", {style:"flex:1"}, prioritySelector("fixed", (peek.player && peek.player.id) ? peek.player.id : "")),
-        el("button", { onclick:()=>{
-            const sel = wrap.querySelector("select"); // hacky but works in this scope
-            if(!sel.value) return alert("우선권 요청자를 선택하세요.");
-            priorityGive("fixed", itemNameInput.value, sel.value);
-            render();
-        }}, "적용 (토큰 차감)")
+      el("div", {style:"font-weight:600; color:#92400e; margin-right:8px;"}, "⚡ 우선권 사용:"),
+      el("div", {style:"flex:1"}, prioritySelector("fixed", (peek.player && peek.player.id) ? peek.player.id : "")),
+      el("button", { onclick:()=>{
+        const sel = wrap.querySelector("select");
+        if(!sel.value) return alert("우선권 요청자를 선택하세요.");
+        priorityGive("fixed", itemNameInput.value, sel.value);
+        render();
+      }}, "적용 (토큰 차감)")
     ]),
 
     el("div", { class:"row", style:"margin-top:16px; justify-content:flex-end;" }, [
-        startSel,
-        el("button", { class:"sm", onclick:()=>{
-            if(!startSel.value) return alert("선택하세요");
-            setPointerToName("fixed", startSel.value);
-            render();
-        }}, "강제 이동")
+      startSel,
+      el("button", { class:"sm", onclick:()=>{
+        if(!startSel.value) return alert("선택하세요");
+        setPointerToName("fixed", startSel.value);
+        render();
+      }}, "강제 이동")
     ])
   ]));
 
@@ -1029,7 +1252,7 @@ function viewLoot(){
   const n = laneCount("loot");
 
   const itemInput = el("input", { placeholder:"드랍된 아이템 입력...", style:"font-weight:bold;" });
-  
+
   const catSel = el("select", { style:"margin-bottom:8px;" });
   catSel.appendChild(el("option", { value:"" }, "📋 목록에서 아이템 선택..."));
   (state.lootCatalog || []).forEach(x => catSel.appendChild(el("option", { value:x }, x)));
@@ -1041,84 +1264,79 @@ function viewLoot(){
 
   wrap.appendChild(el("div", { class:"card" }, [
     el("div", { style:"display:flex; justify-content:space-between; align-items:center;" }, [
-        el("h3", { style:"margin:0" }, "🎲 전리템 레인"),
-        el("button", { class:"primary sm", onclick:()=>{ startBatch(); render(); }}, "⚔️ 새 배치 시작")
+      el("h3", { style:"margin:0" }, "🎲 전리템 레인"),
+      el("button", { class:"primary sm", onclick:()=>{ startBatch(); render(); }}, "⚔️ 새 배치 시작")
     ]),
     el("div", { class:"row", style:"margin-top:12px; margin-bottom:12px;" }, [
-        el("span", { class:"pill" }, `참여: ${n}명`),
-        el("span", { class:"pill" }, `포인터: ${n ? (pointerValue("loot")+1) : 0}`),
-        el("span", { class:"pill" }, `완료: ${batchSummary("loot")}명`),
+      el("span", { class:"pill" }, `참여: ${n}명`),
+      el("span", { class:"pill" }, `포인터: ${n ? (pointerValue("loot")+1) : 0}`),
+      el("span", { class:"pill" }, `완료: ${batchSummary("loot")}명`),
     ]),
 
-    // Main Action Box
     el("div", { class:"current-player-box" }, [
-        el("div", { class:"muted" }, "현재 차례 (Target)"),
-        el("div", { class:"current-player-name" }, curDisplay),
-        peek.offset > 0 ? el("div", { class:"text-danger", style:"margin-bottom:8px; font-weight:600;" }, `※ 앞선 ${peek.offset}명(배치 완료자) 자동 스킵됨`) : null,
+      el("div", { class:"muted" }, "현재 차례 (Target)"),
+      el("div", { class:"current-player-name" }, curDisplay),
+      peek.offset > 0 ? el("div", { class:"text-danger", style:"margin-bottom:8px; font-weight:600;" }, `※ 앞선 ${peek.offset}명(배치 완료자) 자동 스킵됨`) : null,
 
-        el("div", { class:"col", style:"max-width:400px; margin:16px auto;" }, [
-            catSel,
-            itemInput
-        ]),
+      el("div", { class:"col", style:"max-width:400px; margin:16px auto;" }, [ catSel, itemInput ]),
 
-        el("div", { class:"row", style:"justify-content:center; gap:10px; flex-wrap:wrap;" }, [
-            el("button", { class:"primary", style:"padding:12px 20px; font-size:1rem;", onclick:()=>{
-                if(!normalizePointerToEligible("loot")) return;
-                const cur = getCurrentEligible("loot");
-                if(!cur) return;
-                const itemName = safeText(itemInput.value);
-                if(itemName === "(미입력)") return alert("아이템 이름을 입력하세요.");
-                cur.lootCount += 1;
-                markReceived("loot", cur.id);
-                logEvent("LOOT_GIVE", itemName, cur.id, `${cur.name}에게 전리템 지급`, { which:"loot", curId:cur.id, batchId: state.batchId });
-                stepPointer("loot", 1);
-                itemInput.value = ""; catSel.value = ""; render();
-            }}, "🎁 지급"),
+      el("div", { class:"row", style:"justify-content:center; gap:10px; flex-wrap:wrap;" }, [
+        el("button", { class:"primary", style:"padding:12px 20px; font-size:1rem;", onclick:()=>{
+          if(!normalizePointerToEligible("loot")) return;
+          const cur = getCurrentEligible("loot");
+          if(!cur) return;
+          const itemName = safeText(itemInput.value);
+          if(itemName === "(미입력)") return alert("아이템 이름을 입력하세요.");
+          cur.lootCount += 1;
+          markReceived("loot", cur.id);
+          logEvent("LOOT_GIVE", itemName, cur.id, `${cur.name}에게 전리템 지급`, { which:"loot", curId:cur.id, batchId: state.batchId });
+          stepPointer("loot", 1);
+          itemInput.value = ""; catSel.value = ""; render();
+        }}, "🎁 지급"),
 
-            el("button", { class:"success", style:"padding:12px 20px; font-size:1rem;", onclick:()=>{
-                if(!normalizePointerToEligible("loot")) return;
-                const cur = getCurrentEligible("loot");
-                if(!cur) return;
-                const itemName = safeText(itemInput.value);
-                cur.tokens += 1;
-                logEvent("LOOT_PASS_TOKEN", itemName, cur.id, `${cur.name} 패스 (토큰+1)`, { which:"loot", curId:cur.id, minted:1, batchId: state.batchId });
-                stepPointer("loot", 1);
-                itemInput.value = ""; catSel.value = ""; render();
-            }}, "🪙 패스 (토큰+1)"),
+        el("button", { class:"success", style:"padding:12px 20px; font-size:1rem;", onclick:()=>{
+          if(!normalizePointerToEligible("loot")) return;
+          const cur = getCurrentEligible("loot");
+          if(!cur) return;
+          const itemName = safeText(itemInput.value);
+          cur.tokens += 1;
+          logEvent("LOOT_PASS_TOKEN", itemName, cur.id, `${cur.name} 패스 (토큰+1)`, { which:"loot", curId:cur.id, minted:1, batchId: state.batchId });
+          stepPointer("loot", 1);
+          itemInput.value = ""; catSel.value = ""; render();
+        }}, "🪙 패스 (토큰+1)"),
 
-            el("button", { class:"danger", style:"padding:12px 20px; font-size:1rem;", onclick:()=>{
-                if(!normalizePointerToEligible("loot")) return;
-                const cur = getCurrentEligible("loot");
-                if(!cur) return;
-                const itemName = safeText(itemInput.value);
-                logEvent("LOOT_SKIP", itemName, cur.id, `${cur.name} 스킵 (보상X)`, { which:"loot", curId:cur.id, batchId: state.batchId });
-                stepPointer("loot", 1);
-                itemInput.value = ""; catSel.value = ""; render();
-            }}, "⏭ 스킵")
-        ])
+        el("button", { class:"danger", style:"padding:12px 20px; font-size:1rem;", onclick:()=>{
+          if(!normalizePointerToEligible("loot")) return;
+          const cur = getCurrentEligible("loot");
+          if(!cur) return;
+          const itemName = safeText(itemInput.value);
+          logEvent("LOOT_SKIP", itemName, cur.id, `${cur.name} 스킵 (보상X)`, { which:"loot", curId:cur.id, batchId: state.batchId });
+          stepPointer("loot", 1);
+          itemInput.value = ""; catSel.value = ""; render();
+        }}, "⏭ 스킵")
+      ])
     ]),
 
     el("div", { class:"hr" }),
 
-    // Priority
     el("div", { class:"row", style:"background:#fffbeb; padding:12px; border-radius:8px; border:1px solid #fcd34d;" }, [
-        el("div", {style:"font-weight:600; color:#92400e; margin-right:8px;"}, "⚡ 우선권 사용:"),
-        el("div", {style:"flex:1"}, prioritySelector("loot", (peek.player && peek.player.id) ? peek.player.id : "")),
-        el("button", { onclick:()=>{
-            const sel = wrap.querySelectorAll("select")[2]; // hacky selector
-            if(!sel || !sel.value) return alert("우선권 요청자를 선택하세요.");
-            priorityGive("loot", itemInput.value, sel.value);
-            itemInput.value = ""; catSel.value = ""; render();
-        }}, "적용")
+      el("div", {style:"font-weight:600; color:#92400e; margin-right:8px;"}, "⚡ 우선권 사용:"),
+      el("div", {style:"flex:1"}, prioritySelector("loot", (peek.player && peek.player.id) ? peek.player.id : "")),
+      el("button", { onclick:()=>{
+        const sel = wrap.querySelectorAll("select")[2]; // 우선권 선택 select
+        if(!sel || !sel.value) return alert("우선권 요청자를 선택하세요.");
+        priorityGive("loot", itemInput.value, sel.value);
+        itemInput.value = ""; catSel.value = ""; render();
+      }}, "적용")
     ]),
 
     el("div", { class:"row", style:"margin-top:16px; justify-content:flex-end;" }, [
-        startSel,
-        el("button", { class:"sm", onclick:()=>{
-            if(!startSel.value) return alert("선택하세요");
-            setPointerToName("loot", startSel.value);
-            render();
-        }}, "강제 이동")
+      startSel,
+      el("button", { class:"sm", onclick:()=>{
+        if(!startSel.value) return alert("선택하세요");
+        setPointerToName("loot", startSel.value);
+        render();
+      }}, "강제 이동")
     ])
   ]));
 
@@ -1133,9 +1351,34 @@ function viewLogs(){
   const importBtn = el("button", { onclick:importJson }, "📂 JSON 불러오기");
   const resetBtn  = el("button", { class:"danger", onclick:resetAll }, "🚫 전체 초기화");
 
+  const ghBackupBtn = el("button", { class:"primary", onclick: async()=>{
+    try{
+      await ghBackupState();
+      toast(`✅ state.json GitHub 백업 완료 (${isoDate()})`);
+    }catch(err){
+      alert("❌ GitHub 백업 실패: " + (err.message||err));
+    }
+  }}, "⬆️ GitHub 백업(state.json)");
+
+  const ghRestoreBtn = el("button", { class:"primary", onclick: async()=>{
+    try{
+      if(!confirm("GitHub의 state.json으로 현재 데이터를 덮어쓸까요?")) return;
+      await ghRestoreState();
+      logEvent("RESTORE_GITHUB", "(복구)", null, "GitHub state.json 복구 완료");
+      toast("✅ GitHub state.json 복구 완료");
+    }catch(err){
+      alert("❌ GitHub 복구 실패: " + (err.message||err));
+    }
+  }}, "⬇️ GitHub 복구(state.json)");
+
   wrap.appendChild(el("div", { class:"card" }, [
     el("h3", {}, "데이터 관리"),
-    el("div", { class:"row" }, [exportBtn, importBtn, resetBtn])
+    el("div", { class:"row" }, [exportBtn, importBtn, resetBtn]),
+    el("div", { class:"hr" }),
+    el("div", { class:"row" }, [ghBackupBtn, ghRestoreBtn]),
+    el("div", { class:"muted", style:"margin-top:8px" },
+      "※ GitHub 백업/복구는 '명단/목록' 탭에서 Owner/Repo/Branch/Token/StatePath 설정이 필요합니다."
+    )
   ]));
 
   const table = el("table");
@@ -1151,7 +1394,7 @@ function viewLogs(){
   state.logs.slice(0, 500).forEach(l=>{
     const receiver = l.receiverId ? (state.players.find(p=>p.id===l.receiverId) || null) : null;
     tbody.appendChild(el("tr", {}, [
-      el("td", { class:"muted" }, fmt(l.ts).split(" ")[1]), // 시간만 표시
+      el("td", { class:"muted" }, fmt(l.ts).split(" ")[1]),
       el("td", {}, l.type),
       el("td", {}, l.itemName || "-"),
       el("td", { style:"font-weight:600" }, receiver ? receiver.name : "-"),
@@ -1174,10 +1417,13 @@ function exportJson(){
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
+
+  // ✅ 요청: 날짜까지만
   const d = new Date();
   const pad = n => String(n).padStart(2,"0");
   const dateStr = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
   a.download = `loot_state_${dateStr}.json`;
+
   a.click();
   URL.revokeObjectURL(url);
 }
