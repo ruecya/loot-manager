@@ -58,7 +58,7 @@
       "id": "3e82b854-f992-4c98-946c-7c8768562651",
       "name": "청랑",
       "activeFixed": true,
-      "activeLoot": true,
+      "activeLoot": false,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
@@ -85,7 +85,7 @@
       "id": "ba9c03b7-c28a-4608-b01c-f9158ca42ea2",
       "name": "사악",
       "activeFixed": true,
-      "activeLoot": true,
+      "activeLoot": false,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
@@ -94,7 +94,7 @@
       "id": "57a65f2b-1dfc-4b80-ae02-f084806462f7",
       "name": "휘프리온",
       "activeFixed": true,
-      "activeLoot": true,
+      "activeLoot": false,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
@@ -121,7 +121,7 @@
       "id": "18e70a59-fdf9-4b30-841a-635bfe0faf14",
       "name": "연어",
       "activeFixed": true,
-      "activeLoot": true,
+      "activeLoot": false,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
@@ -130,7 +130,7 @@
       "id": "75327b89-a84d-4c22-9c95-d28d336344e3",
       "name": "만해",
       "activeFixed": true,
-      "activeLoot": true,
+      "activeLoot": false,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
@@ -139,7 +139,7 @@
       "id": "38547e4b-5e1f-4046-bc67-5cfdea5aef7f",
       "name": "무짱",
       "activeFixed": true,
-      "activeLoot": true,
+      "activeLoot": false,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
@@ -148,7 +148,7 @@
       "id": "b8f01b25-07f3-4a0e-828b-1257a14fe7db",
       "name": "벤야",
       "activeFixed": true,
-      "activeLoot": true,
+      "activeLoot": false,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
@@ -157,7 +157,7 @@
       "id": "dbcb421a-9d52-431d-8640-1d0f12cbd26e",
       "name": "단군",
       "activeFixed": true,
-      "activeLoot": true,
+      "activeLoot": false,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
@@ -166,7 +166,7 @@
       "id": "d9818b5c-105d-4dc5-b2fa-699afdbcba62",
       "name": "귀환",
       "activeFixed": true,
-      "activeLoot": true,
+      "activeLoot": false,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
@@ -175,7 +175,7 @@
       "id": "216d1fe9-f578-4800-9979-744fe84ae0e8",
       "name": "진춘목",
       "activeFixed": true,
-      "activeLoot": true,
+      "activeLoot": false,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
@@ -184,7 +184,7 @@
       "id": "f2b8f828-1d7d-4e03-83ac-de560eb075c8",
       "name": "쿠르",
       "activeFixed": true,
-      "activeLoot": true,
+      "activeLoot": false,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
@@ -193,7 +193,7 @@
       "id": "559b3235-0f9c-4ffe-ae24-5d13cbf8afa0",
       "name": "사쿠라기",
       "activeFixed": true,
-      "activeLoot": true,
+      "activeLoot": false,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
@@ -202,7 +202,7 @@
       "id": "d5cce0a3-3ddc-4206-9654-7daf5a126171",
       "name": "한방",
       "activeFixed": true,
-      "activeLoot": true,
+      "activeLoot": false,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
@@ -211,7 +211,7 @@
       "id": "3b930a26-0746-40c9-a201-2eaf310ec66a",
       "name": "10더",
       "activeFixed": true,
-      "activeLoot": true,
+      "activeLoot": false,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
@@ -243,6 +243,16 @@
   "batchReceivedFixed": {},
   "batchReceivedLoot": {},
   "logs": [
+    {
+      "ts": 1768074579237,
+      "type": "ROSTER_ALL_OFF",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "loot 전체 OFF",
+      "meta": {
+        "which": "loot"
+      }
+    },
     {
       "ts": 1768074548897,
       "type": "LOOT_CATALOG_FROM_TXT",
