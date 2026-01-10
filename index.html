@@ -414,6 +414,7 @@ function exportRosterTxt(){
   a.download = "roster.txt";
   a.click();
   URL.revokeObjectURL(url);
+}
 
 // GitHub loot_items.txt load (전리품 목록 가져오기)
 function parseLootItemsText(text){
@@ -450,7 +451,6 @@ async function fetchLootItemsFromUrl(url){
     alert("불러오기 실패: " + (e.message || e));
   }
 }
-
 
 
 // Loot catalog
