@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>전리품 분배 매니저 v6.1 (UI 개선판)</title>
+  <title>전리품 분배 매니저 v6 (UI 개선판)</title>
   <style>
     :root {
       --primary: #4f46e5;
@@ -30,12 +30,14 @@
       line-height: 1.5;
     }
 
+    /* Layout */
     .container {
       max-width: 1000px;
       margin: 0 auto;
       padding: 16px;
     }
 
+    /* Navigation / Tabs */
     .nav-tabs {
       display: flex;
       gap: 8px;
@@ -66,6 +68,7 @@
       box-shadow: 0 2px 4px rgba(79, 70, 229, 0.3);
     }
 
+    /* Cards */
     .card {
       background: var(--card-bg);
       border-radius: var(--radius);
@@ -77,9 +80,10 @@
     .card h3 { margin-top: 0; margin-bottom: 16px; font-size: 1.25rem; color: var(--text-main); border-bottom: 1px solid var(--border); padding-bottom: 10px; }
     .card h4 { margin: 16px 0 8px 0; font-size: 1rem; }
 
+    /* Forms & Inputs */
     .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
     .col { display: flex; flex-direction: column; gap: 8px; }
-
+    
     input, select, textarea {
       padding: 10px 12px;
       border: 1px solid var(--border);
@@ -94,6 +98,7 @@
       box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
     }
 
+    /* Buttons */
     button {
       display: inline-flex;
       align-items: center;
@@ -124,7 +129,7 @@
       border-color: var(--danger);
     }
     button.danger:hover { background: #fef2f2; }
-
+    
     button.success {
       background: var(--success);
       border-color: var(--success);
@@ -133,6 +138,7 @@
 
     button.sm { padding: 4px 8px; font-size: 0.8rem; }
 
+    /* Tables */
     .table-responsive { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
     th {
@@ -151,11 +157,14 @@
     }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: #f9fafb; }
-
+    
+    /* Drag & Drop */
     .drag-handle { cursor: grab; color: var(--text-muted); font-size: 1.2rem; padding-right: 8px; }
     tr.drag-over td { background: #eef2ff; border-top: 2px dashed var(--primary); }
 
+    /* Utilities */
     .muted { color: var(--text-muted); font-size: 0.85rem; }
+    .warn { color: #d97706; font-weight: 600; }
     .text-danger { color: var(--danger); }
     .pill {
       display: inline-flex;
@@ -181,7 +190,8 @@
 
     .hr { height: 1px; background: var(--border); margin: 16px 0; }
     .flex-center { display: flex; align-items: center; justify-content: center; }
-
+    
+    /* Current Player Highlight */
     .current-player-box {
       background: #e0e7ff;
       border: 1px solid #c7d2fe;
@@ -205,7 +215,7 @@
 
 <div class="container">
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-    <h2 style="margin:0;">⚔️ 전리품 매니저 v6.1</h2>
+    <h2 style="margin:0;">⚔️ 전리품 매니저 v6</h2>
     <span class="muted">UI Improved</span>
   </div>
 
@@ -221,12 +231,11 @@
 
 <script>
 /**
- * v6.1 수정사항
- * 1) STORAGE_KEY v6로 분리
- * 2) 우선권 select 선택 로직을 id 기반으로 고정 (loot 탭의 취약한 index 접근 제거)
+ * 기능 로직은 v5와 동일하게 유지
+ * UI 렌더링 부분만 개선된 CSS 클래스와 구조로 변경
  */
 
-const STORAGE_KEY = "loot_manager_v6"; // ✅ v5 → v6
+const STORAGE_KEY = "loot_manager_v5";
 
 // --- Reorder helpers (명단 순서 변경) ---
 let _dragPlayerId = null;
@@ -288,6 +297,7 @@ function stripBom(s){
   if(!s) return s;
   return s.charCodeAt(0) === 0xFEFF ? s.slice(1) : s;
 }
+
 
 // State
 function defaultState(){
@@ -617,6 +627,7 @@ async function fetchLootItemsFromUrl(url){
   }
 }
 
+
 // Loot catalog
 function setLootCatalogFromText(text){
   const names = (text || "")
@@ -647,10 +658,8 @@ function exportLootCatalogTxt(){
 }
 
 // Priority
-function prioritySelector(which, currentId, selId){
+function prioritySelector(which, currentId){
   const sel = document.createElement("select");
-  if(selId) sel.id = selId;
-
   const key = laneKey(which);
   const candidates = state.players
     .filter(p => !!p[key] && p.tokens >= 1 && p.id !== currentId && canReceive(which, p.id))
@@ -676,6 +685,7 @@ function priorityGive(which, itemName, claimantId){
 
   const finalItemName = safeText(itemName);
 
+  // Token 이동
   claimant.tokens -= 1;
   cur.tokens += 1;
 
@@ -761,8 +771,8 @@ function viewRoster(){
 
   const rosterUrlInput = el("input", {
     id:"rosterUrl",
-    placeholder:"roster.txt URL (raw 주소 권장)",
-    value:"",
+    placeholder:"roster.txt URL (raw 주소)",
+    value:"roster.txt",
     style:"flex:2;"
   });
 
@@ -774,6 +784,7 @@ function viewRoster(){
     render();
   });
 
+  // Top Stats Card
   wrap.appendChild(el("div", { class:"card" }, [
     el("div", { class:"row" }, [
       el("span", { class:"pill" }, `전체: ${state.players.length}명`),
@@ -785,11 +796,12 @@ function viewRoster(){
     el("div", { class:"hr" }),
     el("div", { class:"row" }, [ nameInput, addBtn ]),
     el("div", { class:"row", style:"margin-top:10px" }, [
-      el("button", { onclick:()=>{ resetPointers(); render(); }}, "🔄 포인터 리셋"),
-      el("button", { class:"primary", onclick:()=>{ startBatch(); render(); }}, "⚔️ 이번 보스 시작(배치 초기화)")
+        el("button", { class:"", onclick:()=>{ resetPointers(); render(); }}, "🔄 포인터 리셋"),
+        el("button", { class:"primary", onclick:()=>{ startBatch(); render(); }}, "⚔️ 이번 보스 시작(배치 초기화)")
     ])
   ]));
 
+  // Bulk & Settings Card
   wrap.appendChild(el("div", { class:"card" }, [
     el("details", {}, [
       el("summary", {}, "📂 대량 추가 및 설정"),
@@ -806,37 +818,25 @@ function viewRoster(){
         ]),
         el("div", { class:"hr" }),
         el("h4", {}, "GitHub 연동"),
-        el("div", { class:"row" }, [
-          rosterUrlInput,
-          el("button", { onclick: async()=>{ await fetchRosterFromUrl(rosterUrlInput.value); render(); }}, "불러오기")
-        ]),
-        el("div", { class:"row", style:"margin-top:8px" }, [
-          el("button", { class:"sm", onclick: exportRosterTxt }, "roster.txt 다운로드")
-        ]),
+        el("div", { class:"row" }, [ rosterUrlInput, el("button", { onclick: async()=>{ await fetchRosterFromUrl(rosterUrlInput.value); render(); }}, "불러오기") ]),
+        el("div", { class:"row", style:"margin-top:8px" }, [ el("button", { class:"sm", onclick: exportRosterTxt }, "roster.txt 다운로드") ]),
         el("div", { class:"hr" }),
         el("h4", {}, "고급 옵션"),
         el("div", { class:"flex-center", style:"justify-content:flex-start" }, [
-          dangerToggle,
-          el("span", { class:"muted" }, "삭제/토큰 수동 조정 버튼 표시(주의)")
+            dangerToggle,
+            el("span", { class:"muted" }, "삭제/토큰 수동 조정 버튼 표시(주의)")
         ])
       ])
     ])
   ]));
 
+  // Table
   const table = el("table");
   table.appendChild(el("thead", {}, el("tr", {}, [
     el("th", {}, "순서"),
     el("th", {}, "이름"),
-    el("th", {}, el("div",{class:"row", style:"gap:4px"},[
-      el("span",{},"고정"),
-      el("button",{class:"sm", onclick:()=>{setAllForLane("fixed",true);render()}},"All ON"),
-      el("button",{class:"sm", onclick:()=>{setAllForLane("fixed",false);render()}},"OFF")
-    ])),
-    el("th", {}, el("div",{class:"row", style:"gap:4px"},[
-      el("span",{},"전리"),
-      el("button",{class:"sm", onclick:()=>{setAllForLane("loot",true);render()}},"All ON"),
-      el("button",{class:"sm", onclick:()=>{setAllForLane("loot",false);render()}},"OFF")
-    ])),
+    el("th", {}, el("div",{class:"row", style:"gap:4px"},[el("span",{},"고정"), el("button",{class:"sm", onclick:()=>{setAllForLane("fixed",true);render()}},"All ON"),el("button",{class:"sm", onclick:()=>{setAllForLane("fixed",false);render()}},"OFF")])),
+    el("th", {}, el("div",{class:"row", style:"gap:4px"},[el("span",{},"전리"), el("button",{class:"sm", onclick:()=>{setAllForLane("loot",true);render()}},"All ON"),el("button",{class:"sm", onclick:()=>{setAllForLane("loot",false);render()}},"OFF")])),
     el("th", {}, "누적수령"),
     el("th", {}, "토큰"),
     el("th", {}, "상태(고정)"),
@@ -885,6 +885,7 @@ function viewRoster(){
       el("td", {}, el("div", { class:"row", style:"gap:4px;" }, manage)),
     ]);
 
+    // Drag & Drop
     tr.draggable = true;
     tr.addEventListener("dragstart", ()=>{ _dragPlayerId = p.id; });
     tr.addEventListener("dragend", ()=>{ _dragPlayerId = null; });
@@ -900,28 +901,29 @@ function viewRoster(){
     el("div", {class:"table-responsive"}, table)
   ]));
 
+  // Catalog Mngt
   const catalogText = el("textarea", { rows:"4", placeholder:"도감\n희귀 장비\n강화석" });
   catalogText.value = (state.lootCatalog || []).join("\n");
-
-  const lootUrlInput = el("input", { value:"", placeholder:"loot_items.txt URL (raw 주소 권장)", style:"flex:2" });
+  
+  const lootUrlInput = el("input", { value:"loot_items.txt", style:"flex:2" });
 
   wrap.appendChild(el("div", { class:"card" }, [
     el("details", {}, [
-      el("summary", {}, "📝 전리템 목록 관리"),
-      el("div", {style:"margin-top:16px"}, [
-        el("h4", {}, "직접 편집"),
-        catalogText,
-        el("div", { class:"row", style:"margin-top:8px" }, [
-          el("button", { onclick:()=>{ setLootCatalogFromText(catalogText.value); render(); }}, "목록 저장"),
-          el("button", { onclick: exportLootCatalogTxt }, "다운로드")
-        ]),
-        el("div", { class:"hr" }),
-        el("h4", {}, "GitHub 불러오기"),
-        el("div", { class:"row" }, [
-          lootUrlInput,
-          el("button", { onclick: async()=>{ await fetchLootItemsFromUrl(lootUrlInput.value); render(); }}, "불러오기")
+        el("summary", {}, "📝 전리템 목록 관리"),
+        el("div", {style:"margin-top:16px"}, [
+            el("h4", {}, "직접 편집"),
+            catalogText,
+            el("div", { class:"row", style:"margin-top:8px" }, [
+                el("button", { onclick:()=>{ setLootCatalogFromText(catalogText.value); render(); }}, "목록 저장"),
+                el("button", { onclick: exportLootCatalogTxt }, "다운로드")
+            ]),
+            el("div", { class:"hr" }),
+            el("h4", {}, "GitHub 불러오기"),
+            el("div", { class:"row" }, [
+                lootUrlInput,
+                el("button", { onclick: async()=>{ await fetchLootItemsFromUrl(lootUrlInput.value); render(); }}, "불러오기")
+            ])
         ])
-      ])
     ])
   ]));
 
@@ -945,74 +947,74 @@ function viewFixed(){
   startSel.appendChild(el("option", { value:"" }, "포인터 변경(선택)"));
   lanePlayers("fixed").forEach(p => startSel.appendChild(el("option", { value:p.name }, p.name)));
 
-  const fixedPrioritySel = prioritySelector("fixed", (peek.player && peek.player.id) ? peek.player.id : "", "fixedPrioritySel");
-
   wrap.appendChild(el("div", { class:"card" }, [
     el("div", { style:"display:flex; justify-content:space-between; align-items:center;" }, [
-      el("h3", { style:"margin:0" }, "💎 고정템 레인"),
-      el("button", { class:"primary sm", onclick:()=>{ startBatch(); render(); }}, "⚔️ 새 배치 시작")
+        el("h3", { style:"margin:0" }, "💎 고정템 레인"),
+        el("button", { class:"primary sm", onclick:()=>{ startBatch(); render(); }}, "⚔️ 새 배치 시작")
     ]),
     el("div", { class:"row", style:"margin-top:12px; margin-bottom:12px;" }, [
-      el("span", { class:"pill" }, `참여: ${n}명`),
-      el("span", { class:"pill" }, `포인터: ${n ? (pointerValue("fixed")+1) : 0}`),
-      el("span", { class:"pill" }, `완료: ${batchSummary("fixed")}명`),
+        el("span", { class:"pill" }, `참여: ${n}명`),
+        el("span", { class:"pill" }, `포인터: ${n ? (pointerValue("fixed")+1) : 0}`),
+        el("span", { class:"pill" }, `완료: ${batchSummary("fixed")}명`),
     ]),
-
+    
+    // Main Action Box
     el("div", { class:"current-player-box" }, [
-      el("div", { class:"muted" }, "현재 차례 (Target)"),
-      el("div", { class:"current-player-name" }, curDisplay),
-      peek.offset > 0 ? el("div", { class:"text-danger", style:"margin-bottom:8px; font-weight:600;" }, `※ 앞선 ${peek.offset}명(배치 완료자) 자동 스킵됨`) : null,
+        el("div", { class:"muted" }, "현재 차례 (Target)"),
+        el("div", { class:"current-player-name" }, curDisplay),
+        peek.offset > 0 ? el("div", { class:"text-danger", style:"margin-bottom:8px; font-weight:600;" }, `※ 앞선 ${peek.offset}명(배치 완료자) 자동 스킵됨`) : null,
+        
+        el("div", { class:"row", style:"justify-content:center; margin-top:16px;" }, [
+            el("span", {style:"align-self:center;"}, "아이템명: "),
+            el("div", {style:"width:200px"}, itemNameInput)
+        ]),
 
-      el("div", { class:"row", style:"justify-content:center; margin-top:16px;" }, [
-        el("span", {style:"align-self:center;"}, "아이템명: "),
-        el("div", {style:"width:200px"}, itemNameInput)
-      ]),
-
-      el("div", { class:"row", style:"justify-content:center; margin-top:16px; gap:16px;" }, [
-        el("button", { class:"primary", style:"padding:12px 24px; font-size:1.1rem;", onclick:()=>{
-          if(!normalizePointerToEligible("fixed")) return;
-          const cur = getCurrentEligible("fixed");
-          if(!cur) return;
-          cur.fixedCount += 1;
-          state.fixedItemName = itemNameInput.value.trim() || "고정템";
-          markReceived("fixed", cur.id);
-          logEvent("FIXED_GIVE", state.fixedItemName, cur.id, `${cur.name}에게 고정템 지급`, { which:"fixed", curId:cur.id, batchId: state.batchId });
-          stepPointer("fixed", 1);
-          render();
-        }}, "🎁 지급 (본인 수령)"),
-
-        el("button", { class:"danger", onclick:()=>{
-          if(!normalizePointerToEligible("fixed")) return;
-          const cur = getCurrentEligible("fixed");
-          if(!cur) return;
-          state.fixedItemName = itemNameInput.value.trim() || "고정템";
-          logEvent("FIXED_SKIP", state.fixedItemName, cur.id, `${cur.name} 차례 스킵`, { which:"fixed", curId:cur.id, batchId: state.batchId });
-          stepPointer("fixed", 1);
-          render();
-        }}, "⏭ 스킵")
-      ])
+        el("div", { class:"row", style:"justify-content:center; margin-top:16px; gap:16px;" }, [
+            el("button", { class:"primary", style:"padding:12px 24px; font-size:1.1rem;", onclick:()=>{
+                if(!normalizePointerToEligible("fixed")) return;
+                const cur = getCurrentEligible("fixed");
+                if(!cur) return;
+                cur.fixedCount += 1;
+                state.fixedItemName = itemNameInput.value.trim() || "고정템";
+                markReceived("fixed", cur.id);
+                logEvent("FIXED_GIVE", state.fixedItemName, cur.id, `${cur.name}에게 고정템 지급`, { which:"fixed", curId:cur.id, batchId: state.batchId });
+                stepPointer("fixed", 1);
+                render();
+            }}, "🎁 지급 (본인 수령)"),
+            
+            el("button", { class:"danger", onclick:()=>{
+                if(!normalizePointerToEligible("fixed")) return;
+                const cur = getCurrentEligible("fixed");
+                if(!cur) return;
+                state.fixedItemName = itemNameInput.value.trim() || "고정템";
+                logEvent("FIXED_SKIP", state.fixedItemName, cur.id, `${cur.name} 차례 스킵`, { which:"fixed", curId:cur.id, batchId: state.batchId });
+                stepPointer("fixed", 1);
+                render();
+            }}, "⏭ 스킵")
+        ])
     ]),
 
     el("div", { class:"hr" }),
-
+    
+    // Priority Section
     el("div", { class:"row", style:"background:#fffbeb; padding:12px; border-radius:8px; border:1px solid #fcd34d;" }, [
-      el("div", {style:"font-weight:600; color:#92400e; margin-right:8px;"}, "⚡ 우선권 사용:"),
-      el("div", {style:"flex:1"}, fixedPrioritySel),
-      el("button", { onclick:()=>{
-        const sel = document.getElementById("fixedPrioritySel");
-        if(!sel || !sel.value) return alert("우선권 요청자를 선택하세요.");
-        priorityGive("fixed", itemNameInput.value, sel.value);
-        render();
-      }}, "적용 (토큰 차감)")
+        el("div", {style:"font-weight:600; color:#92400e; margin-right:8px;"}, "⚡ 우선권 사용:"),
+        el("div", {style:"flex:1"}, prioritySelector("fixed", (peek.player && peek.player.id) ? peek.player.id : "")),
+        el("button", { onclick:()=>{
+            const sel = wrap.querySelector("select"); // hacky but works in this scope
+            if(!sel.value) return alert("우선권 요청자를 선택하세요.");
+            priorityGive("fixed", itemNameInput.value, sel.value);
+            render();
+        }}, "적용 (토큰 차감)")
     ]),
 
     el("div", { class:"row", style:"margin-top:16px; justify-content:flex-end;" }, [
-      startSel,
-      el("button", { class:"sm", onclick:()=>{
-        if(!startSel.value) return alert("선택하세요");
-        setPointerToName("fixed", startSel.value);
-        render();
-      }}, "강제 이동")
+        startSel,
+        el("button", { class:"sm", onclick:()=>{
+            if(!startSel.value) return alert("선택하세요");
+            setPointerToName("fixed", startSel.value);
+            render();
+        }}, "강제 이동")
     ])
   ]));
 
@@ -1027,7 +1029,7 @@ function viewLoot(){
   const n = laneCount("loot");
 
   const itemInput = el("input", { placeholder:"드랍된 아이템 입력...", style:"font-weight:bold;" });
-
+  
   const catSel = el("select", { style:"margin-bottom:8px;" });
   catSel.appendChild(el("option", { value:"" }, "📋 목록에서 아이템 선택..."));
   (state.lootCatalog || []).forEach(x => catSel.appendChild(el("option", { value:x }, x)));
@@ -1037,86 +1039,86 @@ function viewLoot(){
   startSel.appendChild(el("option", { value:"" }, "포인터 변경(선택)"));
   lanePlayers("loot").forEach(p => startSel.appendChild(el("option", { value:p.name }, p.name)));
 
-  const lootPrioritySel = prioritySelector("loot", (peek.player && peek.player.id) ? peek.player.id : "", "lootPrioritySel");
-
   wrap.appendChild(el("div", { class:"card" }, [
     el("div", { style:"display:flex; justify-content:space-between; align-items:center;" }, [
-      el("h3", { style:"margin:0" }, "🎲 전리템 레인"),
-      el("button", { class:"primary sm", onclick:()=>{ startBatch(); render(); }}, "⚔️ 새 배치 시작")
+        el("h3", { style:"margin:0" }, "🎲 전리템 레인"),
+        el("button", { class:"primary sm", onclick:()=>{ startBatch(); render(); }}, "⚔️ 새 배치 시작")
     ]),
     el("div", { class:"row", style:"margin-top:12px; margin-bottom:12px;" }, [
-      el("span", { class:"pill" }, `참여: ${n}명`),
-      el("span", { class:"pill" }, `포인터: ${n ? (pointerValue("loot")+1) : 0}`),
-      el("span", { class:"pill" }, `완료: ${batchSummary("loot")}명`),
+        el("span", { class:"pill" }, `참여: ${n}명`),
+        el("span", { class:"pill" }, `포인터: ${n ? (pointerValue("loot")+1) : 0}`),
+        el("span", { class:"pill" }, `완료: ${batchSummary("loot")}명`),
     ]),
 
+    // Main Action Box
     el("div", { class:"current-player-box" }, [
-      el("div", { class:"muted" }, "현재 차례 (Target)"),
-      el("div", { class:"current-player-name" }, curDisplay),
-      peek.offset > 0 ? el("div", { class:"text-danger", style:"margin-bottom:8px; font-weight:600;" }, `※ 앞선 ${peek.offset}명(배치 완료자) 자동 스킵됨`) : null,
+        el("div", { class:"muted" }, "현재 차례 (Target)"),
+        el("div", { class:"current-player-name" }, curDisplay),
+        peek.offset > 0 ? el("div", { class:"text-danger", style:"margin-bottom:8px; font-weight:600;" }, `※ 앞선 ${peek.offset}명(배치 완료자) 자동 스킵됨`) : null,
 
-      el("div", { class:"col", style:"max-width:400px; margin:16px auto;" }, [
-        catSel,
-        itemInput
-      ]),
+        el("div", { class:"col", style:"max-width:400px; margin:16px auto;" }, [
+            catSel,
+            itemInput
+        ]),
 
-      el("div", { class:"row", style:"justify-content:center; gap:10px; flex-wrap:wrap;" }, [
-        el("button", { class:"primary", style:"padding:12px 20px; font-size:1rem;", onclick:()=>{
-          if(!normalizePointerToEligible("loot")) return;
-          const cur = getCurrentEligible("loot");
-          if(!cur) return;
-          const itemName = safeText(itemInput.value);
-          if(itemName === "(미입력)") return alert("아이템 이름을 입력하세요.");
-          cur.lootCount += 1;
-          markReceived("loot", cur.id);
-          logEvent("LOOT_GIVE", itemName, cur.id, `${cur.name}에게 전리템 지급`, { which:"loot", curId:cur.id, batchId: state.batchId });
-          stepPointer("loot", 1);
-          itemInput.value = ""; catSel.value = ""; render();
-        }}, "🎁 지급"),
+        el("div", { class:"row", style:"justify-content:center; gap:10px; flex-wrap:wrap;" }, [
+            el("button", { class:"primary", style:"padding:12px 20px; font-size:1rem;", onclick:()=>{
+                if(!normalizePointerToEligible("loot")) return;
+                const cur = getCurrentEligible("loot");
+                if(!cur) return;
+                const itemName = safeText(itemInput.value);
+                if(itemName === "(미입력)") return alert("아이템 이름을 입력하세요.");
+                cur.lootCount += 1;
+                markReceived("loot", cur.id);
+                logEvent("LOOT_GIVE", itemName, cur.id, `${cur.name}에게 전리템 지급`, { which:"loot", curId:cur.id, batchId: state.batchId });
+                stepPointer("loot", 1);
+                itemInput.value = ""; catSel.value = ""; render();
+            }}, "🎁 지급"),
 
-        el("button", { class:"success", style:"padding:12px 20px; font-size:1rem;", onclick:()=>{
-          if(!normalizePointerToEligible("loot")) return;
-          const cur = getCurrentEligible("loot");
-          if(!cur) return;
-          const itemName = safeText(itemInput.value);
-          cur.tokens += 1;
-          logEvent("LOOT_PASS_TOKEN", itemName, cur.id, `${cur.name} 패스 (토큰+1)`, { which:"loot", curId:cur.id, minted:1, batchId: state.batchId });
-          stepPointer("loot", 1);
-          itemInput.value = ""; catSel.value = ""; render();
-        }}, "🪙 패스 (토큰+1)"),
+            el("button", { class:"success", style:"padding:12px 20px; font-size:1rem;", onclick:()=>{
+                if(!normalizePointerToEligible("loot")) return;
+                const cur = getCurrentEligible("loot");
+                if(!cur) return;
+                const itemName = safeText(itemInput.value);
+                cur.tokens += 1;
+                logEvent("LOOT_PASS_TOKEN", itemName, cur.id, `${cur.name} 패스 (토큰+1)`, { which:"loot", curId:cur.id, minted:1, batchId: state.batchId });
+                stepPointer("loot", 1);
+                itemInput.value = ""; catSel.value = ""; render();
+            }}, "🪙 패스 (토큰+1)"),
 
-        el("button", { class:"danger", style:"padding:12px 20px; font-size:1rem;", onclick:()=>{
-          if(!normalizePointerToEligible("loot")) return;
-          const cur = getCurrentEligible("loot");
-          if(!cur) return;
-          const itemName = safeText(itemInput.value);
-          logEvent("LOOT_SKIP", itemName, cur.id, `${cur.name} 스킵 (보상X)`, { which:"loot", curId:cur.id, batchId: state.batchId });
-          stepPointer("loot", 1);
-          itemInput.value = ""; catSel.value = ""; render();
-        }}, "⏭ 스킵")
-      ])
+            el("button", { class:"danger", style:"padding:12px 20px; font-size:1rem;", onclick:()=>{
+                if(!normalizePointerToEligible("loot")) return;
+                const cur = getCurrentEligible("loot");
+                if(!cur) return;
+                const itemName = safeText(itemInput.value);
+                logEvent("LOOT_SKIP", itemName, cur.id, `${cur.name} 스킵 (보상X)`, { which:"loot", curId:cur.id, batchId: state.batchId });
+                stepPointer("loot", 1);
+                itemInput.value = ""; catSel.value = ""; render();
+            }}, "⏭ 스킵")
+        ])
     ]),
 
     el("div", { class:"hr" }),
 
+    // Priority
     el("div", { class:"row", style:"background:#fffbeb; padding:12px; border-radius:8px; border:1px solid #fcd34d;" }, [
-      el("div", {style:"font-weight:600; color:#92400e; margin-right:8px;"}, "⚡ 우선권 사용:"),
-      el("div", {style:"flex:1"}, lootPrioritySel),
-      el("button", { onclick:()=>{
-        const sel = document.getElementById("lootPrioritySel");
-        if(!sel || !sel.value) return alert("우선권 요청자를 선택하세요.");
-        priorityGive("loot", itemInput.value, sel.value);
-        itemInput.value = ""; catSel.value = ""; render();
-      }}, "적용")
+        el("div", {style:"font-weight:600; color:#92400e; margin-right:8px;"}, "⚡ 우선권 사용:"),
+        el("div", {style:"flex:1"}, prioritySelector("loot", (peek.player && peek.player.id) ? peek.player.id : "")),
+        el("button", { onclick:()=>{
+            const sel = wrap.querySelectorAll("select")[2]; // hacky selector
+            if(!sel || !sel.value) return alert("우선권 요청자를 선택하세요.");
+            priorityGive("loot", itemInput.value, sel.value);
+            itemInput.value = ""; catSel.value = ""; render();
+        }}, "적용")
     ]),
 
     el("div", { class:"row", style:"margin-top:16px; justify-content:flex-end;" }, [
-      startSel,
-      el("button", { class:"sm", onclick:()=>{
-        if(!startSel.value) return alert("선택하세요");
-        setPointerToName("loot", startSel.value);
-        render();
-      }}, "강제 이동")
+        startSel,
+        el("button", { class:"sm", onclick:()=>{
+            if(!startSel.value) return alert("선택하세요");
+            setPointerToName("loot", startSel.value);
+            render();
+        }}, "강제 이동")
     ])
   ]));
 
@@ -1149,7 +1151,7 @@ function viewLogs(){
   state.logs.slice(0, 500).forEach(l=>{
     const receiver = l.receiverId ? (state.players.find(p=>p.id===l.receiverId) || null) : null;
     tbody.appendChild(el("tr", {}, [
-      el("td", { class:"muted" }, fmt(l.ts).split(" ")[1]),
+      el("td", { class:"muted" }, fmt(l.ts).split(" ")[1]), // 시간만 표시
       el("td", {}, l.type),
       el("td", {}, l.itemName || "-"),
       el("td", { style:"font-weight:600" }, receiver ? receiver.name : "-"),
