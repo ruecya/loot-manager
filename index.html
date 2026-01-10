@@ -192,6 +192,71 @@ function setTodayParticipantsByPaste(text){
   saveState();
 }
 
+
+// roster.txt 파서: 줄바꿈 기준, 빈줄/주석(#) 무시
+function parseRosterText(text){
+  return (text || "")
+    .split(/\r?\n/g)
+    .map(s => s.trim())
+    .filter(s => s && !s.startsWith("#"));
+}
+
+// GitHub(또는 같은 폴더) roster.txt 불러오기
+async function fetchRosterFromUrl(url){
+  const u = (url || "").trim();
+  if(!u) return alert("roster.txt URL을 입력하세요.");
+  try{
+    const res = await fetch(u, { cache: "no-store" });
+    if(!res.ok) throw new Error("HTTP " + res.status);
+    const txt = await res.text();
+    const names = parseRosterText(txt);
+
+    if(names.length === 0) return alert("roster.txt에서 이름을 찾지 못했습니다.");
+
+    // 최대 50명 제한 적용
+    const unique = [];
+    const seen = new Set();
+    for(const n of names){
+      if(seen.has(n)) continue;
+      unique.push(n);
+      seen.add(n);
+    }
+    const finalNames = unique.slice(0, 50);
+
+    if(!confirm(`roster.txt에서 ${finalNames.length}명을 불러옵니다.\n현재 명단을 덮어쓸까요?`)) return;
+
+    // 덮어쓰기(명단 고정 운영에 최적)
+    state.players = [];
+    state.fixedPointer = 0;
+    state.lootPointer = 0;
+
+    for(const name of finalNames) addPlayer(name);
+
+    // 기본은 전체 ON 상태로 시작
+    state.players.forEach(p => p.active = true);
+    clampPointers();
+    logEvent("ROSTER_FROM_TXT", "(명단)", null, `roster.txt 불러오기(덮어쓰기): ${finalNames.length}명`, { url: u, names: finalNames });
+    saveState();
+    alert("명단을 불러왔습니다.");
+  }catch(e){
+    alert("불러오기 실패: " + (e.message || e));
+  }
+}
+
+// 현재 명단을 roster.txt로 다운로드
+function exportRosterTxt(){
+  const lines = state.players.map(p => p.name);
+  const content = lines.join("\n") + "\n";
+  const blob = new Blob([content], { type:"text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "roster.txt";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+
 /** -------------------------
  *  Pointer helpers
  *  ------------------------- */
@@ -368,6 +433,24 @@ function viewRoster(){
     ]),
     el("div", { class:"row", style:"margin-top:10px" }, [nameInput, addBtn, resetPtrBtn]),
     el("div", { class:"hr" }),
+    el("div", { class:"muted small" }, "GitHub에 roster.txt를 올려두면, 여기서 바로 불러올 수 있습니다."),
+    el("div", { class:"row", style:"margin-top:10px" }, [
+      (()=>{ 
+        const i = el("input", { id:"rosterUrl", style:"width:min(720px,100%);", placeholder:"roster.txt URL (예: https://raw.githubusercontent.com/<id>/<repo>/main/roster.txt)", value:"roster.txt" });
+        return i;
+      })()
+    ]),
+    el("div", { class:"row", style:"margin-top:10px" }, [
+      el("button", { class:"primary", onclick: async()=>{
+        const url = document.getElementById("rosterUrl").value;
+        await fetchRosterFromUrl(url);
+        saveState();
+        render();
+      }}, "roster.txt 불러와서 덮어쓰기"),
+      el("button", { onclick: exportRosterTxt }, "현재 명단 roster.txt로 다운로드")
+    ]),
+
+    el("div", { class:"hr" }),
     el("div", { class:"row" }, [bulkInput]),
     el("div", { class:"row", style:"margin-top:10px" }, [
       bulkAddBtn, todayOnlyBtn, allOnBtn, allOffBtn,
@@ -478,7 +561,12 @@ function viewFixed(){
   const a = activePlayers();
   const cur = getActiveByPointer(state.fixedPointer);
 
-  const itemNameInput = el("input", { value: state.fixedItemName });
+  const itemNameInput = el("input", { value: state.fixedItemName, placeholder:"예: 찬란한 검 조각" });
+  // ✅ 자동 저장: 입력하는 즉시 고정템 이름을 상태에 반영(저장 버튼을 누르지 않아도 유지)
+  itemNameInput.addEventListener("input", ()=>{
+    state.fixedItemName = itemNameInput.value.trim() || "고정템";
+    saveState();
+  });
   const saveItemBtn = el("button", { onclick:()=>{
     state.fixedItemName = itemNameInput.value.trim() || "고정템";
     logEvent("FIXED_NAME_SET", "(설정)", null, `고정템 이름 변경: ${state.fixedItemName}`);
@@ -516,6 +604,8 @@ function viewFixed(){
 
   const giveBtn = el("button", { class:"primary", onclick:()=>{
     if(!cur) return alert("참여자가 없습니다.");
+    state.fixedItemName = itemNameInput.value.trim() || "고정템";
+    saveState();
     cur.fixedCount += 1;
     logEvent("FIXED_GIVE", state.fixedItemName, cur.id, `${cur.name}에게 고정템 지급`, { which:"fixed", curId:cur.id });
     stepPointer("fixed", 1);
@@ -524,6 +614,8 @@ function viewFixed(){
 
   const skipBtn = el("button", { onclick:()=>{
     if(!cur) return alert("참여자가 없습니다.");
+    state.fixedItemName = itemNameInput.value.trim() || "고정템";
+    saveState();
     logEvent("FIXED_SKIP", state.fixedItemName, cur.id, `${cur.name} 차례 스킵`, { which:"fixed", curId:cur.id });
     stepPointer("fixed", 1);
     render();
@@ -534,7 +626,7 @@ function viewFixed(){
   const sel = prioritySelector(cur ? cur.id : "");
   const priorityBtn = el("button", { onclick:()=>{
     if(!sel.value) return alert("우선권 요청자를 선택하세요.");
-    priorityGive("fixed", state.fixedItemName, sel.value);
+    priorityGive("fixed", itemNameInput.value, sel.value);
     render();
   }}, "우선권 적용(토큰1 이동)");
 
