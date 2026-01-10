@@ -1,13 +1,321 @@
 {
-  "players": [],
+  "players": [
+    {
+      "id": "184c5a01-8198-48b9-8987-27bc5a9bb89b",
+      "name": "순심이",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "c5756ec0-774f-44c6-baee-15ffddb7248b",
+      "name": "구따",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "c24af4f5-b229-4ea4-b934-e243874d6c84",
+      "name": "목성",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "d98d5b6d-3f4f-4b54-9a34-7ad55cd6e087",
+      "name": "우기",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "959a6023-17ab-4964-ac1a-f93da90f9fcf",
+      "name": "식빵",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "39d32289-8d9b-40d7-aa30-fb3a904bc1e4",
+      "name": "아이유",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "3e82b854-f992-4c98-946c-7c8768562651",
+      "name": "청랑",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "2ffa471f-cdcb-4ac7-bdd2-175dbdb81b47",
+      "name": "두부콩",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "f1124649-f1e6-42b9-bdec-3374632dc3c4",
+      "name": "할맘",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "ba9c03b7-c28a-4608-b01c-f9158ca42ea2",
+      "name": "사악",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "57a65f2b-1dfc-4b80-ae02-f084806462f7",
+      "name": "휘프리온",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "7994f8c7-11a2-4659-a283-b01f64a05593",
+      "name": "섬서잔룡",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "262f1e3a-e5e0-4df8-9a79-44be773be1cc",
+      "name": "코털",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "18e70a59-fdf9-4b30-841a-635bfe0faf14",
+      "name": "연어",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "75327b89-a84d-4c22-9c95-d28d336344e3",
+      "name": "만해",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "38547e4b-5e1f-4046-bc67-5cfdea5aef7f",
+      "name": "무짱",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "b8f01b25-07f3-4a0e-828b-1257a14fe7db",
+      "name": "벤야",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "dbcb421a-9d52-431d-8640-1d0f12cbd26e",
+      "name": "단군",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "d9818b5c-105d-4dc5-b2fa-699afdbcba62",
+      "name": "귀환",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "216d1fe9-f578-4800-9979-744fe84ae0e8",
+      "name": "진춘목",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "f2b8f828-1d7d-4e03-83ac-de560eb075c8",
+      "name": "쿠르",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "559b3235-0f9c-4ffe-ae24-5d13cbf8afa0",
+      "name": "사쿠라기",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "d5cce0a3-3ddc-4206-9654-7daf5a126171",
+      "name": "한방",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "3b930a26-0746-40c9-a201-2eaf310ec66a",
+      "name": "10더",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "1c3f8dba-b1a2-4c13-945d-f50170b8cc89",
+      "name": "혜붕",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    }
+  ],
   "fixedPointer": 0,
   "lootPointer": 0,
   "fixedItemName": "고정템",
-  "lootCatalog": [],
+  "lootCatalog": [
+    "마귀의 가면",
+    "고대 견장",
+    "하급 연꽃 호리병",
+    "하급 무신의 돌",
+    "만년 독니",
+    "불타는 도끼",
+    "하급 무신의 혼",
+    "하급 작약 호리병"
+  ],
   "batchId": 1768074181915,
   "batchReceivedFixed": {},
   "batchReceivedLoot": {},
   "logs": [
+    {
+      "ts": 1768074548897,
+      "type": "LOOT_CATALOG_FROM_TXT",
+      "itemName": "(전리목록)",
+      "receiverId": null,
+      "detail": "loot_items.txt 불러오기(덮어쓰기): 8개",
+      "meta": {
+        "url": "loot_items.txt",
+        "items": [
+          "마귀의 가면",
+          "고대 견장",
+          "하급 연꽃 호리병",
+          "하급 무신의 돌",
+          "만년 독니",
+          "불타는 도끼",
+          "하급 무신의 혼",
+          "하급 작약 호리병"
+        ]
+      }
+    },
+    {
+      "ts": 1768074542102,
+      "type": "ROSTER_FROM_TXT",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "roster.txt 불러오기(덮어쓰기): 25명",
+      "meta": {
+        "url": "roster.txt",
+        "names": [
+          "순심이",
+          "구따",
+          "목성",
+          "우기",
+          "식빵",
+          "아이유",
+          "청랑",
+          "두부콩",
+          "할맘",
+          "사악",
+          "휘프리온",
+          "섬서잔룡",
+          "코털",
+          "연어",
+          "만해",
+          "무짱",
+          "벤야",
+          "단군",
+          "귀환",
+          "진춘목",
+          "쿠르",
+          "사쿠라기",
+          "한방",
+          "10더",
+          "혜붕"
+        ]
+      }
+    },
+    {
+      "ts": 1768074542102,
+      "type": "POINTER_RESET",
+      "itemName": "(포인터)",
+      "receiverId": null,
+      "detail": "고정/전리 포인터를 1번으로 리셋",
+      "meta": {}
+    },
+    {
+      "ts": 1768074532171,
+      "type": "RESTORE_GITHUB",
+      "itemName": "(복구)",
+      "receiverId": null,
+      "detail": "GitHub state.json 복구 완료",
+      "meta": {}
+    },
     {
       "ts": 1768074181915,
       "type": "BATCH_START",
