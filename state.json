@@ -1,16 +1,16 @@
 {
   "players": [
     {
-      "id": "184c5a01-8198-48b9-8987-27bc5a9bb89b",
+      "id": "329e0875-bba4-4e78-a7fc-6dbfedff22f7",
       "name": "순심이",
       "activeFixed": true,
       "activeLoot": true,
-      "fixedCount": 1,
+      "fixedCount": 0,
       "lootCount": 0,
-      "tokens": 1
+      "tokens": 0
     },
     {
-      "id": "c5756ec0-774f-44c6-baee-15ffddb7248b",
+      "id": "070a1da3-4b55-4d13-861b-50e9b900f638",
       "name": "구따",
       "activeFixed": true,
       "activeLoot": true,
@@ -19,7 +19,7 @@
       "tokens": 0
     },
     {
-      "id": "c24af4f5-b229-4ea4-b934-e243874d6c84",
+      "id": "dd15c8fd-417a-4134-b715-f3590312aeda",
       "name": "목성",
       "activeFixed": true,
       "activeLoot": true,
@@ -28,7 +28,7 @@
       "tokens": 0
     },
     {
-      "id": "d98d5b6d-3f4f-4b54-9a34-7ad55cd6e087",
+      "id": "abe18ee8-f1b2-48f3-af4b-6b3213158cc8",
       "name": "우기",
       "activeFixed": true,
       "activeLoot": true,
@@ -37,7 +37,7 @@
       "tokens": 0
     },
     {
-      "id": "959a6023-17ab-4964-ac1a-f93da90f9fcf",
+      "id": "cbd58c56-3cda-48b1-a6b2-067be66a4bd4",
       "name": "식빵",
       "activeFixed": true,
       "activeLoot": true,
@@ -46,7 +46,7 @@
       "tokens": 0
     },
     {
-      "id": "39d32289-8d9b-40d7-aa30-fb3a904bc1e4",
+      "id": "72ca58ef-450d-44cd-a060-d528698d3dcc",
       "name": "아이유",
       "activeFixed": true,
       "activeLoot": true,
@@ -55,16 +55,16 @@
       "tokens": 0
     },
     {
-      "id": "3e82b854-f992-4c98-946c-7c8768562651",
+      "id": "964bfca1-19a1-4ed9-83db-dee6ea4c5b64",
       "name": "청랑",
       "activeFixed": true,
-      "activeLoot": false,
+      "activeLoot": true,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
     },
     {
-      "id": "2ffa471f-cdcb-4ac7-bdd2-175dbdb81b47",
+      "id": "4ec5f3f4-554f-40db-b977-c7276ea65af3",
       "name": "두부콩",
       "activeFixed": true,
       "activeLoot": true,
@@ -73,7 +73,7 @@
       "tokens": 0
     },
     {
-      "id": "f1124649-f1e6-42b9-bdec-3374632dc3c4",
+      "id": "ae5f0095-4121-4c53-bb04-be527f693f81",
       "name": "할맘",
       "activeFixed": true,
       "activeLoot": true,
@@ -82,25 +82,25 @@
       "tokens": 0
     },
     {
-      "id": "ba9c03b7-c28a-4608-b01c-f9158ca42ea2",
+      "id": "a85eeac1-9d30-4185-affd-06fd1fc5858a",
       "name": "사악",
       "activeFixed": true,
-      "activeLoot": false,
+      "activeLoot": true,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
     },
     {
-      "id": "57a65f2b-1dfc-4b80-ae02-f084806462f7",
+      "id": "45285a64-7703-4015-a9c5-d6f1575617e2",
       "name": "휘프리온",
       "activeFixed": true,
-      "activeLoot": false,
+      "activeLoot": true,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
     },
     {
-      "id": "7994f8c7-11a2-4659-a283-b01f64a05593",
+      "id": "c75ef3e9-7688-45b5-a306-984c45fabf8b",
       "name": "섬서잔룡",
       "activeFixed": true,
       "activeLoot": true,
@@ -109,7 +109,7 @@
       "tokens": 0
     },
     {
-      "id": "262f1e3a-e5e0-4df8-9a79-44be773be1cc",
+      "id": "1f347ac4-5c25-4c7f-af47-06c5f97442d2",
       "name": "코털",
       "activeFixed": true,
       "activeLoot": true,
@@ -118,106 +118,106 @@
       "tokens": 0
     },
     {
-      "id": "18e70a59-fdf9-4b30-841a-635bfe0faf14",
+      "id": "9ce37df3-5c8c-47b5-bb60-95575c3a70b9",
       "name": "연어",
       "activeFixed": true,
-      "activeLoot": false,
+      "activeLoot": true,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
     },
     {
-      "id": "75327b89-a84d-4c22-9c95-d28d336344e3",
+      "id": "1c47ea5d-6e5a-4e75-ba10-b44dc98c48e0",
       "name": "만해",
       "activeFixed": true,
-      "activeLoot": false,
+      "activeLoot": true,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
     },
     {
-      "id": "38547e4b-5e1f-4046-bc67-5cfdea5aef7f",
+      "id": "7f38e816-b693-4914-8aa3-4c000b3d5a14",
       "name": "무짱",
       "activeFixed": true,
-      "activeLoot": false,
+      "activeLoot": true,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
     },
     {
-      "id": "b8f01b25-07f3-4a0e-828b-1257a14fe7db",
+      "id": "e8eecfe5-f9e8-4b87-903e-f136a359d564",
       "name": "벤야",
       "activeFixed": true,
-      "activeLoot": false,
+      "activeLoot": true,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
     },
     {
-      "id": "dbcb421a-9d52-431d-8640-1d0f12cbd26e",
+      "id": "debbe2cf-f002-4900-b55a-cda3c82bd92d",
       "name": "단군",
       "activeFixed": true,
-      "activeLoot": false,
+      "activeLoot": true,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
     },
     {
-      "id": "d9818b5c-105d-4dc5-b2fa-699afdbcba62",
+      "id": "fd7166c6-3179-40ff-83d0-933ae57b0a31",
       "name": "귀환",
       "activeFixed": true,
-      "activeLoot": false,
+      "activeLoot": true,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
     },
     {
-      "id": "216d1fe9-f578-4800-9979-744fe84ae0e8",
+      "id": "be3c2c24-c398-44f9-8632-2a2640f16b8d",
       "name": "진춘목",
       "activeFixed": true,
-      "activeLoot": false,
+      "activeLoot": true,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
     },
     {
-      "id": "f2b8f828-1d7d-4e03-83ac-de560eb075c8",
+      "id": "e0d0f3bd-0e19-4fd4-a9f7-f4c65cd344a5",
       "name": "쿠르",
       "activeFixed": true,
-      "activeLoot": false,
+      "activeLoot": true,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
     },
     {
-      "id": "559b3235-0f9c-4ffe-ae24-5d13cbf8afa0",
+      "id": "29d6f9d8-5373-4405-a7d6-7c7192a86b1a",
       "name": "사쿠라기",
       "activeFixed": true,
-      "activeLoot": false,
+      "activeLoot": true,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
     },
     {
-      "id": "d5cce0a3-3ddc-4206-9654-7daf5a126171",
+      "id": "7012a20b-5198-4024-a9fb-badf1250c876",
       "name": "한방",
       "activeFixed": true,
-      "activeLoot": false,
+      "activeLoot": true,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
     },
     {
-      "id": "3b930a26-0746-40c9-a201-2eaf310ec66a",
+      "id": "857bfa99-6bd1-4014-8c27-10ae9204de47",
       "name": "10더",
       "activeFixed": true,
-      "activeLoot": false,
+      "activeLoot": true,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
     },
     {
-      "id": "1c3f8dba-b1a2-4c13-945d-f50170b8cc89",
+      "id": "837714c2-0ff1-442a-ad89-f4f416a7a97e",
       "name": "혜붕",
       "activeFixed": true,
       "activeLoot": true,
@@ -226,9 +226,9 @@
       "tokens": 0
     }
   ],
-  "fixedPointer": 1,
-  "lootPointer": 1,
-  "fixedItemName": "비닐신발",
+  "fixedPointer": 0,
+  "lootPointer": 0,
+  "fixedItemName": "고정템",
   "lootCatalog": [
     "마귀의 가면",
     "고대 견장",
@@ -239,85 +239,12 @@
     "하급 무신의 혼",
     "하급 작약 호리병"
   ],
-  "batchId": 1768074181915,
-  "batchReceivedFixed": {
-    "184c5a01-8198-48b9-8987-27bc5a9bb89b": true
-  },
+  "batchId": null,
+  "batchReceivedFixed": {},
   "batchReceivedLoot": {},
   "logs": [
     {
-      "ts": 1768074944012,
-      "type": "IMPORT",
-      "itemName": "(백업)",
-      "receiverId": null,
-      "detail": "JSON 가져오기 완료",
-      "meta": {}
-    },
-    {
-      "ts": 1768074930080,
-      "type": "LOOT_PASS_TOKEN",
-      "itemName": "마귀의 가면",
-      "receiverId": "184c5a01-8198-48b9-8987-27bc5a9bb89b",
-      "detail": "순심이 패스 (토큰+1)",
-      "meta": {
-        "which": "loot",
-        "curId": "184c5a01-8198-48b9-8987-27bc5a9bb89b",
-        "minted": 1,
-        "batchId": 1768074181915
-      }
-    },
-    {
-      "ts": 1768074926476,
-      "type": "FIXED_GIVE",
-      "itemName": "비닐신발",
-      "receiverId": "184c5a01-8198-48b9-8987-27bc5a9bb89b",
-      "detail": "순심이에게 고정템 지급",
-      "meta": {
-        "which": "fixed",
-        "curId": "184c5a01-8198-48b9-8987-27bc5a9bb89b",
-        "batchId": 1768074181915
-      }
-    },
-    {
-      "ts": 1768074891805,
-      "type": "RESTORE_GITHUB",
-      "itemName": "(복구)",
-      "receiverId": null,
-      "detail": "GitHub state.json 복구 완료",
-      "meta": {}
-    },
-    {
-      "ts": 1768074579237,
-      "type": "ROSTER_ALL_OFF",
-      "itemName": "(명단)",
-      "receiverId": null,
-      "detail": "loot 전체 OFF",
-      "meta": {
-        "which": "loot"
-      }
-    },
-    {
-      "ts": 1768074548897,
-      "type": "LOOT_CATALOG_FROM_TXT",
-      "itemName": "(전리목록)",
-      "receiverId": null,
-      "detail": "loot_items.txt 불러오기(덮어쓰기): 8개",
-      "meta": {
-        "url": "loot_items.txt",
-        "items": [
-          "마귀의 가면",
-          "고대 견장",
-          "하급 연꽃 호리병",
-          "하급 무신의 돌",
-          "만년 독니",
-          "불타는 도끼",
-          "하급 무신의 혼",
-          "하급 작약 호리병"
-        ]
-      }
-    },
-    {
-      "ts": 1768074542102,
+      "ts": 1768075244644,
       "type": "ROSTER_FROM_TXT",
       "itemName": "(명단)",
       "receiverId": null,
@@ -354,7 +281,7 @@
       }
     },
     {
-      "ts": 1768074542102,
+      "ts": 1768075244644,
       "type": "POINTER_RESET",
       "itemName": "(포인터)",
       "receiverId": null,
@@ -362,21 +289,23 @@
       "meta": {}
     },
     {
-      "ts": 1768074532171,
-      "type": "RESTORE_GITHUB",
-      "itemName": "(복구)",
+      "ts": 1768075229829,
+      "type": "LOOT_CATALOG_FROM_TXT",
+      "itemName": "(전리목록)",
       "receiverId": null,
-      "detail": "GitHub state.json 복구 완료",
-      "meta": {}
-    },
-    {
-      "ts": 1768074181915,
-      "type": "BATCH_START",
-      "itemName": "(배치)",
-      "receiverId": null,
-      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "detail": "loot_items.txt 불러오기(덮어쓰기): 8개",
       "meta": {
-        "batchId": 1768074181915
+        "url": "loot_items.txt",
+        "items": [
+          "마귀의 가면",
+          "고대 견장",
+          "하급 연꽃 호리병",
+          "하급 무신의 돌",
+          "만년 독니",
+          "불타는 도끼",
+          "하급 무신의 혼",
+          "하급 작약 호리병"
+        ]
       }
     }
   ],
