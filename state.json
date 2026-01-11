@@ -244,6 +244,15 @@
       "tokens": 0
     },
     {
+      "id": "33ca8382-ea06-4fd8-9ccf-19eb1eab8935",
+      "name": "멩구",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
       "id": "837714c2-0ff1-442a-ad89-f4f416a7a97e",
       "name": "혜붕",
       "activeFixed": true,
@@ -270,6 +279,53 @@
   "batchReceivedFixed": {},
   "batchReceivedLoot": {},
   "logs": [
+    {
+      "ts": 1768138154148,
+      "type": "ROSTER_REORDER",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "명단 순서 변경: 29 → 28",
+      "meta": {
+        "fromIdx": 28,
+        "toIdx": 27,
+        "dragId": "33ca8382-ea06-4fd8-9ccf-19eb1eab8935",
+        "dropId": "837714c2-0ff1-442a-ad89-f4f416a7a97e"
+      }
+    },
+    {
+      "ts": 1768138152380,
+      "type": "ROSTER_REORDER",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "명단 순서 변경: 27 → 29",
+      "meta": {
+        "fromIdx": 26,
+        "toIdx": 28,
+        "dragId": "33ca8382-ea06-4fd8-9ccf-19eb1eab8935",
+        "dropId": "837714c2-0ff1-442a-ad89-f4f416a7a97e"
+      }
+    },
+    {
+      "ts": 1768138150386,
+      "type": "ROSTER_REORDER",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "명단 순서 변경: 29 → 27",
+      "meta": {
+        "fromIdx": 28,
+        "toIdx": 26,
+        "dragId": "33ca8382-ea06-4fd8-9ccf-19eb1eab8935",
+        "dropId": "39c7370f-814a-40bb-9d91-06f515e808c8"
+      }
+    },
+    {
+      "ts": 1768138144865,
+      "type": "ROSTER_ADD",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "단일 추가: 멩구",
+      "meta": {}
+    },
     {
       "ts": 1768137524324,
       "type": "BATCH_START",
