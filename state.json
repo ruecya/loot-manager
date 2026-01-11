@@ -15,7 +15,7 @@
       "activeFixed": true,
       "activeLoot": true,
       "fixedCount": 0,
-      "lootCount": 0,
+      "lootCount": 1,
       "tokens": 0
     },
     {
@@ -41,7 +41,7 @@
       "name": "할맘",
       "activeFixed": true,
       "activeLoot": false,
-      "fixedCount": 0,
+      "fixedCount": 1,
       "lootCount": 0,
       "tokens": 0
     },
@@ -235,9 +235,9 @@
       "tokens": 0
     }
   ],
-  "fixedPointer": 4,
-  "lootPointer": 1,
-  "fixedItemName": "풍신갑",
+  "fixedPointer": 5,
+  "lootPointer": 2,
+  "fixedItemName": "풍신 장갑",
   "lootCatalog": [
     "마귀의 가면",
     "고대 견장",
@@ -249,9 +249,37 @@
     "하급 작약 호리병"
   ],
   "batchId": 1768128808215,
-  "batchReceivedFixed": {},
-  "batchReceivedLoot": {},
+  "batchReceivedFixed": {
+    "ae5f0095-4121-4c53-bb04-be527f693f81": true
+  },
+  "batchReceivedLoot": {
+    "070a1da3-4b55-4d13-861b-50e9b900f638": true
+  },
   "logs": [
+    {
+      "ts": 1768137103376,
+      "type": "LOOT_GIVE",
+      "itemName": "하급 연꽃 호리병",
+      "receiverId": "070a1da3-4b55-4d13-861b-50e9b900f638",
+      "detail": "구따에게 전리템 지급",
+      "meta": {
+        "which": "loot",
+        "curId": "070a1da3-4b55-4d13-861b-50e9b900f638",
+        "batchId": 1768128808215
+      }
+    },
+    {
+      "ts": 1768137065772,
+      "type": "FIXED_GIVE",
+      "itemName": "풍신 장갑",
+      "receiverId": "ae5f0095-4121-4c53-bb04-be527f693f81",
+      "detail": "할맘에게 고정템 지급",
+      "meta": {
+        "which": "fixed",
+        "curId": "ae5f0095-4121-4c53-bb04-be527f693f81",
+        "batchId": 1768128808215
+      }
+    },
     {
       "ts": 1768128808215,
       "type": "BATCH_START",
