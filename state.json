@@ -208,8 +208,8 @@
       "tokens": 0
     },
     {
-      "id": "0576d8f3-d36f-480f-a7de-ea87aa5a6419",
-      "name": "홍성",
+      "id": "4c76e405-8be5-46ed-80fd-e62673e17ec2",
+      "name": "혹성",
       "activeFixed": true,
       "activeLoot": true,
       "fixedCount": 0,
@@ -244,7 +244,20 @@
   "batchReceivedLoot": {},
   "logs": [
     {
-      "ts": 1768125644862,
+      "ts": 1768125714782,
+      "type": "ROSTER_REORDER",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "명단 순서 변경: 25 → 24",
+      "meta": {
+        "fromIdx": 24,
+        "toIdx": 23,
+        "dragId": "4c76e405-8be5-46ed-80fd-e62673e17ec2",
+        "dropId": "837714c2-0ff1-442a-ad89-f4f416a7a97e"
+      }
+    },
+    {
+      "ts": 1768125712498,
       "type": "ROSTER_DELETE",
       "itemName": "(명단)",
       "receiverId": null,
@@ -252,24 +265,19 @@
       "meta": {}
     },
     {
-      "ts": 1768125590779,
-      "type": "ROSTER_REORDER",
-      "itemName": "(명단)",
-      "receiverId": null,
-      "detail": "명단 순서 변경: 26 → 25",
-      "meta": {
-        "fromIdx": 25,
-        "toIdx": 24,
-        "dragId": "0576d8f3-d36f-480f-a7de-ea87aa5a6419",
-        "dropId": "837714c2-0ff1-442a-ad89-f4f416a7a97e"
-      }
-    },
-    {
-      "ts": 1768125587352,
+      "ts": 1768125700144,
       "type": "ROSTER_ADD",
       "itemName": "(명단)",
       "receiverId": null,
-      "detail": "단일 추가: 홍성",
+      "detail": "단일 추가: 혹성",
+      "meta": {}
+    },
+    {
+      "ts": 1768125672380,
+      "type": "RESTORE_GITHUB",
+      "itemName": "(복구)",
+      "receiverId": null,
+      "detail": "GitHub state.json 복구 완료",
       "meta": {}
     },
     {
