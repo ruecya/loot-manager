@@ -275,10 +275,38 @@
     "하급 무신의 혼",
     "하급 작약 호리병"
   ],
-  "batchId": 1768171693242,
+  "batchId": 1768173955162,
   "batchReceivedFixed": {},
   "batchReceivedLoot": {},
   "logs": [
+    {
+      "ts": 1768173955162,
+      "type": "BATCH_START",
+      "itemName": "(배치)",
+      "receiverId": null,
+      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "meta": {
+        "batchId": 1768173955162
+      }
+    },
+    {
+      "ts": 1768173953254,
+      "type": "BATCH_START",
+      "itemName": "(배치)",
+      "receiverId": null,
+      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "meta": {
+        "batchId": 1768173953254
+      }
+    },
+    {
+      "ts": 1768173922690,
+      "type": "RESTORE_GITHUB",
+      "itemName": "(복구)",
+      "receiverId": null,
+      "detail": "GitHub state.json 복구 완료",
+      "meta": {}
+    },
     {
       "ts": 1768171693242,
       "type": "BATCH_START",
