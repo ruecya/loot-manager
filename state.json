@@ -28,44 +28,8 @@
       "tokens": 0
     },
     {
-      "id": "abe18ee8-f1b2-48f3-af4b-6b3213158cc8",
-      "name": "우기",
-      "activeFixed": true,
-      "activeLoot": true,
-      "fixedCount": 0,
-      "lootCount": 0,
-      "tokens": 0
-    },
-    {
       "id": "cbd58c56-3cda-48b1-a6b2-067be66a4bd4",
       "name": "식빵",
-      "activeFixed": true,
-      "activeLoot": true,
-      "fixedCount": 0,
-      "lootCount": 0,
-      "tokens": 0
-    },
-    {
-      "id": "72ca58ef-450d-44cd-a060-d528698d3dcc",
-      "name": "아이유",
-      "activeFixed": true,
-      "activeLoot": true,
-      "fixedCount": 0,
-      "lootCount": 0,
-      "tokens": 0
-    },
-    {
-      "id": "964bfca1-19a1-4ed9-83db-dee6ea4c5b64",
-      "name": "청랑",
-      "activeFixed": true,
-      "activeLoot": false,
-      "fixedCount": 0,
-      "lootCount": 0,
-      "tokens": 0
-    },
-    {
-      "id": "4ec5f3f4-554f-40db-b977-c7276ea65af3",
-      "name": "두부콩",
       "activeFixed": true,
       "activeLoot": true,
       "fixedCount": 0,
@@ -76,32 +40,32 @@
       "id": "ae5f0095-4121-4c53-bb04-be527f693f81",
       "name": "할맘",
       "activeFixed": true,
+      "activeLoot": false,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "9ce37df3-5c8c-47b5-bb60-95575c3a70b9",
+      "name": "연어",
+      "activeFixed": true,
+      "activeLoot": false,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "abe18ee8-f1b2-48f3-af4b-6b3213158cc8",
+      "name": "우기",
+      "activeFixed": true,
       "activeLoot": true,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
     },
     {
-      "id": "a85eeac1-9d30-4185-affd-06fd1fc5858a",
-      "name": "사악",
-      "activeFixed": true,
-      "activeLoot": false,
-      "fixedCount": 0,
-      "lootCount": 0,
-      "tokens": 0
-    },
-    {
-      "id": "45285a64-7703-4015-a9c5-d6f1575617e2",
-      "name": "휘프리온",
-      "activeFixed": true,
-      "activeLoot": false,
-      "fixedCount": 0,
-      "lootCount": 0,
-      "tokens": 0
-    },
-    {
-      "id": "c75ef3e9-7688-45b5-a306-984c45fabf8b",
-      "name": "섬서잔룡",
+      "id": "0576d8f3-d36f-480f-a7de-ea87aa5a6419",
+      "name": "홍성",
       "activeFixed": true,
       "activeLoot": true,
       "fixedCount": 0,
@@ -118,17 +82,8 @@
       "tokens": 0
     },
     {
-      "id": "9ce37df3-5c8c-47b5-bb60-95575c3a70b9",
-      "name": "연어",
-      "activeFixed": true,
-      "activeLoot": false,
-      "fixedCount": 0,
-      "lootCount": 0,
-      "tokens": 0
-    },
-    {
-      "id": "1c47ea5d-6e5a-4e75-ba10-b44dc98c48e0",
-      "name": "만해",
+      "id": "a85eeac1-9d30-4185-affd-06fd1fc5858a",
+      "name": "사악",
       "activeFixed": true,
       "activeLoot": false,
       "fixedCount": 0,
@@ -145,10 +100,10 @@
       "tokens": 0
     },
     {
-      "id": "e8eecfe5-f9e8-4b87-903e-f136a359d564",
-      "name": "벤야",
+      "id": "72ca58ef-450d-44cd-a060-d528698d3dcc",
+      "name": "아이유",
       "activeFixed": true,
-      "activeLoot": false,
+      "activeLoot": true,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
@@ -163,8 +118,8 @@
       "tokens": 0
     },
     {
-      "id": "be3c2c24-c398-44f9-8632-2a2640f16b8d",
-      "name": "진춘목",
+      "id": "45285a64-7703-4015-a9c5-d6f1575617e2",
+      "name": "휘프리온",
       "activeFixed": true,
       "activeLoot": false,
       "fixedCount": 0,
@@ -172,17 +127,8 @@
       "tokens": 0
     },
     {
-      "id": "e0d0f3bd-0e19-4fd4-a9f7-f4c65cd344a5",
-      "name": "쿠르",
-      "activeFixed": true,
-      "activeLoot": false,
-      "fixedCount": 0,
-      "lootCount": 0,
-      "tokens": 0
-    },
-    {
-      "id": "29d6f9d8-5373-4405-a7d6-7c7192a86b1a",
-      "name": "사쿠라기",
+      "id": "964bfca1-19a1-4ed9-83db-dee6ea4c5b64",
+      "name": "청랑",
       "activeFixed": true,
       "activeLoot": false,
       "fixedCount": 0,
@@ -199,8 +145,17 @@
       "tokens": 0
     },
     {
-      "id": "857bfa99-6bd1-4014-8c27-10ae9204de47",
-      "name": "10더",
+      "id": "3b8df1dd-580c-491a-883b-b7506b1ae6b2",
+      "name": "꾸벅",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "e0d0f3bd-0e19-4fd4-a9f7-f4c65cd344a5",
+      "name": "쿠르",
       "activeFixed": true,
       "activeLoot": false,
       "fixedCount": 0,
@@ -208,10 +163,64 @@
       "tokens": 0
     },
     {
-      "id": "4c76e405-8be5-46ed-80fd-e62673e17ec2",
-      "name": "혹성",
+      "id": "4ec5f3f4-554f-40db-b977-c7276ea65af3",
+      "name": "두부콩",
       "activeFixed": true,
-      "activeLoot": true,
+      "activeLoot": false,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "c75ef3e9-7688-45b5-a306-984c45fabf8b",
+      "name": "섬서잔룡",
+      "activeFixed": true,
+      "activeLoot": false,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "29d6f9d8-5373-4405-a7d6-7c7192a86b1a",
+      "name": "사쿠라기",
+      "activeFixed": false,
+      "activeLoot": false,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "857bfa99-6bd1-4014-8c27-10ae9204de47",
+      "name": "10더",
+      "activeFixed": false,
+      "activeLoot": false,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "e8eecfe5-f9e8-4b87-903e-f136a359d564",
+      "name": "벤야",
+      "activeFixed": true,
+      "activeLoot": false,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "be3c2c24-c398-44f9-8632-2a2640f16b8d",
+      "name": "진춘목",
+      "activeFixed": false,
+      "activeLoot": false,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "1c47ea5d-6e5a-4e75-ba10-b44dc98c48e0",
+      "name": "만해",
+      "activeFixed": false,
+      "activeLoot": false,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
@@ -244,15 +253,7 @@
   "batchReceivedLoot": {},
   "logs": [
     {
-      "ts": 1768125818243,
-      "type": "RESTORE_GITHUB",
-      "itemName": "(복구)",
-      "receiverId": null,
-      "detail": "GitHub state.json 복구 완료",
-      "meta": {}
-    },
-    {
-      "ts": 1768125714782,
+      "ts": 1768127644932,
       "type": "ROSTER_REORDER",
       "itemName": "(명단)",
       "receiverId": null,
@@ -260,12 +261,257 @@
       "meta": {
         "fromIdx": 24,
         "toIdx": 23,
-        "dragId": "4c76e405-8be5-46ed-80fd-e62673e17ec2",
-        "dropId": "837714c2-0ff1-442a-ad89-f4f416a7a97e"
+        "dragId": "be3c2c24-c398-44f9-8632-2a2640f16b8d",
+        "dropId": "1c47ea5d-6e5a-4e75-ba10-b44dc98c48e0"
       }
     },
     {
-      "ts": 1768125712498,
+      "ts": 1768127641554,
+      "type": "ROSTER_REORDER",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "명단 순서 변경: 24 → 23",
+      "meta": {
+        "fromIdx": 23,
+        "toIdx": 22,
+        "dragId": "e8eecfe5-f9e8-4b87-903e-f136a359d564",
+        "dropId": "1c47ea5d-6e5a-4e75-ba10-b44dc98c48e0"
+      }
+    },
+    {
+      "ts": 1768127637410,
+      "type": "ROSTER_REORDER",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "명단 순서 변경: 25 → 22",
+      "meta": {
+        "fromIdx": 24,
+        "toIdx": 21,
+        "dragId": "857bfa99-6bd1-4014-8c27-10ae9204de47",
+        "dropId": "1c47ea5d-6e5a-4e75-ba10-b44dc98c48e0"
+      }
+    },
+    {
+      "ts": 1768127634124,
+      "type": "ROSTER_REORDER",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "명단 순서 변경: 24 → 21",
+      "meta": {
+        "fromIdx": 23,
+        "toIdx": 20,
+        "dragId": "29d6f9d8-5373-4405-a7d6-7c7192a86b1a",
+        "dropId": "1c47ea5d-6e5a-4e75-ba10-b44dc98c48e0"
+      }
+    },
+    {
+      "ts": 1768127484600,
+      "type": "ROSTER_REORDER",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "명단 순서 변경: 23 → 18",
+      "meta": {
+        "fromIdx": 22,
+        "toIdx": 17,
+        "dragId": "e0d0f3bd-0e19-4fd4-a9f7-f4c65cd344a5",
+        "dropId": "4ec5f3f4-554f-40db-b977-c7276ea65af3"
+      }
+    },
+    {
+      "ts": 1768127479698,
+      "type": "ROSTER_REORDER",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "명단 순서 변경: 26 → 17",
+      "meta": {
+        "fromIdx": 25,
+        "toIdx": 16,
+        "dragId": "3b8df1dd-580c-491a-883b-b7506b1ae6b2",
+        "dropId": "4ec5f3f4-554f-40db-b977-c7276ea65af3"
+      }
+    },
+    {
+      "ts": 1768127470289,
+      "type": "ROSTER_ADD",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "단일 추가: 꾸벅",
+      "meta": {}
+    },
+    {
+      "ts": 1768127446426,
+      "type": "ROSTER_REORDER",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "명단 순서 변경: 24 → 16",
+      "meta": {
+        "fromIdx": 23,
+        "toIdx": 15,
+        "dragId": "7012a20b-5198-4024-a9fb-badf1250c876",
+        "dropId": "4ec5f3f4-554f-40db-b977-c7276ea65af3"
+      }
+    },
+    {
+      "ts": 1768127440056,
+      "type": "ROSTER_REORDER",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "명단 순서 변경: 16 → 14",
+      "meta": {
+        "fromIdx": 15,
+        "toIdx": 13,
+        "dragId": "45285a64-7703-4015-a9c5-d6f1575617e2",
+        "dropId": "964bfca1-19a1-4ed9-83db-dee6ea4c5b64"
+      }
+    },
+    {
+      "ts": 1768127435034,
+      "type": "ROSTER_REORDER",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "명단 순서 변경: 19 → 13",
+      "meta": {
+        "fromIdx": 18,
+        "toIdx": 12,
+        "dragId": "debbe2cf-f002-4900-b55a-cda3c82bd92d",
+        "dropId": "964bfca1-19a1-4ed9-83db-dee6ea4c5b64"
+      }
+    },
+    {
+      "ts": 1768127428788,
+      "type": "ROSTER_REORDER",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "명단 순서 변경: 17 → 11",
+      "meta": {
+        "fromIdx": 16,
+        "toIdx": 10,
+        "dragId": "7f38e816-b693-4914-8aa3-4c000b3d5a14",
+        "dropId": "72ca58ef-450d-44cd-a060-d528698d3dcc"
+      }
+    },
+    {
+      "ts": 1768127421934,
+      "type": "ROSTER_REORDER",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "명단 순서 변경: 13 → 10",
+      "meta": {
+        "fromIdx": 12,
+        "toIdx": 9,
+        "dragId": "a85eeac1-9d30-4185-affd-06fd1fc5858a",
+        "dropId": "72ca58ef-450d-44cd-a060-d528698d3dcc"
+      }
+    },
+    {
+      "ts": 1768127416894,
+      "type": "ROSTER_REORDER",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "명단 순서 변경: 15 → 9",
+      "meta": {
+        "fromIdx": 14,
+        "toIdx": 8,
+        "dragId": "1f347ac4-5c25-4c7f-af47-06c5f97442d2",
+        "dropId": "72ca58ef-450d-44cd-a060-d528698d3dcc"
+      }
+    },
+    {
+      "ts": 1768126211203,
+      "type": "ROSTER_REORDER",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "명단 순서 변경: 11 → 8",
+      "meta": {
+        "fromIdx": 10,
+        "toIdx": 7,
+        "dragId": "0576d8f3-d36f-480f-a7de-ea87aa5a6419",
+        "dropId": "72ca58ef-450d-44cd-a060-d528698d3dcc"
+      }
+    },
+    {
+      "ts": 1768126208019,
+      "type": "ROSTER_REORDER",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "명단 순서 변경: 24 → 11",
+      "meta": {
+        "fromIdx": 23,
+        "toIdx": 10,
+        "dragId": "0576d8f3-d36f-480f-a7de-ea87aa5a6419",
+        "dropId": "a85eeac1-9d30-4185-affd-06fd1fc5858a"
+      }
+    },
+    {
+      "ts": 1768126199480,
+      "type": "ROSTER_REORDER",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "명단 순서 변경: 14 → 6",
+      "meta": {
+        "fromIdx": 13,
+        "toIdx": 5,
+        "dragId": "9ce37df3-5c8c-47b5-bb60-95575c3a70b9",
+        "dropId": "abe18ee8-f1b2-48f3-af4b-6b3213158cc8"
+      }
+    },
+    {
+      "ts": 1768126193143,
+      "type": "ROSTER_REORDER",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "명단 순서 변경: 9 → 5",
+      "meta": {
+        "fromIdx": 8,
+        "toIdx": 4,
+        "dragId": "ae5f0095-4121-4c53-bb04-be527f693f81",
+        "dropId": "abe18ee8-f1b2-48f3-af4b-6b3213158cc8"
+      }
+    },
+    {
+      "ts": 1768126187125,
+      "type": "ROSTER_REORDER",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "명단 순서 변경: 5 → 4",
+      "meta": {
+        "fromIdx": 4,
+        "toIdx": 3,
+        "dragId": "cbd58c56-3cda-48b1-a6b2-067be66a4bd4",
+        "dropId": "abe18ee8-f1b2-48f3-af4b-6b3213158cc8"
+      }
+    },
+    {
+      "ts": 1768125878435,
+      "type": "RESTORE_GITHUB",
+      "itemName": "(복구)",
+      "receiverId": null,
+      "detail": "GitHub state.json 복구 완료",
+      "meta": {}
+    },
+    {
+      "ts": 1768125765283,
+      "type": "ROSTER_REORDER",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "명단 순서 변경: 23 → 22",
+      "meta": {
+        "fromIdx": 22,
+        "toIdx": 21,
+        "dragId": "857bfa99-6bd1-4014-8c27-10ae9204de47",
+        "dropId": "7012a20b-5198-4024-a9fb-badf1250c876"
+      }
+    },
+    {
+      "ts": 1768125735899,
+      "type": "RESTORE_GITHUB",
+      "itemName": "(복구)",
+      "receiverId": null,
+      "detail": "GitHub state.json 복구 완료",
+      "meta": {}
+    },
+    {
+      "ts": 1768125644862,
       "type": "ROSTER_DELETE",
       "itemName": "(명단)",
       "receiverId": null,
@@ -273,19 +519,24 @@
       "meta": {}
     },
     {
-      "ts": 1768125700144,
+      "ts": 1768125590779,
+      "type": "ROSTER_REORDER",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "명단 순서 변경: 26 → 25",
+      "meta": {
+        "fromIdx": 25,
+        "toIdx": 24,
+        "dragId": "0576d8f3-d36f-480f-a7de-ea87aa5a6419",
+        "dropId": "837714c2-0ff1-442a-ad89-f4f416a7a97e"
+      }
+    },
+    {
+      "ts": 1768125587352,
       "type": "ROSTER_ADD",
       "itemName": "(명단)",
       "receiverId": null,
-      "detail": "단일 추가: 혹성",
-      "meta": {}
-    },
-    {
-      "ts": 1768125672380,
-      "type": "RESTORE_GITHUB",
-      "itemName": "(복구)",
-      "receiverId": null,
-      "detail": "GitHub state.json 복구 완료",
+      "detail": "단일 추가: 홍성",
       "meta": {}
     },
     {
