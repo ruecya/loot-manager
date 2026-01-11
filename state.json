@@ -190,15 +190,6 @@
       "tokens": 0
     },
     {
-      "id": "7012a20b-5198-4024-a9fb-badf1250c876",
-      "name": "한방",
-      "activeFixed": true,
-      "activeLoot": false,
-      "fixedCount": 0,
-      "lootCount": 0,
-      "tokens": 0
-    },
-    {
       "id": "857bfa99-6bd1-4014-8c27-10ae9204de47",
       "name": "10더",
       "activeFixed": true,
@@ -208,8 +199,17 @@
       "tokens": 0
     },
     {
-      "id": "4c76e405-8be5-46ed-80fd-e62673e17ec2",
-      "name": "혹성",
+      "id": "7012a20b-5198-4024-a9fb-badf1250c876",
+      "name": "한방",
+      "activeFixed": true,
+      "activeLoot": false,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "0576d8f3-d36f-480f-a7de-ea87aa5a6419",
+      "name": "홍성",
       "activeFixed": true,
       "activeLoot": true,
       "fixedCount": 0,
@@ -244,20 +244,28 @@
   "batchReceivedLoot": {},
   "logs": [
     {
-      "ts": 1768125714782,
+      "ts": 1768125765283,
       "type": "ROSTER_REORDER",
       "itemName": "(명단)",
       "receiverId": null,
-      "detail": "명단 순서 변경: 25 → 24",
+      "detail": "명단 순서 변경: 23 → 22",
       "meta": {
-        "fromIdx": 24,
-        "toIdx": 23,
-        "dragId": "4c76e405-8be5-46ed-80fd-e62673e17ec2",
-        "dropId": "837714c2-0ff1-442a-ad89-f4f416a7a97e"
+        "fromIdx": 22,
+        "toIdx": 21,
+        "dragId": "857bfa99-6bd1-4014-8c27-10ae9204de47",
+        "dropId": "7012a20b-5198-4024-a9fb-badf1250c876"
       }
     },
     {
-      "ts": 1768125712498,
+      "ts": 1768125735899,
+      "type": "RESTORE_GITHUB",
+      "itemName": "(복구)",
+      "receiverId": null,
+      "detail": "GitHub state.json 복구 완료",
+      "meta": {}
+    },
+    {
+      "ts": 1768125644862,
       "type": "ROSTER_DELETE",
       "itemName": "(명단)",
       "receiverId": null,
@@ -265,19 +273,24 @@
       "meta": {}
     },
     {
-      "ts": 1768125700144,
+      "ts": 1768125590779,
+      "type": "ROSTER_REORDER",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "명단 순서 변경: 26 → 25",
+      "meta": {
+        "fromIdx": 25,
+        "toIdx": 24,
+        "dragId": "0576d8f3-d36f-480f-a7de-ea87aa5a6419",
+        "dropId": "837714c2-0ff1-442a-ad89-f4f416a7a97e"
+      }
+    },
+    {
+      "ts": 1768125587352,
       "type": "ROSTER_ADD",
       "itemName": "(명단)",
       "receiverId": null,
-      "detail": "단일 추가: 혹성",
-      "meta": {}
-    },
-    {
-      "ts": 1768125672380,
-      "type": "RESTORE_GITHUB",
-      "itemName": "(복구)",
-      "receiverId": null,
-      "detail": "GitHub state.json 복구 완료",
+      "detail": "단일 추가: 홍성",
       "meta": {}
     },
     {
@@ -383,6 +396,6 @@
     }
   ],
   "ui": {
-    "showDangerButtons": true
+    "showDangerButtons": false
   }
 }
