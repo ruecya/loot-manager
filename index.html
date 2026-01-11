@@ -225,6 +225,9 @@
  * - "전리템 목록 관리"의 "목록 저장" 버튼을 누르면 GitHub에도 자동 업로드(버튼 없이)
  * - state.json을 GitHub에 자동 백업/복구 버튼 제공
  * - JSON 내보내기 파일명: 날짜(YYYY-MM-DD)까지만
+ *
+ * 추가 반영:
+ * - GitHub 백업 커밋 메시지: YYYY-MM-DD HH:mm:ss KST (Asia/Seoul) 고정 포맷
  */
 
 const STORAGE_KEY = "loot_manager_v5";
@@ -358,6 +361,17 @@ async function ghPutFile(path, contentText, message){
 
 function isoDate(){ return new Date().toISOString().slice(0,10); }
 
+// ✅ 추가: YYYY-MM-DD HH:mm:ss KST 고정 포맷 (Asia/Seoul)
+function kstStamp(){
+  const s = new Intl.DateTimeFormat('sv-SE', {
+    timeZone: 'Asia/Seoul',
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', second: '2-digit',
+    hour12: false
+  }).format(new Date()); // 예: 2026-01-12 07:48:12
+  return `${s} KST`;
+}
+
 function buildRosterText(){ return state.players.map(p => p.name).join("\n") + "\n"; }
 function buildLootItemsText(){ return (state.lootCatalog || []).join("\n") + "\n"; }
 function buildStateJsonText(){ return JSON.stringify(state, null, 2); }
@@ -379,7 +393,8 @@ function scheduleAutoUploadLootCatalog(){
 
 async function ghBackupState(){
   validateGh();
-  await ghPutFile(gh.statePath, buildStateJsonText(), `Backup state (${isoDate()})`);
+  // ✅ 변경: 커밋 메시지에 시간까지 (KST 고정)
+  await ghPutFile(gh.statePath, buildStateJsonText(), `Backup state (${kstStamp()})`);
 }
 
 async function ghRestoreState(){
@@ -781,7 +796,7 @@ async function fetchLootItemsFromUrl(url){
     saveState();
     alert(`전리품 목록을 불러왔습니다. (${uniq.length}개)`);
   }catch(e){
-    alert("불러오기 실패: " + (e.message || e));
+    alert("불러오기 실패: " + (e.message||e));
   }
 }
 
@@ -1355,7 +1370,7 @@ function viewLogs(){
   const ghBackupBtn = el("button", { class:"primary", onclick: async()=>{
     try{
       await ghBackupState();
-      toast(`✅ state.json GitHub 백업 완료 (${isoDate()})`);
+      toast(`✅ state.json GitHub 백업 완료 (${kstStamp()})`);
     }catch(err){
       alert("❌ GitHub 백업 실패: " + (err.message||err));
     }
