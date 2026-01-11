@@ -6,7 +6,7 @@
       "activeFixed": true,
       "activeLoot": true,
       "fixedCount": 0,
-      "lootCount": 0,
+      "lootCount": 1,
       "tokens": 0
     },
     {
@@ -32,7 +32,7 @@
       "name": "식빵",
       "activeFixed": true,
       "activeLoot": true,
-      "fixedCount": 0,
+      "fixedCount": 1,
       "lootCount": 0,
       "tokens": 0
     },
@@ -235,9 +235,9 @@
       "tokens": 0
     }
   ],
-  "fixedPointer": 0,
-  "lootPointer": 0,
-  "fixedItemName": "고정템",
+  "fixedPointer": 4,
+  "lootPointer": 1,
+  "fixedItemName": "풍신갑",
   "lootCatalog": [
     "마귀의 가면",
     "고대 견장",
@@ -248,10 +248,84 @@
     "하급 무신의 혼",
     "하급 작약 호리병"
   ],
-  "batchId": 1768125427756,
-  "batchReceivedFixed": {},
-  "batchReceivedLoot": {},
+  "batchId": 1768128086785,
+  "batchReceivedFixed": {
+    "cbd58c56-3cda-48b1-a6b2-067be66a4bd4": true
+  },
+  "batchReceivedLoot": {
+    "329e0875-bba4-4e78-a7fc-6dbfedff22f7": true
+  },
   "logs": [
+    {
+      "ts": 1768128600117,
+      "type": "LOOT_GIVE",
+      "itemName": "하급 무신의 돌",
+      "receiverId": "329e0875-bba4-4e78-a7fc-6dbfedff22f7",
+      "detail": "순심이에게 전리템 지급",
+      "meta": {
+        "which": "loot",
+        "curId": "329e0875-bba4-4e78-a7fc-6dbfedff22f7",
+        "batchId": 1768128086785
+      }
+    },
+    {
+      "ts": 1768128479281,
+      "type": "FIXED_GIVE",
+      "itemName": "풍신갑",
+      "receiverId": "cbd58c56-3cda-48b1-a6b2-067be66a4bd4",
+      "detail": "식빵에게 고정템 지급",
+      "meta": {
+        "which": "fixed",
+        "curId": "cbd58c56-3cda-48b1-a6b2-067be66a4bd4",
+        "batchId": 1768128086785
+      }
+    },
+    {
+      "ts": 1768128407167,
+      "type": "FIXED_SKIP",
+      "itemName": "풍신갑",
+      "receiverId": "dd15c8fd-417a-4134-b715-f3590312aeda",
+      "detail": "목성 차례 스킵",
+      "meta": {
+        "which": "fixed",
+        "curId": "dd15c8fd-417a-4134-b715-f3590312aeda",
+        "batchId": 1768128086785
+      }
+    },
+    {
+      "ts": 1768128332485,
+      "type": "FIXED_SKIP",
+      "itemName": "풍신갑",
+      "receiverId": "070a1da3-4b55-4d13-861b-50e9b900f638",
+      "detail": "구따 차례 스킵",
+      "meta": {
+        "which": "fixed",
+        "curId": "070a1da3-4b55-4d13-861b-50e9b900f638",
+        "batchId": 1768128086785
+      }
+    },
+    {
+      "ts": 1768128212357,
+      "type": "FIXED_SKIP",
+      "itemName": "풍신갑",
+      "receiverId": "329e0875-bba4-4e78-a7fc-6dbfedff22f7",
+      "detail": "순심이 차례 스킵",
+      "meta": {
+        "which": "fixed",
+        "curId": "329e0875-bba4-4e78-a7fc-6dbfedff22f7",
+        "batchId": 1768128086785
+      }
+    },
+    {
+      "ts": 1768128086785,
+      "type": "BATCH_START",
+      "itemName": "(배치)",
+      "receiverId": null,
+      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "meta": {
+        "batchId": 1768128086785
+      }
+    },
     {
       "ts": 1768127644932,
       "type": "ROSTER_REORDER",
