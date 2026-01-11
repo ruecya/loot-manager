@@ -226,6 +226,24 @@
       "tokens": 0
     },
     {
+      "id": "24a518a1-7d3c-4c20-b50a-56a4e836ea34",
+      "name": "꾸벅",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
+      "id": "39c7370f-814a-40bb-9d91-06f515e808c8",
+      "name": "보스",
+      "activeFixed": true,
+      "activeLoot": true,
+      "fixedCount": 0,
+      "lootCount": 0,
+      "tokens": 0
+    },
+    {
       "id": "837714c2-0ff1-442a-ad89-f4f416a7a97e",
       "name": "혜붕",
       "activeFixed": true,
@@ -256,6 +274,35 @@
     "070a1da3-4b55-4d13-861b-50e9b900f638": true
   },
   "logs": [
+    {
+      "ts": 1768137290369,
+      "type": "ROSTER_REORDER",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "명단 순서 변경: 26 → 28",
+      "meta": {
+        "fromIdx": 25,
+        "toIdx": 27,
+        "dragId": "837714c2-0ff1-442a-ad89-f4f416a7a97e",
+        "dropId": "39c7370f-814a-40bb-9d91-06f515e808c8"
+      }
+    },
+    {
+      "ts": 1768137285598,
+      "type": "ROSTER_ADD",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "단일 추가: 보스",
+      "meta": {}
+    },
+    {
+      "ts": 1768137282186,
+      "type": "ROSTER_ADD",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "단일 추가: 꾸벅",
+      "meta": {}
+    },
     {
       "ts": 1768137103376,
       "type": "LOOT_GIVE",
