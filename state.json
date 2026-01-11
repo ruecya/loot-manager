@@ -210,7 +210,7 @@
     {
       "id": "be3c2c24-c398-44f9-8632-2a2640f16b8d",
       "name": "진춘목",
-      "activeFixed": false,
+      "activeFixed": true,
       "activeLoot": false,
       "fixedCount": 0,
       "lootCount": 0,
