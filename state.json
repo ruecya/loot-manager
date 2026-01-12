@@ -24,7 +24,7 @@
       "activeFixed": true,
       "activeLoot": true,
       "fixedCount": 0,
-      "lootCount": 0,
+      "lootCount": 1,
       "tokens": 0
     },
     {
@@ -263,7 +263,7 @@
     }
   ],
   "fixedPointer": 5,
-  "lootPointer": 2,
+  "lootPointer": 3,
   "fixedItemName": "풍신 장갑",
   "lootCatalog": [
     "마귀의 가면",
@@ -277,8 +277,22 @@
   ],
   "batchId": 1768174163655,
   "batchReceivedFixed": {},
-  "batchReceivedLoot": {},
+  "batchReceivedLoot": {
+    "dd15c8fd-417a-4134-b715-f3590312aeda": true
+  },
   "logs": [
+    {
+      "ts": 1768192450701,
+      "type": "LOOT_GIVE",
+      "itemName": "만년 독니",
+      "receiverId": "dd15c8fd-417a-4134-b715-f3590312aeda",
+      "detail": "목성에게 전리템 지급",
+      "meta": {
+        "which": "loot",
+        "curId": "dd15c8fd-417a-4134-b715-f3590312aeda",
+        "batchId": 1768174163655
+      }
+    },
     {
       "ts": 1768174163655,
       "type": "BATCH_START",
