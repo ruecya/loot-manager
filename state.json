@@ -166,7 +166,7 @@
       "id": "4ec5f3f4-554f-40db-b977-c7276ea65af3",
       "name": "두부콩",
       "activeFixed": true,
-      "activeLoot": false,
+      "activeLoot": true,
       "fixedCount": 0,
       "lootCount": 0,
       "tokens": 0
@@ -275,10 +275,40 @@
     "하급 무신의 혼",
     "하급 작약 호리병"
   ],
-  "batchId": 1768192592371,
+  "batchId": 1768197119673,
   "batchReceivedFixed": {},
   "batchReceivedLoot": {},
   "logs": [
+    {
+      "ts": 1768197119673,
+      "type": "BATCH_START",
+      "itemName": "(배치)",
+      "receiverId": null,
+      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "meta": {
+        "batchId": 1768197119673
+      }
+    },
+    {
+      "ts": 1768197117687,
+      "type": "BATCH_START",
+      "itemName": "(배치)",
+      "receiverId": null,
+      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "meta": {
+        "batchId": 1768197117687
+      }
+    },
+    {
+      "ts": 1768197097098,
+      "type": "BATCH_START",
+      "itemName": "(배치)",
+      "receiverId": null,
+      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "meta": {
+        "batchId": 1768197097098
+      }
+    },
     {
       "ts": 1768192592371,
       "type": "BATCH_START",
