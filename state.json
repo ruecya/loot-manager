@@ -40,7 +40,7 @@
       "id": "ae5f0095-4121-4c53-bb04-be527f693f81",
       "name": "할맘",
       "activeFixed": true,
-      "activeLoot": false,
+      "activeLoot": true,
       "fixedCount": 1,
       "lootCount": 0,
       "tokens": 0
