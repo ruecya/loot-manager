@@ -33,7 +33,7 @@
       "activeFixed": true,
       "activeLoot": true,
       "fixedCount": 1,
-      "lootCount": 0,
+      "lootCount": 1,
       "tokens": 0
     },
     {
@@ -263,7 +263,7 @@
     }
   ],
   "fixedPointer": 5,
-  "lootPointer": 3,
+  "lootPointer": 4,
   "fixedItemName": "풍신 장갑",
   "lootCatalog": [
     "마귀의 가면",
@@ -277,8 +277,22 @@
   ],
   "batchId": 1768312346974,
   "batchReceivedFixed": {},
-  "batchReceivedLoot": {},
+  "batchReceivedLoot": {
+    "cbd58c56-3cda-48b1-a6b2-067be66a4bd4": true
+  },
   "logs": [
+    {
+      "ts": 1768312603332,
+      "type": "LOOT_GIVE",
+      "itemName": "하급 연꽃 호리병",
+      "receiverId": "cbd58c56-3cda-48b1-a6b2-067be66a4bd4",
+      "detail": "식빵에게 전리템 지급",
+      "meta": {
+        "which": "loot",
+        "curId": "cbd58c56-3cda-48b1-a6b2-067be66a4bd4",
+        "batchId": 1768312346974
+      }
+    },
     {
       "ts": 1768312346974,
       "type": "BATCH_START",
