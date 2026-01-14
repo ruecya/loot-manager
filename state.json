@@ -50,7 +50,7 @@
       "name": "연어",
       "activeFixed": true,
       "activeLoot": false,
-      "fixedCount": 0,
+      "fixedCount": 1,
       "lootCount": 0,
       "tokens": 0
     },
@@ -226,15 +226,6 @@
       "tokens": 0
     },
     {
-      "id": "24a518a1-7d3c-4c20-b50a-56a4e836ea34",
-      "name": "꾸벅",
-      "activeFixed": true,
-      "activeLoot": true,
-      "fixedCount": 0,
-      "lootCount": 0,
-      "tokens": 0
-    },
-    {
       "id": "39c7370f-814a-40bb-9d91-06f515e808c8",
       "name": "보스",
       "activeFixed": true,
@@ -262,9 +253,9 @@
       "tokens": 0
     }
   ],
-  "fixedPointer": 5,
+  "fixedPointer": 6,
   "lootPointer": 4,
-  "fixedItemName": "풍신 장갑",
+  "fixedItemName": "뇌운창",
   "lootCatalog": [
     "마귀의 가면",
     "고대 견장",
@@ -275,12 +266,90 @@
     "하급 무신의 혼",
     "하급 작약 호리병"
   ],
-  "batchId": 1768312346974,
+  "batchId": 1768396251845,
   "batchReceivedFixed": {},
-  "batchReceivedLoot": {
-    "cbd58c56-3cda-48b1-a6b2-067be66a4bd4": true
-  },
+  "batchReceivedLoot": {},
   "logs": [
+    {
+      "ts": 1768396251845,
+      "type": "BATCH_START",
+      "itemName": "(배치)",
+      "receiverId": null,
+      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "meta": {
+        "batchId": 1768396251845
+      }
+    },
+    {
+      "ts": 1768396250472,
+      "type": "BATCH_START",
+      "itemName": "(배치)",
+      "receiverId": null,
+      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "meta": {
+        "batchId": 1768396250472
+      }
+    },
+    {
+      "ts": 1768396231647,
+      "type": "ROSTER_DELETE",
+      "itemName": "(명단)",
+      "receiverId": null,
+      "detail": "삭제: 꾸벅",
+      "meta": {}
+    },
+    {
+      "ts": 1768395955834,
+      "type": "BATCH_START",
+      "itemName": "(배치)",
+      "receiverId": null,
+      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "meta": {
+        "batchId": 1768395955834
+      }
+    },
+    {
+      "ts": 1768395954392,
+      "type": "BATCH_START",
+      "itemName": "(배치)",
+      "receiverId": null,
+      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "meta": {
+        "batchId": 1768395954392
+      }
+    },
+    {
+      "ts": 1768395923714,
+      "type": "FIXED_GIVE",
+      "itemName": "뇌운창",
+      "receiverId": "9ce37df3-5c8c-47b5-bb60-95575c3a70b9",
+      "detail": "연어에게 고정템 지급",
+      "meta": {
+        "which": "fixed",
+        "curId": "9ce37df3-5c8c-47b5-bb60-95575c3a70b9",
+        "batchId": 1768312700014
+      }
+    },
+    {
+      "ts": 1768312700014,
+      "type": "BATCH_START",
+      "itemName": "(배치)",
+      "receiverId": null,
+      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "meta": {
+        "batchId": 1768312700014
+      }
+    },
+    {
+      "ts": 1768312698338,
+      "type": "BATCH_START",
+      "itemName": "(배치)",
+      "receiverId": null,
+      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "meta": {
+        "batchId": 1768312698338
+      }
+    },
     {
       "ts": 1768312603332,
       "type": "LOOT_GIVE",
