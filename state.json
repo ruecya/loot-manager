@@ -59,7 +59,7 @@
       "name": "우기",
       "activeFixed": true,
       "activeLoot": true,
-      "fixedCount": 0,
+      "fixedCount": 1,
       "lootCount": 0,
       "tokens": 0
     },
@@ -253,7 +253,7 @@
       "tokens": 0
     }
   ],
-  "fixedPointer": 6,
+  "fixedPointer": 7,
   "lootPointer": 4,
   "fixedItemName": "뇌운창",
   "lootCatalog": [
@@ -266,10 +266,44 @@
     "하급 무신의 혼",
     "하급 작약 호리병"
   ],
-  "batchId": 1768396251845,
-  "batchReceivedFixed": {},
+  "batchId": 1768482493412,
+  "batchReceivedFixed": {
+    "abe18ee8-f1b2-48f3-af4b-6b3213158cc8": true
+  },
   "batchReceivedLoot": {},
   "logs": [
+    {
+      "ts": 1768482607894,
+      "type": "FIXED_GIVE",
+      "itemName": "뇌운창",
+      "receiverId": "abe18ee8-f1b2-48f3-af4b-6b3213158cc8",
+      "detail": "우기에게 고정템 지급",
+      "meta": {
+        "which": "fixed",
+        "curId": "abe18ee8-f1b2-48f3-af4b-6b3213158cc8",
+        "batchId": 1768482493412
+      }
+    },
+    {
+      "ts": 1768482493412,
+      "type": "BATCH_START",
+      "itemName": "(배치)",
+      "receiverId": null,
+      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "meta": {
+        "batchId": 1768482493412
+      }
+    },
+    {
+      "ts": 1768482492110,
+      "type": "BATCH_START",
+      "itemName": "(배치)",
+      "receiverId": null,
+      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "meta": {
+        "batchId": 1768482492110
+      }
+    },
     {
       "ts": 1768396251845,
       "type": "BATCH_START",
