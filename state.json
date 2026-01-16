@@ -42,7 +42,7 @@
       "activeFixed": true,
       "activeLoot": true,
       "fixedCount": 1,
-      "lootCount": 0,
+      "lootCount": 1,
       "tokens": 0
     },
     {
@@ -61,7 +61,7 @@
       "activeLoot": true,
       "fixedCount": 1,
       "lootCount": 0,
-      "tokens": 0
+      "tokens": 1
     },
     {
       "id": "0576d8f3-d36f-480f-a7de-ea87aa5a6419",
@@ -70,7 +70,7 @@
       "activeLoot": true,
       "fixedCount": 0,
       "lootCount": 0,
-      "tokens": 0
+      "tokens": 1
     },
     {
       "id": "1f347ac4-5c25-4c7f-af47-06c5f97442d2",
@@ -79,7 +79,7 @@
       "activeLoot": true,
       "fixedCount": 0,
       "lootCount": 0,
-      "tokens": 0
+      "tokens": 1
     },
     {
       "id": "a85eeac1-9d30-4185-affd-06fd1fc5858a",
@@ -96,7 +96,7 @@
       "activeFixed": true,
       "activeLoot": true,
       "fixedCount": 0,
-      "lootCount": 0,
+      "lootCount": 1,
       "tokens": 0
     },
     {
@@ -254,7 +254,7 @@
     }
   ],
   "fixedPointer": 7,
-  "lootPointer": 4,
+  "lootPointer": 9,
   "fixedItemName": "뇌운창",
   "lootCatalog": [
     "마귀의 가면",
@@ -268,8 +268,82 @@
   ],
   "batchId": 1768483566580,
   "batchReceivedFixed": {},
-  "batchReceivedLoot": {},
+  "batchReceivedLoot": {
+    "ae5f0095-4121-4c53-bb04-be527f693f81": true,
+    "7f38e816-b693-4914-8aa3-4c000b3d5a14": true
+  },
   "logs": [
+    {
+      "ts": 1768571688718,
+      "type": "LOOT_GIVE",
+      "itemName": "하급 작약 호리병",
+      "receiverId": "7f38e816-b693-4914-8aa3-4c000b3d5a14",
+      "detail": "무짱에게 전리템 지급",
+      "meta": {
+        "which": "loot",
+        "curId": "7f38e816-b693-4914-8aa3-4c000b3d5a14",
+        "batchId": 1768483566580
+      }
+    },
+    {
+      "ts": 1768570907090,
+      "type": "LOOT_PASS_TOKEN",
+      "itemName": "(미입력)",
+      "receiverId": "1f347ac4-5c25-4c7f-af47-06c5f97442d2",
+      "detail": "코털 패스 (토큰+1)",
+      "meta": {
+        "which": "loot",
+        "curId": "1f347ac4-5c25-4c7f-af47-06c5f97442d2",
+        "minted": 1,
+        "batchId": 1768483566580
+      }
+    },
+    {
+      "ts": 1768570806182,
+      "type": "LOOT_PASS_TOKEN",
+      "itemName": "(미입력)",
+      "receiverId": "0576d8f3-d36f-480f-a7de-ea87aa5a6419",
+      "detail": "홍성 패스 (토큰+1)",
+      "meta": {
+        "which": "loot",
+        "curId": "0576d8f3-d36f-480f-a7de-ea87aa5a6419",
+        "minted": 1,
+        "batchId": 1768483566580
+      }
+    },
+    {
+      "ts": 1768569362190,
+      "type": "LOOT_PASS_TOKEN",
+      "itemName": "(미입력)",
+      "receiverId": "abe18ee8-f1b2-48f3-af4b-6b3213158cc8",
+      "detail": "우기 패스 (토큰+1)",
+      "meta": {
+        "which": "loot",
+        "curId": "abe18ee8-f1b2-48f3-af4b-6b3213158cc8",
+        "minted": 1,
+        "batchId": 1768483566580
+      }
+    },
+    {
+      "ts": 1768569360692,
+      "type": "LOOT_GIVE",
+      "itemName": "하급 무신의 혼",
+      "receiverId": "ae5f0095-4121-4c53-bb04-be527f693f81",
+      "detail": "할맘에게 전리템 지급",
+      "meta": {
+        "which": "loot",
+        "curId": "ae5f0095-4121-4c53-bb04-be527f693f81",
+        "batchId": 1768483566580
+      }
+    },
+    {
+      "ts": 1768569350759,
+      "type": "RESTORE_GITHUB",
+      "itemName": "(복구)",
+      "receiverId": null,
+      "detail": "GitHub state.json 복구 완료",
+      "meta": {}
+    },
     {
       "ts": 1768483566580,
       "type": "BATCH_START",
