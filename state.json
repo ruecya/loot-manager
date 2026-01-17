@@ -68,7 +68,7 @@
       "name": "홍성",
       "activeFixed": true,
       "activeLoot": true,
-      "fixedCount": 0,
+      "fixedCount": 1,
       "lootCount": 0,
       "tokens": 1
     },
@@ -253,9 +253,9 @@
       "tokens": 0
     }
   ],
-  "fixedPointer": 7,
+  "fixedPointer": 8,
   "lootPointer": 9,
-  "fixedItemName": "뇌운창",
+  "fixedItemName": "추혼사자검",
   "lootCatalog": [
     "마귀의 가면",
     "고대 견장",
@@ -266,10 +266,34 @@
     "하급 무신의 혼",
     "하급 작약 호리병"
   ],
-  "batchId": 1768571882869,
-  "batchReceivedFixed": {},
+  "batchId": 1768655143008,
+  "batchReceivedFixed": {
+    "0576d8f3-d36f-480f-a7de-ea87aa5a6419": true
+  },
   "batchReceivedLoot": {},
   "logs": [
+    {
+      "ts": 1768655143982,
+      "type": "FIXED_GIVE",
+      "itemName": "추혼사자검",
+      "receiverId": "0576d8f3-d36f-480f-a7de-ea87aa5a6419",
+      "detail": "홍성에게 고정템 지급",
+      "meta": {
+        "which": "fixed",
+        "curId": "0576d8f3-d36f-480f-a7de-ea87aa5a6419",
+        "batchId": 1768655143008
+      }
+    },
+    {
+      "ts": 1768655143008,
+      "type": "BATCH_START",
+      "itemName": "(배치)",
+      "receiverId": null,
+      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "meta": {
+        "batchId": 1768655143008
+      }
+    },
     {
       "ts": 1768571882870,
       "type": "BATCH_START",
