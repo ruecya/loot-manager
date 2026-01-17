@@ -255,7 +255,7 @@
   ],
   "fixedPointer": 8,
   "lootPointer": 9,
-  "fixedItemName": "추혼사자검",
+  "fixedItemName": "고정템",
   "lootCatalog": [
     "마귀의 가면",
     "고대 견장",
@@ -266,12 +266,30 @@
     "하급 무신의 혼",
     "하급 작약 호리병"
   ],
-  "batchId": 1768655143008,
-  "batchReceivedFixed": {
-    "0576d8f3-d36f-480f-a7de-ea87aa5a6419": true
-  },
+  "batchId": 1768655321818,
+  "batchReceivedFixed": {},
   "batchReceivedLoot": {},
   "logs": [
+    {
+      "ts": 1768655321818,
+      "type": "BATCH_START",
+      "itemName": "(배치)",
+      "receiverId": null,
+      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "meta": {
+        "batchId": 1768655321818
+      }
+    },
+    {
+      "ts": 1768655320260,
+      "type": "BATCH_START",
+      "itemName": "(배치)",
+      "receiverId": null,
+      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "meta": {
+        "batchId": 1768655320260
+      }
+    },
     {
       "ts": 1768655143982,
       "type": "FIXED_GIVE",
