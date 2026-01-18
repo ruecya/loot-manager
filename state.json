@@ -77,7 +77,7 @@
       "name": "코털",
       "activeFixed": true,
       "activeLoot": true,
-      "fixedCount": 0,
+      "fixedCount": 1,
       "lootCount": 0,
       "tokens": 1
     },
@@ -253,9 +253,9 @@
       "tokens": 0
     }
   ],
-  "fixedPointer": 8,
+  "fixedPointer": 9,
   "lootPointer": 10,
-  "fixedItemName": "고정템",
+  "fixedItemName": "뇌운창",
   "lootCatalog": [
     "마귀의 가면",
     "고대 견장",
@@ -266,12 +266,42 @@
     "하급 무신의 혼",
     "하급 작약 호리병"
   ],
-  "batchId": 1768655321818,
+  "batchId": 1768742073823,
   "batchReceivedFixed": {},
-  "batchReceivedLoot": {
-    "abe18ee8-f1b2-48f3-af4b-6b3213158cc8": true
-  },
+  "batchReceivedLoot": {},
   "logs": [
+    {
+      "ts": 1768742073823,
+      "type": "BATCH_START",
+      "itemName": "(배치)",
+      "receiverId": null,
+      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "meta": {
+        "batchId": 1768742073823
+      }
+    },
+    {
+      "ts": 1768742072553,
+      "type": "BATCH_START",
+      "itemName": "(배치)",
+      "receiverId": null,
+      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "meta": {
+        "batchId": 1768742072553
+      }
+    },
+    {
+      "ts": 1768742070433,
+      "type": "FIXED_GIVE",
+      "itemName": "뇌운창",
+      "receiverId": "1f347ac4-5c25-4c7f-af47-06c5f97442d2",
+      "detail": "코털에게 고정템 지급",
+      "meta": {
+        "which": "fixed",
+        "curId": "1f347ac4-5c25-4c7f-af47-06c5f97442d2",
+        "batchId": 1768655321818
+      }
+    },
     {
       "ts": 1768741942748,
       "type": "PRIORITY_LOOT",
