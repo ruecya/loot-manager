@@ -60,8 +60,8 @@
       "activeFixed": true,
       "activeLoot": true,
       "fixedCount": 1,
-      "lootCount": 0,
-      "tokens": 1
+      "lootCount": 1,
+      "tokens": 0
     },
     {
       "id": "0576d8f3-d36f-480f-a7de-ea87aa5a6419",
@@ -106,7 +106,7 @@
       "activeLoot": true,
       "fixedCount": 0,
       "lootCount": 0,
-      "tokens": 0
+      "tokens": 1
     },
     {
       "id": "debbe2cf-f002-4900-b55a-cda3c82bd92d",
@@ -254,7 +254,7 @@
     }
   ],
   "fixedPointer": 8,
-  "lootPointer": 9,
+  "lootPointer": 10,
   "fixedItemName": "고정템",
   "lootCatalog": [
     "마귀의 가면",
@@ -268,8 +268,24 @@
   ],
   "batchId": 1768655321818,
   "batchReceivedFixed": {},
-  "batchReceivedLoot": {},
+  "batchReceivedLoot": {
+    "abe18ee8-f1b2-48f3-af4b-6b3213158cc8": true
+  },
   "logs": [
+    {
+      "ts": 1768741942748,
+      "type": "PRIORITY_LOOT",
+      "itemName": "(미입력)",
+      "receiverId": "abe18ee8-f1b2-48f3-af4b-6b3213158cc8",
+      "detail": "우선권 적용: 원차례자=아이유 → 수령자=우기 / 토큰 1개 아이유에게 이동",
+      "meta": {
+        "which": "loot",
+        "curId": "72ca58ef-450d-44cd-a060-d528698d3dcc",
+        "claimantId": "abe18ee8-f1b2-48f3-af4b-6b3213158cc8",
+        "tokenTransfer": 1,
+        "batchId": 1768655321818
+      }
+    },
     {
       "ts": 1768655321818,
       "type": "BATCH_START",
