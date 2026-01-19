@@ -86,7 +86,7 @@
       "name": "사악",
       "activeFixed": true,
       "activeLoot": false,
-      "fixedCount": 0,
+      "fixedCount": 1,
       "lootCount": 0,
       "tokens": 0
     },
@@ -253,9 +253,9 @@
       "tokens": 0
     }
   ],
-  "fixedPointer": 9,
+  "fixedPointer": 10,
   "lootPointer": 10,
-  "fixedItemName": "뇌운창",
+  "fixedItemName": "비늘투구",
   "lootCatalog": [
     "마귀의 가면",
     "고대 견장",
@@ -267,9 +267,23 @@
     "하급 작약 호리병"
   ],
   "batchId": 1768742073823,
-  "batchReceivedFixed": {},
+  "batchReceivedFixed": {
+    "a85eeac1-9d30-4185-affd-06fd1fc5858a": true
+  },
   "batchReceivedLoot": {},
   "logs": [
+    {
+      "ts": 1768829667431,
+      "type": "FIXED_GIVE",
+      "itemName": "비늘투구",
+      "receiverId": "a85eeac1-9d30-4185-affd-06fd1fc5858a",
+      "detail": "사악에게 고정템 지급",
+      "meta": {
+        "which": "fixed",
+        "curId": "a85eeac1-9d30-4185-affd-06fd1fc5858a",
+        "batchId": 1768742073823
+      }
+    },
     {
       "ts": 1768742073823,
       "type": "BATCH_START",
