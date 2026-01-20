@@ -95,7 +95,7 @@
       "name": "무짱",
       "activeFixed": true,
       "activeLoot": true,
-      "fixedCount": 0,
+      "fixedCount": 1,
       "lootCount": 1,
       "tokens": 0
     },
@@ -104,7 +104,7 @@
       "name": "아이유",
       "activeFixed": true,
       "activeLoot": true,
-      "fixedCount": 0,
+      "fixedCount": 1,
       "lootCount": 0,
       "tokens": 1
     },
@@ -253,9 +253,9 @@
       "tokens": 0
     }
   ],
-  "fixedPointer": 10,
+  "fixedPointer": 12,
   "lootPointer": 10,
-  "fixedItemName": "비늘투구",
+  "fixedItemName": "흑호창",
   "lootCatalog": [
     "마귀의 가면",
     "고대 견장",
@@ -266,10 +266,57 @@
     "하급 무신의 혼",
     "하급 작약 호리병"
   ],
-  "batchId": 1768829760443,
-  "batchReceivedFixed": {},
+  "batchId": 1768914592391,
+  "batchReceivedFixed": {
+    "7f38e816-b693-4914-8aa3-4c000b3d5a14": true,
+    "72ca58ef-450d-44cd-a060-d528698d3dcc": true
+  },
   "batchReceivedLoot": {},
   "logs": [
+    {
+      "ts": 1768915445903,
+      "type": "FIXED_GIVE",
+      "itemName": "흑호창",
+      "receiverId": "72ca58ef-450d-44cd-a060-d528698d3dcc",
+      "detail": "아이유에게 고정템 지급",
+      "meta": {
+        "which": "fixed",
+        "curId": "72ca58ef-450d-44cd-a060-d528698d3dcc",
+        "batchId": 1768914592391
+      }
+    },
+    {
+      "ts": 1768915417737,
+      "type": "FIXED_GIVE",
+      "itemName": "자목침",
+      "receiverId": "7f38e816-b693-4914-8aa3-4c000b3d5a14",
+      "detail": "무짱에게 고정템 지급",
+      "meta": {
+        "which": "fixed",
+        "curId": "7f38e816-b693-4914-8aa3-4c000b3d5a14",
+        "batchId": 1768914592391
+      }
+    },
+    {
+      "ts": 1768914592391,
+      "type": "BATCH_START",
+      "itemName": "(배치)",
+      "receiverId": null,
+      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "meta": {
+        "batchId": 1768914592391
+      }
+    },
+    {
+      "ts": 1768914591191,
+      "type": "BATCH_START",
+      "itemName": "(배치)",
+      "receiverId": null,
+      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "meta": {
+        "batchId": 1768914591191
+      }
+    },
     {
       "ts": 1768829760443,
       "type": "BATCH_START",
