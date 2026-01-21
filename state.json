@@ -113,7 +113,7 @@
       "name": "단군",
       "activeFixed": true,
       "activeLoot": false,
-      "fixedCount": 0,
+      "fixedCount": 1,
       "lootCount": 0,
       "tokens": 0
     },
@@ -253,9 +253,9 @@
       "tokens": 0
     }
   ],
-  "fixedPointer": 12,
+  "fixedPointer": 13,
   "lootPointer": 10,
-  "fixedItemName": "흑호창",
+  "fixedItemName": "비늘허리띠",
   "lootCatalog": [
     "마귀의 가면",
     "고대 견장",
@@ -266,13 +266,44 @@
     "하급 무신의 혼",
     "하급 작약 호리병"
   ],
-  "batchId": 1768914592391,
+  "batchId": 1769002483955,
   "batchReceivedFixed": {
-    "7f38e816-b693-4914-8aa3-4c000b3d5a14": true,
-    "72ca58ef-450d-44cd-a060-d528698d3dcc": true
+    "debbe2cf-f002-4900-b55a-cda3c82bd92d": true
   },
   "batchReceivedLoot": {},
   "logs": [
+    {
+      "ts": 1769002932919,
+      "type": "FIXED_GIVE",
+      "itemName": "비늘허리띠",
+      "receiverId": "debbe2cf-f002-4900-b55a-cda3c82bd92d",
+      "detail": "단군에게 고정템 지급",
+      "meta": {
+        "which": "fixed",
+        "curId": "debbe2cf-f002-4900-b55a-cda3c82bd92d",
+        "batchId": 1769002483955
+      }
+    },
+    {
+      "ts": 1769002483956,
+      "type": "BATCH_START",
+      "itemName": "(배치)",
+      "receiverId": null,
+      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "meta": {
+        "batchId": 1769002483955
+      }
+    },
+    {
+      "ts": 1769002482398,
+      "type": "BATCH_START",
+      "itemName": "(배치)",
+      "receiverId": null,
+      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "meta": {
+        "batchId": 1769002482398
+      }
+    },
     {
       "ts": 1768915445903,
       "type": "FIXED_GIVE",
