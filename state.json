@@ -122,7 +122,7 @@
       "name": "휘프리온",
       "activeFixed": true,
       "activeLoot": false,
-      "fixedCount": 0,
+      "fixedCount": 1,
       "lootCount": 0,
       "tokens": 0
     },
@@ -210,7 +210,7 @@
     {
       "id": "be3c2c24-c398-44f9-8632-2a2640f16b8d",
       "name": "진춘목",
-      "activeFixed": true,
+      "activeFixed": false,
       "activeLoot": false,
       "fixedCount": 0,
       "lootCount": 0,
@@ -253,9 +253,9 @@
       "tokens": 0
     }
   ],
-  "fixedPointer": 13,
+  "fixedPointer": 14,
   "lootPointer": 10,
-  "fixedItemName": "비늘허리띠",
+  "fixedItemName": "하급 무신의 돌",
   "lootCatalog": [
     "마귀의 가면",
     "고대 견장",
@@ -266,12 +266,44 @@
     "하급 무신의 혼",
     "하급 작약 호리병"
   ],
-  "batchId": 1769002483955,
+  "batchId": 1769087937258,
   "batchReceivedFixed": {
-    "debbe2cf-f002-4900-b55a-cda3c82bd92d": true
+    "45285a64-7703-4015-a9c5-d6f1575617e2": true
   },
   "batchReceivedLoot": {},
   "logs": [
+    {
+      "ts": 1769089209987,
+      "type": "FIXED_GIVE",
+      "itemName": "하급 무신의 돌",
+      "receiverId": "45285a64-7703-4015-a9c5-d6f1575617e2",
+      "detail": "휘프리온에게 고정템 지급",
+      "meta": {
+        "which": "fixed",
+        "curId": "45285a64-7703-4015-a9c5-d6f1575617e2",
+        "batchId": 1769087937258
+      }
+    },
+    {
+      "ts": 1769087937258,
+      "type": "BATCH_START",
+      "itemName": "(배치)",
+      "receiverId": null,
+      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "meta": {
+        "batchId": 1769087937258
+      }
+    },
+    {
+      "ts": 1769087935262,
+      "type": "BATCH_START",
+      "itemName": "(배치)",
+      "receiverId": null,
+      "detail": "이번 보스(배치) 시작: 레인별 1인1개 초기화",
+      "meta": {
+        "batchId": 1769087935262
+      }
+    },
     {
       "ts": 1769002932919,
       "type": "FIXED_GIVE",
